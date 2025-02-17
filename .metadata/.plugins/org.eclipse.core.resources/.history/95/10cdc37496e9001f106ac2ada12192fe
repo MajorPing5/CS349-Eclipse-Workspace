@@ -1,0 +1,14 @@
+package inventory;
+
+public class Item {
+	
+	// fields - ID, Name, Quantity, Price
+	int id, quantity;
+	String name;
+	float price;
+	
+	// constructor - empty constructor
+	public Item() {
+		
+	}
+}

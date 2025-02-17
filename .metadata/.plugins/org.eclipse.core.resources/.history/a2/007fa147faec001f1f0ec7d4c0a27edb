@@ -1,0 +1,10 @@
+package module;
+
+import java.util.ArrayList;
+
+public class Library {
+	
+	// fields - name
+	private String name;
+	private ArrayList<Book> books = new ArrayList<>();
+}
