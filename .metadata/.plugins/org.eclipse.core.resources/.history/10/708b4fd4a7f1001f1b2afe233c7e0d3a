@@ -30,6 +30,6 @@ public class App {
 		// field - choiceNo
 		private int choiceNo;
 		
-		choiceNo = invokeChoice();
+		choiceNo = ;
 	}
 }
