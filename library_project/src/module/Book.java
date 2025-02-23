@@ -21,14 +21,14 @@ public class Book {
 
 	// setters and getters
 	/**
-	 * @return the iSBN
+	 * @return the isbn
 	 */
 	public int getISBN() {
 		return isbn;
 	}
 
 	/**
-	 * @param iSBN the iSBN to set
+	 * @param isbn the isbn to set
 	 */
 	public void setISBN(int isbn) {
 		this.isbn = isbn;

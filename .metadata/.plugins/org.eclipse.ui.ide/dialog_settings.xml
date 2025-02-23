@@ -30,6 +30,8 @@
 		<item key="SmartImportRootWizardPage.STORE_NESTED_PROJECTS" value="true"/>
 		<item key="SmartImportRootWizardPage.STORE_CONFIGURE_NATURES" value="true"/>
 		<list key="org.eclipse.ui.internal.wizards.datatransfer.SmartImportRootWizardPage.knownSources">
+			<item value="C:\Users\Robert-Abel Porras\OneDrive\UMKC Comp Sci\COMP SCI 349\CS349-Eclipse-Workspace\topic_09_inheritance"/>
+			<item value="C:\Users\Robert-Abel Porras\OneDrive\UMKC Comp Sci\COMP SCI 349\CS349-Eclipse-Workspace\topic_08_classes_2"/>
 			<item value="C:\Users\Robert-Abel Porras\Downloads"/>
 			<item value="C:\Users\Robert-Abel Porras\Downloads\topic_09_inheritance"/>
 			<item value="C:\Users\Robert-Abel Porras\Downloads\topic_08_classes_2"/>
@@ -38,7 +40,7 @@
 		<section name="SmartImportWizard.dialogBounds">
 			<item key="DIALOG_X_ORIGIN" value="1026"/>
 			<item key="DIALOG_Y_ORIGIN" value="367"/>
-			<item key="DIALOG_WIDTH" value="885"/>
+			<item key="DIALOG_WIDTH" value="977"/>
 			<item key="DIALOG_HEIGHT" value="629"/>
 			<item key="DIALOG_FONT_NAME" value="1|Segoe UI|9.0|0|WINDOWS|1|-12|0|0|0|400|0|0|0|1|0|0|0|0|Segoe UI"/>
 		</section>

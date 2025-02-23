@@ -30,5 +30,6 @@ public class App {
 		
 		// show bmi 
 		System.out.println("Hi " + firstName + " " + lastName + ", your bmi is " + bmi);
+		System.exit(0);
 	}
 }
