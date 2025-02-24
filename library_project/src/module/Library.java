@@ -58,15 +58,15 @@ public class Library {
     /**
      * method to display books
      */
-        public void displayBooks() {
-            
-            StringBuilder booksToDisplay = new StringBuilder("");
-            
-            ArrayList<Book> books = new ArrayList<>();
-            for(Book book: getBooks()) {
-                booksToDisplay.append(book.display()+"\n");
-            }
-            
-            JOptionPane.showMessageDialog(null, booksToDisplay);
+    public void displayBooks() {
+        
+        StringBuilder booksToDisplay = new StringBuilder("");
+        
+        ArrayList<Book> books = new ArrayList<>();
+        for(Book book: getBooks()) {
+            booksToDisplay.append(book.display()+"\n");
+        }
+        
+        JOptionPane.showMessageDialog(null, booksToDisplay);
     }
 }
