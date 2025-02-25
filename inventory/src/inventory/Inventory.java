@@ -1,6 +1,7 @@
 package inventory;
 
 import java.util.ArrayList;
+import inventory.Item;
 
 public class Inventory {
 	private int itemID;
@@ -25,6 +26,26 @@ public class Inventory {
 	}
 	
 	// custom methods
+	/**
+	 * 
+	 * 
+	 */
+	public int getNextItemID() {
+		// Assuming the list is empty...
+		if (items.isEmpty()) {
+			return 1;
+		}
+		
+		int nextID = items.get(0).getID();
+		
+		for (Item item: items) {
+			if (item.getID() > nextID) {
+				nextID = item.getID();
+			}
+		}
+		return nextID;
+	}
+	
 	/* *Method to add a new inventory item to the inventory collection
 	 * @param item
 	 */
