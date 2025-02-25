@@ -1,8 +1,8 @@
 package app;
 
-import inventory.*;
+import inventory.Inventory;
+import inventory.Item;
 import java.io.*;
-import java.util.ArrayList;
 import java.util.Scanner;
 
 // JOPtionPane is not allowed to be used, according to requirements
@@ -12,15 +12,28 @@ public class App {
 	private static Scanner keyboard = new Scanner(System.in);
 
 	public static void main(String[] args) throws IOException {
-		// TODO Auto-generated method stub
+		// Field - filename
 		String filename = "inventory.txt";
 		
-		retrieveFile(filename);
+		/** 
+		 * Creates a fresh inventory for the whole program to use.
+		 * If the file already exists, it will use this inventory object
+		 * to read into it.
+		 * If the file does NOT exist, it will simply create the inventory
+		 * and proceed with the rest of the program 
+		 */
+		Inventory inventory = retrieveFile(filename);
 		
-		final int choiceNo = 0;
-		Inventory inventory = createInventory();
+		int choiceNo = 0;
 		while (choiceNo != 5)
-		{
+		{ 
+			choiceNo = readInt("Welcome to the inventory management system!\n\n"
+					+ "Please choose any of the options you wish to run:\n"
+					+ "1. Add a new item\n"
+					+ "2. View your current inventory\n"
+					+ "3. Update an existing item\n"
+					+ "4. Delete an existing item\n"
+					+ "5. Quit");
 			switch(choiceNo) {
 			case 1:
 				addItem(inventory);
@@ -41,50 +54,12 @@ public class App {
 		
 		
 	}
-	
-	private static Inventory retrieveFile(String filename) throws IOException {
-		if(fileExists(filename)) {
-			File file = new File(filename);
-			Scanner inputFile = new Scanner(file);
-			
-			while (inputFile.hasNext()) {
-				createInventory();
-				String item = inputFile.nextLine();
-				
-				
-			}
-			
-			return inventory;
-		} else {
-			return createInventory();	
-		}
-	}
-	
-	/**
-	 * Helper function dedicated to searching for the file.
-	 * This helps determine if "inventory.txt" should or should not be created
-	 * @param filename
-	 * @return
-	 */
-	private static boolean fileExists(String filename) {
-		File file = new File(filename);
-		return file.exists();
-	}
-	
-	/**
-	 * Creates an inventory to modify,
-	 * assuming inventory.txt does not already exist
-	 */
-	private static Inventory createInventory() {
-		// creates an inventory
-		Inventory inventory = new Inventory();		
-		return inventory;
-	}
-	
+
 	/**
 	 * Helper function for testing string conversion to integer
 	 * @param prompt String message to prompt user for input
-	 * @return int or error
+	 * @return int
+	 * @throws NumberFormatException
 	 */
 	public static int readInt(String prompt) {
 		while (true) {
@@ -101,7 +76,8 @@ public class App {
 	/**
 	 * Helper function for testing string conversion to float
 	 * @param prompt String message to prompt user for input
-	 * @return float or error
+	 * @return float
+	 * @throws NumberFormatException
 	 */
 	public static float readFloat(String prompt) {
 		while (true) {
@@ -114,6 +90,43 @@ public class App {
 			}
 		}
 	}
+	
+	/**
+	 * Helper function dedicated to searching for the file.
+	 * This helps determine if "inventory.txt" should or should not be created
+	 * @param filename
+	 * @return object inventory
+	 */
+	private static boolean fileExists(String filename) {
+		File file = new File(filename);
+		return file.exists();
+	}
+	
+	/**
+	 * Attempts to retrive the file, and either creates a blank inventory
+	 * or reads in file to populate newly created inventory
+	 * @param filename
+	 * @return
+	 * @throws IOException
+	 */
+	private static Inventory retrieveFile(String filename) throws IOException {
+		Inventory inventory = new Inventory();
+		
+		if(fileExists(filename)) {
+			File file = new File(filename);
+			Scanner inputFile = new Scanner(file);
+			
+			while (inputFile.hasNext()) {
+				String item = inputFile.nextLine();
+				inventory.addItem(item);
+				
+			}
+			inputFile.close();
+		}
+		
+		return inventory;
+	}
+	
 	
 	/**
 	 * Centralized Item Addition Function
