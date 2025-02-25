@@ -39,7 +39,6 @@ public class App {
 				addItem(inventory);
 				break;
 			case 2:
-				inventory.displayInventory();
 				break;
 			case 3:
 				break;
@@ -96,7 +95,7 @@ public class App {
 	 * Helper function dedicated to searching for the file.
 	 * This helps determine if "inventory.txt" should or should not be created
 	 * @param filename
-	 * @return inventory object
+	 * @return object inventory
 	 */
 	private static boolean fileExists(String filename) {
 		File file = new File(filename);
@@ -104,10 +103,10 @@ public class App {
 	}
 	
 	/**
-	 * Attempts to retrieve the file, and either creates a blank inventory
+	 * Attempts to retrive the file, and either creates a blank inventory
 	 * or reads in file to populate newly created inventory
 	 * @param filename
-	 * @return inventory Object
+	 * @return
 	 * @throws IOException
 	 */
 	private static Inventory retrieveFile(String filename) throws IOException {
@@ -143,24 +142,14 @@ public class App {
 		return inventory;
 	}
 	
+	
 	/**
 	 * Centralized Item Addition Function
 	 * @param inventory
 	 */
 	private static void addItem(Inventory inventory) {
 		// fields - id, name, quantity, price
-		int id = inventory.getNextItemID();
-
-		System.out.print("What is the name of the new item to the inventory?\n");
-		String name = keyboard.nextLine(); 
 		
-		int quantity = readInt("How many is being added to your inventory?");
-		
-		float price = readFloat("What is the starting price of one of these items?");
-		
-		Item item = new Item(id, name, quantity, price);
-		
-		inventory.addItem(item);
 	}
 	
 	private static void removeItem(Inventory inventory) {
