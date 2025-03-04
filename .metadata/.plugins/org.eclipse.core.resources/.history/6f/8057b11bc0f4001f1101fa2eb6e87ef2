@@ -11,9 +11,22 @@ public class Item {
 	public Item() {
 		
 	}
-	
+	/**
+	 * Overloaded constructor to retrieve all specified item information
+	 * @param id
+	 * @param name
+	 * @param quantity
+	 * @param price
+	 * @return id,
+	 * name,
+	 * quantity,
+	 * price
+	 */
 	public Item(int id, String name, int quantity, float price) {
-		
+		this.id = id;
+		this.name = name;
+		this.quantity = quantity;
+		this.price = price;
 	}
 	
 	// setters and getters

@@ -61,9 +61,7 @@ public class Inventory {
 		// Get all items that exist &		
 		// loop until either item is found or End of Inventory
 		for (Item currentItems : items) {
-			if (currentItems ==  items) {
-				
-			}
+			if (items )
 		}
 	}
 	

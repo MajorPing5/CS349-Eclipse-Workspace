@@ -50,20 +50,20 @@ public class Inventory {
 	 * Method to add a new inventory item to the inventory collection
 	 * @param item
 	 */
-	public void addItem(Item items) {
-		getItems().add(items);
+	public void addItem(Item item) {
+		getItems().add(item);
 	}
 	
 	/**
 	 * 
 	 */
-	public void removeItem(Item items) {
-		// Get all items that exist &		
+	public void removeItem(Item item) {
+		// Get all items that exist
+		ArrayList<Item> currentItems = getItems();
+		
 		// loop until either item is found or End of Inventory
-		for (Item currentItems : items) {
-			if (currentItems ==  items) {
-				
-			}
+		if (item.getID() == Integer.parseInt(itemID)) {
+			
 		}
 	}
 	
@@ -74,8 +74,9 @@ public class Inventory {
 		
 		StringBuilder itemsToDisplay = new StringBuilder("");
 		
-		for(Item items : getItems()) {
-			itemsToDisplay.append(items.display()+"\n");
+		ArrayList<Item> items = new ArrayList<>();
+		for(Item item: getItems()) {
+			itemsToDisplay.append(item.display()+"\n");
 		}
 		
 		// JOptionPane.showMessageDialog(null, itemsToDisplay);

@@ -50,20 +50,18 @@ public class Inventory {
 	 * Method to add a new inventory item to the inventory collection
 	 * @param item
 	 */
-	public void addItem(Item items) {
-		getItems().add(items);
+	public void addItem(Item item) {
+		getItems().add(item);
 	}
 	
 	/**
 	 * 
 	 */
-	public void removeItem(Item items) {
+	public void removeItem(Item item) {
 		// Get all items that exist &		
 		// loop until either item is found or End of Inventory
 		for (Item currentItems : items) {
-			if (currentItems ==  items) {
-				
-			}
+			if (item )
 		}
 	}
 	

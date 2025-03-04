@@ -11,7 +11,9 @@ public class Item {
 	public Item() {
 		
 	}
-	/** Overloaded constructor to retrieve all specified item information
+	
+	/**
+	 * Overloaded constructor to retrieve all specified item information
 	 * @param id
 	 * @param name
 	 * @param quantity
