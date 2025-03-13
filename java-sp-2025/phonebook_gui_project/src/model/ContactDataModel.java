@@ -3,6 +3,7 @@ package model;
 import java.util.ArrayList;
 
 public class ContactDataModel {
+	
 	private ArrayList<ContactModel> contacts;
 	
 	public ContactDataModel() {
