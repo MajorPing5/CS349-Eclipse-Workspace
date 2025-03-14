@@ -5,7 +5,9 @@ import view.*;
 
 import java.awt.event.*;
 import java.util.Map;
+import java.util.List;
 import java.util.HashMap;
+import java.util.ArrayList;
 
 import javax.swing.JOptionPane;
 
@@ -21,29 +23,54 @@ public class ContactController {
 		// "add" button listener
 		view.getBtnAdd().addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				
 				// Add empty field validations				
 				
-
-				try {
+				/**
+				 * Creates a collection of pair entries between text fields and
+				 * their trimming function that the user can interact with,
+				 * allowing easier referencing of individual or colective
+				 * fields when needed
+				 */
+				Map<String, String> txtField = new HashMap<>();
+				txtField.put("firstName", view.getTxtFirstName().getText().trim());
+				txtField.put("lastName", view.getTxtLastName().getText().trim());
+				txtField.put("phoneNumber", view.getTxtPhoneNumber().getText().trim());
+				
+				// Designates an easy dynamic list for any and all fields left empty
+				List<String> emptyFields = new ArrayList<>();
+				
+				/**
+				 * Easily iterates through all fields to see if
+				 * (removing all unnecessary spaces) any field is a real empty field
+				 */
+				txtField.forEach((field, value) -> {
+					if(value.isEmpty()) {
+						emptyFields.add(field);
+					}
+				});
+				
+				/**
+				 * Only two options: No field is empty (then execute insertion),
+				 * or ANY/ALL fields are empty and display what field(s) are null
+				 */
+				if (emptyFields.isEmpty()) {
 					String firstName = view.getTxtFirstName().getText();
 					String lastName = view.getTxtLastName().getText();
 					String phoneNumber = view.getTxtPhoneNumber().getText();
 					
-
+					
 					// Add a new contact
 					ContactModel newContact = new ContactModel(firstName, lastName, phoneNumber);
 					new ContactDataModel().addContact(newContact);
-
+					
 					// update the view (contact list)
 					view.getContactListModel().addElement(newContact);
-
-					JOptionPane.showMessageDialog(null, "Button clicked");
-
-				} catch (NullPointerException err) {
-
-					JOptionPane.showMessageDialog(null, "A field has been left empty");
-
+					
+					JOptionPane.showMessageDialog(null, "Button clicked");					
+				} else {
+					JOptionPane.showMessageDialog(view,
+							"Missing: " + String.join(", ", emptyFields),
+							"Error", JOptionPane.ERROR_MESSAGE);
 				}
 			}
 		});
