@@ -1,7 +1,8 @@
 package app;
 
-import inventory.Inventory;
-import inventory.Item;
+import model.Inventory;
+import model.ItemModel;
+
 import java.io.*;
 import java.util.Scanner;
 
@@ -131,10 +132,10 @@ public class App {
 				float price = Float.parseFloat(arguments[3].trim());
 				
 				// Instantiates Item object
-				Item item = new Item(id, name, quantity, price);
+				ItemModel itemModel = new ItemModel(id, name, quantity, price);
 				
 				// Adds the new Item object to Inventory
-				inventory.addItem(item);
+				inventory.addItem(itemModel);
 			}
 			
 			inputFile.close();
@@ -149,7 +150,7 @@ public class App {
 	 */
 	private static void addItem(Inventory inventory) {
 		// fields - id, name, quantity, price
-		int id = inventory.getNextItemID();
+		int id = inventory.getNextID();
 
 		System.out.print("What is the name of the new item to the inventory?\n");
 		String name = keyboard.nextLine(); 
@@ -158,19 +159,19 @@ public class App {
 		
 		float price = readFloat("What is the starting price of one of these items?");
 		
-		Item item = new Item(id, name, quantity, price);
+		ItemModel itemModel = new ItemModel(id, name, quantity, price);
 		
-		inventory.addItem(item);
+		inventory.addItem(itemModel);
 	}
 	
 	private static void removeItem(Inventory inventory) {
 		String inventoryID = keyboard.nextLine();
 		
-		Item itemToRemove = null;
+		ItemModel itemToRemove = null;
 		
-		for(Item item: inventory.getItems()) {
-			if(item.getID() == Integer.parseInt(inventoryID)) {
-				itemToRemove = item;
+		for(ItemModel itemModel: inventory.getItems()) {
+			if(itemModel.getID() == Integer.parseInt(inventoryID)) {
+				itemToRemove = itemModel;
 				break;
 			}
 		}
