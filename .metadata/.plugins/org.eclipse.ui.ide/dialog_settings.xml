@@ -30,6 +30,7 @@
 		<item key="SmartImportRootWizardPage.STORE_NESTED_PROJECTS" value="true"/>
 		<item key="SmartImportRootWizardPage.STORE_CONFIGURE_NATURES" value="true"/>
 		<list key="org.eclipse.ui.internal.wizards.datatransfer.SmartImportRootWizardPage.knownSources">
+			<item value="C:\Users\Robert-Abel Porras\CS349"/>
 			<item value="C:\Users\Robert-Abel Porras\OneDrive\UMKC Comp Sci\COMP SCI 349\CS349-Eclipse-Workspace"/>
 			<item value="C:\Users\Robert-Abel Porras\OneDrive\UMKC Comp Sci\COMP SCI 349\CS349-Eclipse-Workspace\topic_09_inheritance"/>
 			<item value="C:\Users\Robert-Abel Porras\OneDrive\UMKC Comp Sci\COMP SCI 349\CS349-Eclipse-Workspace\topic_08_classes_2"/>
