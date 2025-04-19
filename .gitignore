@@ -1,7 +1,74 @@
-# Compiled class file
+# Eclipse Specific Files
+.metadata/
+bin/
+tmp/
+*.tmp
+*.bak
+*.swp
+*~.nib
+*.prefs
+*.xmi
+local.properties
+.settings/
+.loadpath
+.recommenders
+
+# Machine-specific paths & creates issues with different IDEs or configs
+.classpath
+
+# External tool builders
+.externalToolBuilders/
+
+# Locally stored "Eclipse launch configurations"
+*.launch
+
+# PyDev specific (Python IDE for Eclipse)
+*.pydevproject
+
+# CDT-specific (C/C++ Development Tooling)
+.cproject
+
+# CDT- autotools
+.autotools
+
+# Java annotation processor (APT)
+.factorypath
+
+# PDT-specific (PHP Development Tools)
+.buildpath
+
+# sbteclipse plugin
+.target
+
+# Tern plugin
+.tern-project
+
+# TeXlipse plugin
+.texlipse
+
+# STS (Spring Tool Suite)
+.springBeans
+
+# Code Recommenders
+.recommenders/
+
+# Annotation Processing
+.apt_generated/
+.apt_generated_test/
+
+# Scala IDE specific (Scala & Java development for Eclipse)
+.cache-main
+.scala_dependencies
+.worksheet
+
+# Uncomment this line if you wish to ignore the project description file.
+# Typically, this file would be tracked if it contains build/dependency configurations:
+.project
+
+# Java Compiled class file
 *.class
 
-# Log file
+# Java Log file
 *.log
 
 # BlueJ files
@@ -10,7 +77,7 @@
 # Mobile Tools for Java (J2ME)
 .mtj.tmp/
 
-# Package Files #
+# Java Package Files #
 *.jar
 *.war
 *.nar
@@ -22,97 +89,10 @@
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
 replay_pid*
-.metadata/version.ini
-.metadata/.plugins/org.eclipse.jdt.ui/QualifiedTypeNameHistory.xml
-.metadata/.plugins/org.eclipse.jdt.ui/jdt-images/8.png
-.metadata/.plugins/org.eclipse.jdt.ui/jdt-images/7.png
-.metadata/.plugins/org.eclipse.jdt.ui/jdt-images/6.png
-.metadata/.plugins/org.eclipse.jdt.ui/jdt-images/5.png
-.metadata/.plugins/org.eclipse.jdt.ui/jdt-images/4.png
-.metadata/.plugins/org.eclipse.jdt.ui/jdt-images/3.png
-.metadata/.plugins/org.eclipse.jdt.ui/jdt-images/2.png
-.metadata/.plugins/org.eclipse.jdt.ui/jdt-images/1.png
-.metadata/.plugins/org.eclipse.jdt.ui/jdt-images/0.png
-.metadata/.plugins/org.eclipse.jdt.core/variablesAndContainers.dat
-.metadata/.plugins/org.eclipse.jdt.core/savedIndexNames.txt
-.metadata/.plugins/org.eclipse.jdt.core/394678312.index
-.metadata/.plugins/org.eclipse.jdt.core/23149504.index
-.metadata/.plugins/org.eclipse.jdt.core/1865797976.index
-.metadata/.plugins/org.eclipse.jdt.core/1707214842.index
-.metadata/.plugins/org.eclipse.e4.workbench/workbench.xmi
-.metadata/.plugins/org.eclipse.core.resources/7.snap
-.metadata/.plugins/org.eclipse.core.resources/.safetable/org.eclipse.core.resources
-.metadata/.plugins/org.eclipse.core.resources/.root/.markers.snap
-.metadata/.plugins/org.eclipse.core.resources/.projects/topic_09_inheritance/org.eclipse.jdt.core/state.dat
-.metadata/.plugins/org.eclipse.core.resources/.projects/topic_09_inheritance/.syncinfo.snap
-.metadata/.plugins/org.eclipse.core.resources/.projects/topic_09_inheritance/.markers.snap
-.metadata/.plugins/org.eclipse.core.resources/.projects/topic_09_inheritance/.indexes/7/5c/history.index
-.metadata/.plugins/org.eclipse.core.resources/.projects/topic_09_inheritance/.indexes/7/5c/af/history.index
-.metadata/.plugins/org.eclipse.core.resources/.projects/topic_08_classes_2/org.eclipse.jdt.core/state.dat
-.metadata/.plugins/org.eclipse.core.resources/.projects/topic_08_classes_2/.syncinfo.snap
-.metadata/.plugins/org.eclipse.core.resources/.projects/topic_08_classes_2/.markers.snap
-.metadata/.plugins/org.eclipse.core.resources/.projects/topic_07_arrays_and_arraylist_class/.syncinfo.snap
-.metadata/.plugins/org.eclipse.core.resources/.projects/topic_07_arrays_and_arraylist_class/.markers.snap
-.metadata/.plugins/org.eclipse.core.resources/.projects/topic_06_classes_1/.syncinfo.snap
-.metadata/.plugins/org.eclipse.core.resources/.projects/topic_06_classes_1/.markers.snap
-.metadata/.plugins/org.eclipse.core.resources/.projects/topic_05_methods/.syncinfo.snap
-.metadata/.plugins/org.eclipse.core.resources/.projects/topic_05_methods/.markers.snap
-.metadata/.plugins/org.eclipse.core.resources/.projects/topic_04_loops_and_files/.syncinfo.snap
-.metadata/.plugins/org.eclipse.core.resources/.projects/topic_04_loops_and_files/.markers.snap
-.metadata/.plugins/org.eclipse.core.resources/.projects/topic_03_decision_structures/.syncinfo.snap
-.metadata/.plugins/org.eclipse.core.resources/.projects/topic_03_decision_structures/.markers.snap
-.metadata/.plugins/org.eclipse.core.resources/.projects/topic_02_java_fundamentals/.syncinfo.snap
-.metadata/.plugins/org.eclipse.core.resources/.projects/topic_02_java_fundamentals/.markers.snap
-.metadata/.plugins/org.eclipse.core.resources/.projects/library_project/org.eclipse.jdt.core/state.dat
-.metadata/.plugins/org.eclipse.core.resources/.projects/library_project/.syncinfo.snap
-.metadata/.plugins/org.eclipse.core.resources/.projects/library_project/.markers.snap
-.metadata/.plugins/org.eclipse.core.resources/.projects/library_project/.indexes/e4/94/history.index
-.metadata/.plugins/org.eclipse.core.resources/.projects/inventory/org.eclipse.jdt.core/state.dat
-.metadata/.plugins/org.eclipse.core.resources/.projects/inventory/.syncinfo.snap
-.metadata/.plugins/org.eclipse.core.resources/.projects/inventory/.markers.snap
-.metadata/.plugins/org.eclipse.core.resources/.projects/inventory/.indexes/e4/a4/history.index
-.metadata/.plugins/org.eclipse.core.resources/.projects/inventory/.indexes/e4/21/history.index
-.metadata/.plugins/org.eclipse.core.resources/.projects/inventory/.indexes/e4/12/history.index
-.metadata/.plugins/org.eclipse.core.resources/.projects/bmi_project/.syncinfo.snap
-.metadata/.plugins/org.eclipse.core.resources/.projects/bmi_project/.markers.snap
-.metadata/.plugins/org.eclipse.core.resources/.projects/.org.eclipse.egit.core.cmp/.syncinfo.snap
-.metadata/.plugins/org.eclipse.core.resources/.projects/.org.eclipse.egit.core.cmp/.markers.snap
-.metadata/.plugins/org.eclipse.core.resources/.history/fe/c0ff414813f2001f1bb9a29b336e4676
-.metadata/.plugins/org.eclipse.core.resources/.history/f9/002f490864f2001f1bb9a29b336e4676
-.metadata/.plugins/org.eclipse.core.resources/.history/f5/00cb913d13f2001f1bb9a29b336e4676
-.metadata/.plugins/org.eclipse.core.resources/.history/e9/302b42e755f2001f1bb9a29b336e4676
-.metadata/.plugins/org.eclipse.core.resources/.history/e7/a06f529c6df2001f1bb9a29b336e4676
-.metadata/.plugins/org.eclipse.core.resources/.history/bf/60d15b426ff2001f1bb9a29b336e4676
-.metadata/.plugins/org.eclipse.core.resources/.history/96/a03ed2dd55f2001f1bb9a29b336e4676
-.metadata/.plugins/org.eclipse.core.resources/.history/81/d0e583e213f2001f1bb9a29b336e4676
-.metadata/.plugins/org.eclipse.core.resources/.history/7c/1059aece76f2001f1bb9a29b336e4676
-.metadata/.plugins/org.eclipse.core.resources/.history/77/50872ce271f2001f1bb9a29b336e4676
-.metadata/.plugins/org.eclipse.core.resources/.history/65/90aee09d5ef2001f1bb9a29b336e4676
-.metadata/.plugins/org.eclipse.core.resources/.history/5b/90e8ebea71f2001f1bb9a29b336e4676
-.metadata/.plugins/org.eclipse.core.resources/.history/54/9042bc0564f2001f1bb9a29b336e4676
-.metadata/.plugins/org.eclipse.core.resources/.history/49/10345da656f2001f1bb9a29b336e4676
-.metadata/.plugins/org.eclipse.core.resources/.history/28/c0709df075f2001f1bb9a29b336e4676
-.metadata/.plugins/org.eclipse.core.resources/.history/17/504dcbd172f2001f1bb9a29b336e4676
-.metadata/.lock_info
-/.metadata
-/.metadata/.plugins
-/.metadata/.plugins/org.eclipse.swt/EBWebView/Default
-.metadata/.plugins/org.eclipse.swt/EBWebView/Default/DIPS
-.metadata/.plugins/org.eclipse.swt/EBWebView/Default/DIPS
-.metadata/.plugins/org.eclipse.swt/EBWebView/Default/Extension State/LOG
-.metadata/.plugins/org.eclipse.swt/EBWebView/Default/Favicons
-.metadata/.plugins/org.eclipse.swt/EBWebView/Default/History
-.metadata/.plugins/org.eclipse.swt/EBWebView/Default/History-journal
-.metadata/.plugins/org.eclipse.swt/EBWebView/Default/Local Storage/leveldb/LOG
-.metadata/.plugins/org.eclipse.swt/EBWebView/Default/Network/Cookies
-.metadata/.plugins/org.eclipse.swt/EBWebView/Default/Safe Browsing Network/Safe Browsing Cookies
-.metadata/.plugins/org.eclipse.swt/EBWebView/Default/Session Storage/LOG
-.metadata/.plugins/org.eclipse.swt/EBWebView/Default/shared_proto_db/LOG
-.metadata/.plugins/org.eclipse.swt/EBWebView/Default/shared_proto_db/metadata/LOG
-.metadata/.plugins/org.eclipse.swt/EBWebView/Default/Site Characteristics Database/LOG
-.metadata/.plugins/org.eclipse.swt/EBWebView/Default/Sync Data/LevelDB/LOG
-.metadata/.plugins/org.eclipse.swt/EBWebView/Default/Top Sites
-.metadata/.plugins/org.eclipse.swt/EBWebView/Default/Visited Links
-.metadata/.plugins/org.eclipse.swt/EBWebView/Default/Web Data
-.metadata/.plugins/org.eclipse.swt/EBWebView/Default/Web Data-journal
-phonebook_db_project/bin/.project
+
+# Credentials
+*.token
+*.env
+
+# System files
+*.DS_Store
