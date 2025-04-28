@@ -1,4 +1,10 @@
 eclipse.preferences.version=1
+org.eclipse.jdt.core.classpathVariable.ECLIPSE_HOME=C\:/Users/Robert-Abel Porras/eclipse/java-latest-released/eclipse/
+org.eclipse.jdt.core.classpathVariable.JRE_LIB=C\:/Program Files/Java/jdk-24/lib/jrt-fs.jar
+org.eclipse.jdt.core.classpathVariable.JRE_SRC=C\:/Program Files/Java/jdk-24/lib/src.zip
+org.eclipse.jdt.core.classpathVariable.JRE_SRCROOT=
+org.eclipse.jdt.core.classpathVariable.JUNIT_HOME=C\:/Users/Robert-Abel Porras/.p2/pool/plugins/org.junit_4.13.2.v20240929-1000.jar
+org.eclipse.jdt.core.classpathVariable.M2_REPO=C\:/Users/Robert-Abel Porras/.m2/repository
 org.eclipse.jdt.core.codeComplete.visibilityCheck=enabled
 org.eclipse.jdt.core.compiler.codegen.targetPlatform=21
 org.eclipse.jdt.core.compiler.compliance=21

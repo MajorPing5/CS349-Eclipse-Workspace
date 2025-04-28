@@ -26,11 +26,13 @@
 		<item key="DIALOG_Y_ORIGIN" value="514"/>
 	</section>
 	<section name="SmartImportWizard">
-		<item key="SmartImportRootWizardPage.STORE_HIDE_ALREADY_OPEN" value="false"/>
+		<item key="SmartImportRootWizardPage.STORE_HIDE_ALREADY_OPEN" value="true"/>
 		<item key="SmartImportRootWizardPage.STORE_CLOSE_IMPORTED" value="false"/>
 		<item key="SmartImportRootWizardPage.STORE_NESTED_PROJECTS" value="true"/>
 		<item key="SmartImportRootWizardPage.STORE_CONFIGURE_NATURES" value="true"/>
 		<list key="org.eclipse.ui.internal.wizards.datatransfer.SmartImportRootWizardPage.knownSources">
+			<item value="C:\Users\Robert-Abel Porras\Downloads\topic_10_11_gui\topic_10_11_gui"/>
+			<item value="C:\Users\Robert-Abel Porras\Downloads\phonebook_db_project\phonebook_db_projectt"/>
 			<item value="C:\Users\Robert-Abel Porras\OneDrive\UMKC Comp Sci\COMP SCI 349\CS349-Eclipse-Workspace"/>
 			<item value="C:\Users\Robert-Abel Porras\OneDrive\UMKC Comp Sci\COMP SCI 349\CS349-Eclipse-Workspace\topic_09_inheritance"/>
 			<item value="C:\Users\Robert-Abel Porras\OneDrive\UMKC Comp Sci\COMP SCI 349\CS349-Eclipse-Workspace\topic_08_classes_2"/>
@@ -59,5 +61,13 @@
 	<section name="WORKBENCH_SETTINGS">
 		<list key="ENABLED_TRANSFERS">
 		</list>
+	</section>
+	<section name="BasicNewProjectResourceWizard">
+	</section>
+	<section name="CleanDialogSettings">
+		<item key="TOGGLE_SELECTED" value="false"/>
+		<item key="DIALOG_WIDTH" value="500"/>
+		<item key="DIALOG_HEIGHT" value="389"/>
+		<item key="DIALOG_FONT_NAME" value="1|Segoe UI|9.0|0|WINDOWS|1|-12|0|0|0|400|0|0|0|1|0|0|0|0|Segoe UI"/>
 	</section>
 </section>

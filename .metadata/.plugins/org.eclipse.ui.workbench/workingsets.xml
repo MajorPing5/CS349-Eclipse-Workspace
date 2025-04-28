@@ -6,26 +6,12 @@
 <item elementID="=phonebook_gui_project" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
 <item elementID="=phonebook_db_projectt" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
 </workingSet>
-<workingSet editPageId="org.eclipse.jdt.ui.JavaWorkingSetPage" factoryID="org.eclipse.ui.internal.WorkingSetFactory" id="1745718367901_4" label="BMI" name="BMI">
-<item elementID="=bmi_project" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
-</workingSet>
-<workingSet editPageId="org.eclipse.jdt.ui.JavaWorkingSetPage" factoryID="org.eclipse.ui.internal.WorkingSetFactory" id="1745718379959_5" label="Inventory" name="Inventory">
-<item elementID="=inventory" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
-</workingSet>
+<workingSet editPageId="org.eclipse.jdt.ui.JavaWorkingSetPage" factoryID="org.eclipse.ui.internal.WorkingSetFactory" id="1745718367901_4" label="BMI" name="BMI"/>
+<workingSet editPageId="org.eclipse.jdt.ui.JavaWorkingSetPage" factoryID="org.eclipse.ui.internal.WorkingSetFactory" id="1745718379959_5" label="Inventory" name="Inventory"/>
 <workingSet editPageId="org.eclipse.jdt.ui.JavaWorkingSetPage" factoryID="org.eclipse.ui.internal.WorkingSetFactory" id="1745718391317_6" label="Library" name="Library">
 <item elementID="=library_project" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
 </workingSet>
-<workingSet editPageId="org.eclipse.jdt.ui.JavaWorkingSetPage" factoryID="org.eclipse.ui.internal.WorkingSetFactory" id="1745718410868_7" label="In-Class Examples" name="In-Class Examples">
-<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/topic_04_loops_and_files" type="4"/>
-<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/topic_09_inheritance" type="4"/>
-<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/topic_08_classes_2" type="4"/>
-<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/topic_02_java_fundamentals" type="4"/>
-<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/topic_06_classes_1" type="4"/>
-<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/topic_10_11_gui" type="4"/>
-<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/topic_07_arrays_and_arraylist_class" type="4"/>
-<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/topic_05_methods" type="4"/>
-<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/topic_03_decision_structures" type="4"/>
-</workingSet>
+<workingSet editPageId="org.eclipse.jdt.ui.JavaWorkingSetPage" factoryID="org.eclipse.ui.internal.WorkingSetFactory" id="1745718410868_7" label="In-Class Examples" name="In-Class Examples"/>
 <workingSet editPageId="org.eclipse.jdt.ui.JavaWorkingSetPage" factoryID="org.eclipse.ui.internal.WorkingSetFactory" id="1745722082052_8" label="Final Project" name="Final Project">
 <item elementID="=school_management_system" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
 </workingSet>
