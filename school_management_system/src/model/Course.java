@@ -1,11 +1,5 @@
-/**
- * 
- */
 package model;
 
-/**
- * 
- */
 public class Course {
 	private String code, course_name, description, status;
 	private int max_capacity;
