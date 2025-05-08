@@ -7,6 +7,8 @@ import model.*;
 import view.*;
 
 public class Main {
+	private static final int WINDOW_WIDTH = 400;   // Window width
+	private static final int WINDOW_HEIGHT = 300;  // Window height
 	public static void main(String[] args) {
 		
 		/**
@@ -15,10 +17,8 @@ public class Main {
 			EventQueue.invokeLater(new Runnable() {
 				public void run() {
 					try {
-						TeacherView teacherFrame = new TeacherView();
 						AuthView initialFrame = new AuthView();
-						
-						teacherFrame.setVisible(false);
+						initialFrame.setSize(WINDOW_WIDTH, WINDOW_HEIGHT);
 						initialFrame.setVisible(true);
 					} catch (Exception e) {
 						e.printStackTrace();

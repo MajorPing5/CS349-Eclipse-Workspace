@@ -34,7 +34,7 @@ public class TeacherView extends JFrame {
 		
 		JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
 		
-		JPanel coursesPanel = createButtonPanel("Courses", "Access your course materials and assignments", this::handleCourses);
+		JPanel coursesPanel = createButtonPanel("Courses", "View all information regarding your assigned courses & students", this::handleCourses);
 		JPanel inboxPanel	= createButtonPanel("Inbox", "Check your in-system messages from students", this::handleInbox);
 		
 		splitPane.setLeftComponent(coursesPanel);
