@@ -32,14 +32,13 @@ public class AuthView extends JFrame {
 		mmFile.add(mmQuitItem);
 		getContentPane().setLayout(new BorderLayout(0, 20));
 		
-		JPanel panel = new JPanel();
-		getContentPane().add(panel, BorderLayout.NORTH);
-		panel.setLayout(new BorderLayout(0, 10));
+		JPanel welcomePanel = new JPanel();
+		getContentPane().add(welcomePanel, BorderLayout.NORTH);
+		welcomePanel.setLayout(new BorderLayout(0, 10));
 		
 		JLabel Greeting = new JLabel("Welcome to the School System!");
 		JLabel Directions = new JLabel("Log-In using your Email and Password Credentials");
-		JPanel loginField = new JPanel();
-		FlowLayout flowLayout = (FlowLayout) loginField.getLayout();
+		JPanel loginFields = new JPanel();
 		Box authFields = Box.createVerticalBox();
 		JLabel emailPrompt = new JLabel("Email: ");
 		JLabel passwordPrompt = new JLabel("Password: ");
@@ -54,13 +53,10 @@ public class AuthView extends JFrame {
 		emailPrompt.setHorizontalAlignment(SwingConstants.RIGHT);
 		Directions.setAlignmentX(0.5f);
 		
-		flowLayout.setVgap(20);
-		flowLayout.setHgap(20);
-		
-		panel.add(Greeting, BorderLayout.NORTH);
-		panel.add(Directions, BorderLayout.SOUTH);
-		getContentPane().add(loginField, BorderLayout.CENTER);
-		loginField.add(authFields);
+		welcomePanel.add(Greeting, BorderLayout.NORTH);
+		welcomePanel.add(Directions, BorderLayout.SOUTH);
+		getContentPane().add(loginFields, BorderLayout.CENTER);
+		loginFields.add(authFields);
 		authFields.add(emailPrompt);
 		
 		authFields.add(textField);
@@ -79,6 +75,12 @@ public class AuthView extends JFrame {
 		errorField.setVisible(false);
 		errorField.setEnabled(false);
 		authFields.add(errorField);
+		
+		JPanel Buttons = new JPanel();
+		getContentPane().add(Buttons, BorderLayout.SOUTH);
+		
+		JButton btnLogin = new JButton("Log-In");
+		Buttons.add(btnLogin);
 		
 		setVisible(true);
 	}

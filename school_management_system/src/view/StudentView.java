@@ -10,18 +10,26 @@ import java.util.Map;
 public class StudentView extends JFrame {
 	private Map<String, List<Component>> componentSections;
 	private JMenuBar menuBar;
-	private JMenu mmFile;
 	private JMenuItem mmLogOutItem;
 	private JMenuItem mmQuitItem;
+	private JPanel panel;
 	
 	public StudentView() {
 		componentSections = new LinkedHashMap<>();
+		
+		setTitle("Course Enrollment");
+		setLayout(new BorderLayout());
 		initializeView();
 	}
 	
-	private void createView() {
+	/**
+	 * Initialize the contents of the full window.
+	 */	
+	public void createView() {
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		buildMenu();
 		buildFrame();
+		assembleComponents();
 	}
 
 	/**
@@ -38,36 +46,41 @@ public class StudentView extends JFrame {
 	private void buildMenu() {
 		List<Component> menuComponents = componentSections.get("menu");
 		
-		JMenuBar menuBar = new JMenuBar();
-		getContentPane().add(menuBar, BorderLayout.NORTH);
-		
 		JMenu mmFile = new JMenu("File");
 		JMenuItem mmLogOutItem = new JMenuItem("Log-Out");
 		JMenuItem mmQuitItem = new JMenuItem("Quit");
 		
-		
-		menuBar.add(mmFile);
 		mmFile.add(mmLogOutItem);
 		mmFile.addSeparator();
-		mmFile.add(mmQuitItem);		
-	}
-	
-	
-	/**
-	 * Initialize the contents of the full window.
-	 */
-	private void initialize() {
-		setTitle("Course Enrollment");
-		setLayout(new BorderLayout());
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		buildMenu();
+		mmFile.add(mmQuitItem);
 		
-		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.LEFT);
-		getContentPane().add(tabbedPane, BorderLayout.CENTER);
+		menuComponents.add(mmFile);
+	}
+
+	private void buildFrame() {
+		buildTabbedPaneSection();
 	}
 	
+	private void buildTabbedPaneSection() {
+		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.LEFT);		
+		getContentPane().add(tabbedPane, BorderLayout.CENTER);
+		courseSchedule();
+		tabbedPane.addTab("Edit Schedule", panel);
+	}
 	
-	private void buildFrame() {
+	private Object courseSchedule() {
+		// FIXME Fix method to properly create course schedule tab
+		return courseSchedule();
+	}
+	
+	private void assembleComponents() {
+		componentSections.get("menu").forEach(comp ->
+				add((JMenuBar) comp, BorderLayout.NORTH));
+		
+		componentSections.get("frame").forEach(comp ->
+				add((JTabbedPane) comp, BorderLayout.CENTER));
+		
+		pack();
 		
 	}
 	
@@ -83,4 +96,6 @@ public class StudentView extends JFrame {
 	public JButton getQuitButton() {
 		return (JButton) componentSections.get("menu").get(menuBar.getComponentIndex(mmQuitItem));
 	}
+	
+	// TODO Create remaining getters for controller access
 }

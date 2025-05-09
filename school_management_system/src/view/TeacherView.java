@@ -7,7 +7,7 @@ import java.awt.*;
 import java.awt.event.*;
 
 public class TeacherView extends JFrame {
-
+	// TODO Convert TeacherView into CommonView to permit this being the splash page for teachers and students post-login
 	private static final long serialVersionUID = 1L;
 	private JPanel Dashboard;
 	public TeacherView() {
