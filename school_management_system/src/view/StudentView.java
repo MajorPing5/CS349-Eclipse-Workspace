@@ -69,7 +69,7 @@ public class StudentView extends JFrame {
 	}
 	
 	private Object courseSchedule() {
-		// FIXME Fix method to properly create course schedule tab
+		// TODO Method to properly create course schedule tab is incomplete
 		return courseSchedule();
 	}
 	

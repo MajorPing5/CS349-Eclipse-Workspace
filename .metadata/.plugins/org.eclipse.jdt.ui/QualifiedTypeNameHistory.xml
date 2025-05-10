@@ -2,4 +2,5 @@
 <qualifiedTypeNameHistroy>
     <fullyQualifiedTypeName name="javax.swing.JOptionPane"/>
     <fullyQualifiedTypeName name="model.CourseDA"/>
+    <fullyQualifiedTypeName name="view.AuthView"/>
 </qualifiedTypeNameHistroy>
