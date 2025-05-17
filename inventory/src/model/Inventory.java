@@ -47,21 +47,21 @@ public class Inventory {
 	
 	/**
 	 * Method to add a new inventory item to the inventory collection
-	 * @param item
+	 * @param item object of class ItemModel that exists in the array list
 	 */
-	public void addItem(ItemModel itemModels) {
-		getItems().add(itemModels);
+	public void addItem(ItemModel item) {
+		getItems().add(item);
 	}
 	
 	/**
 	 * 
 	 */
-	public void removeItem(ItemModel itemModels) {
+	public void removeItem(ItemModel targetItem) {
 		// Get all items that exist &		
 		// loop until either item is found or End of Inventory
-		for (ItemModel currentItems : itemModels) {
-			if (currentItems ==  itemModels) {
-				
+		for (ItemModel currentItem : itemModels) {
+			if (currentItem == targetItem) {
+				itemModels.remove(currentItem);
 			}
 		}
 	}

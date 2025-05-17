@@ -89,8 +89,7 @@ public class App {
 
 	/**
 	 * Reads a double from user input with validation
-	 * @param prompt String message to prompt user for input
-	 * @param allowEmpty Whether to accept empty input (returns 0.0f)
+	 * @param prompt String message for user's input
 	 * @return Valid float value (≥ 0.0)
 	 */
 	public static double readDouble(String prompt) {
@@ -143,34 +142,33 @@ public class App {
 			outputFile.print("3,Orange,20,0.7");
 			outputFile.close();
 			retrieveFile(filename);	
+		} else {
+			File file = new File(filename);
+			Scanner inputFile = new Scanner(file);
+
+			while (inputFile.hasNext()) {
+				// Reads the line
+				String line = inputFile.nextLine();
+
+				// Scan the line for commas, separating it for each comma present
+				String[] arguments = line.split(",");
+
+				// Insert each entry to its appropriate segment
+				int id = Integer.parseInt(arguments[0].trim());
+				String name = arguments[1].trim();
+				int quantity = Integer.parseInt(arguments[2].trim());
+				float price = Float.parseFloat(arguments[3].trim());
+
+				// Instantiates Item object
+				Item item = new Item(id, name, quantity, price);
+
+				// Adds the new Item object to Inventory
+				inventory.addItem(item);
+			}
+
+			inputFile.close();
+			inventory.displayInventory();		
 		}
-
-		File file = new File(filename);
-		Scanner inputFile = new Scanner(file);
-
-		while (inputFile.hasNext()) {
-			// Reads the line
-			String line = inputFile.nextLine();
-
-			// Scan the line for commas, separating it for each comma present
-			String[] arguments = line.split(",");
-
-			// Insert each entry to its appropriate segment
-			int id = Integer.parseInt(arguments[0].trim());
-			String name = arguments[1].trim();
-			int quantity = Integer.parseInt(arguments[2].trim());
-			float price = Float.parseFloat(arguments[3].trim());
-
-			// Instantiates Item object
-			Item item = new Item(id, name, quantity, price);
-
-			// Adds the new Item object to Inventory
-			inventory.addItem(item);
-		}
-		
-		inputFile.close();
-		inventory.displayInventory();
-		
 		return inventory;
 	}
 
