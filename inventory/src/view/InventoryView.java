@@ -7,6 +7,7 @@ import java.awt.*;
 
 public class InventoryView extends JFrame{
 	/**
+	 * TODO
 	 *  Required components:
 	 *  JTable or JList for inventory display
 	 *  JTextField for input
