@@ -33,7 +33,7 @@ public class App {
 					+ "2. View your current inventory\n"
 					+ "3. Update an existing item\n"
 					+ "4. Delete an existing item\n"
-					+ "5. Quit\n\n");
+					+ "5. Quit\n");
 			switch(choiceNo) {
 			case 1:
 				addItem(inventory);
@@ -138,8 +138,11 @@ public class App {
 		if(!fileExists(filename)) {
 			PrintWriter outputFile = new PrintWriter(filename);
 			outputFile.println("1,Apple,50,0.5");
+			outputFile.write("1,Apple,50,0.5");
 			outputFile.println("2,Banana,30,0.3");
+			outputFile.write("2,Banana,30,0.3");
 			outputFile.print("3,Orange,20,0.7");
+			outputFile.write("3,Orange,20,0.7");
 			outputFile.close();
 			retrieveFile(filename);	
 		} else {
