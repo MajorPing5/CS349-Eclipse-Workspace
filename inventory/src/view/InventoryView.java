@@ -4,10 +4,31 @@ import javax.swing.*;
 import java.awt.*;
 
 public class InventoryView extends JFrame {
+	private JTable catalog;
 	// TODO JTable or JList for inventory display
 	// TODO JTextField for input
 	// TODO JButton components for actions
 	// TODO Error & Success Dialog Boxes
+	/**
+	 * Class Constructor
+	 */
+	public InventoryView() {
+		// Creates an appropriate title
+		setTitle("Inventory Management");
+		
+		// Directly specifies the action necessary for the close button
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		
+		// Creates a top-level BorderLayout manager
+		setLayout(new BorderLayout());
+		
+		pack();
+		setVisible(true);
+	}
+	
+	private void catalog() {
+		
+	}
 	String filename = "inventory.txt";
 
 	/** 
