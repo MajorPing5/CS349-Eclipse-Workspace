@@ -33,7 +33,7 @@ public class App {
 					+ "2. View your current inventory\n"
 					+ "3. Update an existing item\n"
 					+ "4. Delete an existing item\n"
-					+ "5. Quit\n\n");
+					+ "5. Quit\n");
 			switch(choiceNo) {
 			case 1:
 				addItem(inventory);
@@ -126,50 +126,78 @@ public class App {
 	}
 
 	/**
-	 * Attempts to retrieve the file, and either creates a blank inventory
-	 * or reads in file to populate newly created inventory.
+	 * Attempts to retrieve the file, creates a blank inventory if it doesn't exist,
+	 * and reads in the file to populate the newly created inventory.
 	 * @param filename
 	 * @return inventory Object
 	 * @throws IOException
 	 */
 	private static Inventory retrieveFile(String filename) throws IOException {
 		Inventory inventory = new Inventory();
-
+		
+		// Checks if inventory.txt does or does not exist. True if it is missing from root folder, false if found
 		if(!fileExists(filename)) {
-			PrintWriter outputFile = new PrintWriter(filename);
-			outputFile.println("1,Apple,50,0.5");
-			outputFile.println("2,Banana,30,0.3");
-			outputFile.print("3,Orange,20,0.7");
-			outputFile.close();
-			retrieveFile(filename);	
-		} else {
-			File file = new File(filename);
-			Scanner inputFile = new Scanner(file);
+		createFile(filename);	
+		}
+		
+		readFile(filename, inventory);
+		return inventory;
+	}
+	
+	/**
+	 * Creates a given file name.
+	 * Precon: filename does not exist;
+	 * Postcon: inventory.txt exists with 4 entries, the last entry being an empty string	
+	 * @param filename The string name of the file to check: inventory.txt
+	 * @throws IOException
+	 */
+	private static void createFile(String filename) throws IOException {
+		PrintWriter outputFile = new PrintWriter(filename);
+		
+		outputFile.println("1,Apple,50,0.5");
+		outputFile.println("2,Banana,30,0.3");
+		outputFile.println("3,Orange,20,0.7");
+		
+		outputFile.close();
+	}
+	
+	/**
+	 * Reads the provided file and adds it to the inventory object.
+	 * Precon: inventory.txt exists;
+	 * Postcon: inventory, and object of class Inventory, is now populated with all existing data
+	 * @param filename The string name of the file to check: inventory.txt 
+	 * @param inventory An object from the class Inventory, containing 4 fields for each entry
+	 * @throws IOException
+	 */
+	private static void readFile(String filename, Inventory inventory) throws IOException {
+		File file = new File(filename);
+		Scanner inputFile = new Scanner(file);
 
-			while (inputFile.hasNext()) {
-				// Reads the line
-				String line = inputFile.nextLine();
-
-				// Scan the line for commas, separating it for each comma present
-				String[] arguments = line.split(",");
-
-				// Insert each entry to its appropriate segment
-				int id = Integer.parseInt(arguments[0].trim());
-				String name = arguments[1].trim();
-				int quantity = Integer.parseInt(arguments[2].trim());
-				float price = Float.parseFloat(arguments[3].trim());
-
-				// Instantiates Item object
-				Item item = new Item(id, name, quantity, price);
-
-				// Adds the new Item object to Inventory
-				inventory.addItem(item);
+		while (inputFile.hasNextLine()) {
+			// Reads the line
+			String line = inputFile.nextLine();
+			if (line.isEmpty()) {
+				continue;
 			}
 
-			inputFile.close();
-			inventory.displayInventory();		
+			// Scan the line for commas, separating it for each comma present
+			String[] arguments = line.split(",");
+
+			// Insert each entry to its appropriate segment
+			int id = Integer.parseInt(arguments[0].trim());
+			String name = arguments[1].trim();
+			int quantity = Integer.parseInt(arguments[2].trim());
+			float price = Float.parseFloat(arguments[3].trim());
+
+			// Instantiates Item object
+			Item item = new Item(id, name, quantity, price);
+
+			// Adds the new Item object to Inventory
+			inventory.addItem(item);
 		}
-		return inventory;
+
+		inputFile.close();
+		inventory.displayInventory();
 	}
 
 	/**
