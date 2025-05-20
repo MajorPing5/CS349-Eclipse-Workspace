@@ -1,6 +1,6 @@
 package app;
 
-import inventory.Inventory;
+import view.*;
 import inventory.Item;
 import java.io.*;
 import java.util.Scanner;
@@ -9,7 +9,6 @@ import java.util.Scanner;
 // import javax.swing.JOptionPane;
 
 public class App {
-	private static Scanner keyboard = new Scanner(System.in);
 
 	public static void main(String[] args) throws IOException {
 		// Field - filename
@@ -22,7 +21,7 @@ public class App {
 		 * If the file does NOT exist, it will simply create the inventory
 		 * and proceed with the rest of the program 
 		 */
-		Inventory inventory = retrieveFile(filename);
+		InventoryModel inventory = retrieveFile(filename);
 
 		int choiceNo = 0;
 		while (choiceNo != 5)
@@ -67,7 +66,6 @@ public class App {
 	public static int readInt(String prompt) {
 	    while (true) {
 	        System.out.println(prompt);
-	        String entry = keyboard.nextLine().trim();
 	        
 	        // Handle empty input
 	        if (entry.isEmpty()) {
@@ -95,7 +93,6 @@ public class App {
 	public static double readDouble(String prompt) {
 	    while (true) {
 	        System.out.println(prompt);
-	        String entry = keyboard.nextLine().trim();
 	        
 	        // Handle empty input
 	        if (entry.isEmpty()) {
@@ -209,7 +206,6 @@ public class App {
 		int id = inventory.getNextItemID();
 
 		System.out.println("What is the name of the new item to the inventory?");
-		String name = keyboard.nextLine(); 
 
 		int quantity = readInt("How many are being added to your inventory?");
 
@@ -256,7 +252,6 @@ public class App {
 		if (oldItem != null) {
 			System.out.println("For the following questions, if you wish not to change the given field then press Enter:");
 			System.out.println("Do you want to change the name of the current item?\n");
-			String newName = keyboard.nextLine();
 
 			int newQuantity = readInt("Do you want to update the quantity amount?\n");
 
@@ -279,7 +274,6 @@ public class App {
 		Item foundItem = null;
 		
 		System.out.println("What's the ID of the item of interest?");
-		String inventoryID = keyboard.nextLine();
 
 		for(Item item: inventory.getItems()) {
 			if(item.getID() == Integer.parseInt(inventoryID)) {
