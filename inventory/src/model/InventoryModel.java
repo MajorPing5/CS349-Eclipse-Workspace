@@ -51,7 +51,7 @@ public class InventoryModel {
 	 * @param item object of class ItemModel that exists in the array list
 	 */
 	public void addItem(InventoryItem item) {
-		getItems().add(item);
+		items.add(item);
 	}
 	
 	/**
@@ -60,7 +60,7 @@ public class InventoryModel {
 	 */
 	public void removeItem(InventoryItem item) {
 		// Removes an item where its ID matches the currently element's item ID in Array List Items
-		getItems().removeIf(current -> current.getID() == item.getID());
+		items.removeIf(current -> current.getID() == item.getID());
 	}
 	
 	/**
@@ -72,7 +72,7 @@ public class InventoryModel {
 	 */
 	public void updateItem(InventoryItem oldItem, String newName, int newQuantity, float newPrice) {
 		// 1. Provided the old item information, find the index in the ArrayList of items
-		int i = getItems().indexOf(oldItem);
+		int i = items.indexOf(oldItem);
 		
 		// 2. Assuming there's a match, then change based on the following If criteria:
 		//		a. If field is not null or the default initialized value, use updated value in items.set(i, Item(id, name, quantity, price)) with appropriate field present
@@ -94,21 +94,6 @@ public class InventoryModel {
 				);
 		
 		//	3. Replaces existing item at index i with updated information
-		getItems().set(i, updatedItem);
+		items.set(i, updatedItem);
 	}
-	
-	/**
-	 * Method to display all items
-	 */
-	public void displayInventory() {
-		
-		StringBuilder itemsToDisplay = new StringBuilder("");
-		
-		for(InventoryItem item : getItems()) {
-			itemsToDisplay.append(item.display()+"\n");
-		}
-		
-		// JOptionPane.showMessageDialog(null, itemsToDisplay);
-	}
-
 }
