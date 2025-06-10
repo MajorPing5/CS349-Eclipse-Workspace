@@ -7,17 +7,35 @@ import model.InventoryItem;
 
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class InventoryView extends JFrame {
+	// Window Size
+	private int WINDOW_X = 800;
+	private int WINDOW_Y = 600;
+	
+	// Specific Fields
+	private JButton btnAdd, btnClear, btnUpdate, btnDelete, btnSubmit, btnBack;
 	private JTable catalog;
 	private DefaultTableModel tableModel;
-
+	private JTextField txtID, txtName, txtQuantity, txtPrice;
+	
+	// Field groupings by panel
+	private final JPanel greetPanel = new JPanel();
+	private final JPanel invPanel = new JPanel();
+	private final JPanel btnPanel = new JPanel();
+	
+	// Organization System
+	private final List<UISection> uiSections = new ArrayList<>();
+	private final List<ComponentGroup> compRegistry = new ArrayList<>();
+	
 	// TODO JTable or JList for inventory display
 	// TODO JTextField for input
 	// TODO JButton components for actions
 	// TODO Error & Success Dialog Boxes
 	
-	private class GroupRegion {
+	// Region Assignment Helper Class
+	private static class GroupRegion {
 		final JPanel group;
 		final String region;
 		GroupRegion(JPanel group, String region) {
@@ -30,30 +48,67 @@ public class InventoryView extends JFrame {
 	 * Class Constructor
 	 */
 	public InventoryView() {
+		configMainPanel();
+		initializeFieldGroups();
+		setupFieldGroups();
+		assembleView();
+	}
+	
+	private void configMainPanel() {
 		// Creates an appropriate title
 		setTitle("Inventory Management");
-
+		
 		// Directly specifies the action necessary for the close button
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
-		// Creates a top-level BorderLayout manager
-		setLayout(new BorderLayout());
 		
-		catalog();
-
-		pack();
-		setVisible(true);
+		// Creates a top-level BorderLayout manager
+		setLayout(new BorderLayout());	
+		
+		// Defines the window size
+		setSize(WINDOW_X, WINDOW_Y);
+	}
+	
+	private void initializeFieldGroups() {
+		fieldGroups.addAll(Arrays.asList(
+				new GroupRegion(greetPanel, BorderLayout.NORTH),
+				new GroupRegion(invPanel, BorderLayout.CENTER),
+				new GroupRegion(btnPanel, BorderLayout.SOUTH)
+				));
+	}
+	
+	private void setupFieldGroups() {
+		buildGreet();
+		buildCatalog();
+		buildConfirmBtns();
+	}
+	
+	private void assembleView() {
+		fieldGroups.forEach(groupRegion -> {
+			mainPanel.add(groupRegion.group, groupRegion.region);
+		});
+		
+		mainFrame.add(mainPanel);
+		mainFrame.pack();
+		mainFrame.setVisible(true);
 	}
 
-	private void catalog() {
+	private void buildGreet() {
+		JLabel txtGreet = new JLabel("Welcome to the Inventory Management System");
+		greetPanel.add(txtGreet);
+	}
+
+	private void buildCatalog() {
 		tableModel = new DefaultTableModel();
 		tableModel.setColumnIdentifiers(new Object[] { "ID", "Name", "Quantity", "Price" });
 		catalog = new JTable(tableModel);
 		add(new JScrollPane(catalog));
 	}
 	
-	private void greeting() {
-		JLabel greetingtxt = new JLabel("Welcome to the Inventory Management System");
+	private void buildOpBtns() {
+		
+	}
+	
+	private void buildConfirmBtns() {
 		
 	}
 
