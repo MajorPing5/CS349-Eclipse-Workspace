@@ -11,5 +11,7 @@ public class CtrlerInventory {
 	public CtrlerInventory(InventoryView view, InventoryModel model) {
 		this.view = view;
 		this.model = model;
+		
+		view.newTable();
 	}
 }
