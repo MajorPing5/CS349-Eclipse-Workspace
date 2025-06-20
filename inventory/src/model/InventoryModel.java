@@ -70,20 +70,24 @@ public class InventoryModel {
 	 * @param newQuantity
 	 * @param newPrice
 	 */
-	public void updateItem(InventoryItem oldItem, String newName, int newQuantity, float newPrice) {
+	public void updateItem(InventoryItem oldItem, String newName, Integer newQuantity, Float newPrice) {
 		// 1. Provided the old item information, find the index in the ArrayList of items
 		int i = items.indexOf(oldItem);
 		
-		// 2. Assuming there's a match, then change based on the following If criteria:
-		//		a. If field is not null or the default initialized value, use updated value in items.set(i, Item(id, name, quantity, price)) with appropriate field present
-		//		b. If field IS null or the default initialized value, use oldItem value present in the appropriate field.
-		String finalName = (newName == null || newName.trim().isEmpty())
+		/**
+		 * 2. Assuming there's a match, then change based on the following If criteria:
+		 *		a. If field is not null or the default initialized value, use updated value in
+		 *			items.set(i, Item(id, name, quantity, price)) with appropriate field present
+		 *		b. If field IS null or the default initialized value, use oldItem value present in
+		 *			the appropriate field. 
+		 */
+		String finalName = (newName == null || newName.isBlank())
 				? oldItem.getName() : newName;
 		
-		int finalQuantity = (newQuantity == 0)
+		int finalQuantity = (newQuantity == null)
 				? oldItem.getQuantity() : newQuantity;
 		
-		float finalPrice = (newPrice  == 0.0f)
+		float finalPrice = (newPrice  == null)
 				? oldItem.getPrice() : newPrice;
 		
 		InventoryItem updatedItem = new InventoryItem(

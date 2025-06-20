@@ -3,8 +3,12 @@ package controller;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 import java.util.function.Consumer;
+import java.util.function.Supplier;
+import java.util.stream.Collectors;
 
 import exception.Persistence;
 import ioOperation.Repository;
@@ -17,6 +21,7 @@ public class CtrlerInventory {
 	private InventoryModel model;
 	private Repository repository;
 	private String state = "Main";
+	private InventoryItem searchResult;
 	
 	public CtrlerInventory(InventoryView view, InventoryModel model, Repository repository) {
 		this.view = view;
@@ -116,7 +121,7 @@ public class CtrlerInventory {
 				
 				if (isPhase1()) {
 	                // Phase 1: Process ID lookup for Update or Delete
-					searchResult = searchInventory(false);
+					searchResult = searchInventory();
 	                if (searchResult != null) {
 	                	setTxtFields.accept(searchResult);
 	                	
@@ -159,8 +164,8 @@ public class CtrlerInventory {
 	 * Public method combining validation and search
 	 * @return Found item or null if invalid/not found
 	 */
-	public InventoryItem searchInventory(boolean isUpdate) {
-	    Integer existingID = validateInt(view.getTxtID().getText(),"ID", isUpdate);
+	public InventoryItem searchInventory() {
+	    Integer existingID = validateInt(view.getTxtID().getText(),"ID", false);
 	    return existingID != 0 ? findID(existingID) : null;
 	}
 	
@@ -179,24 +184,29 @@ public class CtrlerInventory {
 	};
 	
 	private boolean addExecution() {
-		// Gathers all text fields
-		String txtID = view.getTxtID().getText();
-		String txtName = view.getTxtName().getText();
-		String txtQuantity = view.getTxtQuantity().getText();
-		String txtPrice = view.getTxtPrice().getText();
+		// Assigns all fields with validation - if necessary
+		List<Supplier<Object>> validators = Arrays.asList(
+				() -> view.getTxtID().getText(),
+				() -> validateString(view.getTxtName().getText(), "Name", false),
+				() -> validateInt(view.getTxtQuantity().getText(), "Quantity", false),
+				() -> validateFloat(view.getTxtPrice().getText(), false)
+				);
 		
-		// ID is pre-set from earlier implementation in "Add" button listener
-		int ID = Integer.parseInt(txtID);
+		// Note: ID is pre-set from earlier implementation in "Add" button listener
+		// Will automatically iterate through the list to search for anything that is null
+		List<Object> results = validators.stream()
+				.map(Supplier::get)
+				.collect(Collectors.toList());		
 		
-		// Validates that all other fields are in proper form
-		String name = validateString(txtName, "Name", false);
-		int quantity = validateInt(txtQuantity, "Quantity", false);
-		float price = validateFloat(txtPrice, false);
-		
-		
-		if (name == null || quantity == 0 || price == 0.0f) {
+		if (results.stream().anyMatch(Objects::isNull)) {
 			return false;
+			
 		} else {		
+			int ID = (Integer) results.get(0);
+			String name = (String) results.get(1);
+			int quantity = (Integer) results.get(2);
+			float price = (Float) results.get(3);
+
 			model.addItem(new InventoryItem(ID, name, quantity, price));
 			return true;
 		}
@@ -208,8 +218,6 @@ public class CtrlerInventory {
 		String txtQuantity = view.getTxtQuantity().getText();
 		String txtPrice = view.getTxtPrice().getText();
 		
-		InventoryItem oldItem = searchInventory(false);
-		
 		// Validates that all other fields are in proper form
 		String updatedName = validateString(txtName, "Name", true);
 		int updatedQuantity = validateInt(txtQuantity, "Quantity", true);
@@ -219,7 +227,7 @@ public class CtrlerInventory {
 		if (updatedName == null || updatedQuantity == 0 || updatedPrice == 0.0f) {
 			return false;
 		} else {		
-			model.updateItem(oldItem, updatedName, updatedQuantity, updatedPrice);
+			model.updateItem(searchResult, updatedName, updatedQuantity, updatedPrice);
 			return true;
 		}
 	}
@@ -242,14 +250,14 @@ public class CtrlerInventory {
 	    input = validateString(input, fieldName, isUpdate);
 	    // Terminates due to empty field without repeatedly mentioning field is empty
 	    if (input.isBlank()) {
-	    	return 0;
+	    	return null;
 	    	
 	    } else {
 		    try {
 		        int value = Integer.parseInt(input);
 		        if (value <= 0) {
 		            view.failedEntry("Integer Domain Violation", List.of(fieldName));
-		            return 0;
+		            return null;
 		        
 		        } else {
 		        	return value;
@@ -258,7 +266,7 @@ public class CtrlerInventory {
 		    } catch (NumberFormatException e) {
 		        view.failedEntry("Not An Integer", List.of(fieldName));
 		        
-		        return 0;
+		        return null;
 		    }
 	    }
 	}
@@ -285,22 +293,21 @@ public class CtrlerInventory {
 	private Float validateFloat(String input, boolean isUpdate) {
 		input = validateString(input, "Price", isUpdate);
 		if (input.isBlank()) {
-			return 0.0f;
+			return null;
 	    	
 	    } else {
 			try {
 		        float value = Float.parseFloat(input);
-		        if (value <= 0) {
-		            view.failedEntry("Float Domain Violation", List.of("Price"));
-		        
-		            return 0.0f;
+		        if (value > 0) {
+		        	return value;
+		        } else {
+		        	view.failedEntry("Float Domain Violation", List.of("Price"));		        
+		        	return null;
 		        }
-		    
-		        return value;
 		    } catch (NumberFormatException e) {
 		        view.failedEntry("Not A Float", List.of("Price"));
 		        
-		        return 0.0f;
+		        return null;
 		    }
 	    }
 	}
@@ -312,13 +319,14 @@ public class CtrlerInventory {
 		 * the result of an AND comparison between testing an empty, trimmed string
 		 * and isUpdate is false
 		 */
-		if ((input.trim().isBlank()) && (isUpdate == false)) {
-	        view.failedEntry("Field left Blank", List.of(fieldName));
-	        
-	        return "";
-	    }
-	    
-		return input.trim();
+		if (!input.trim().isBlank()) {
+			return input.trim();
+	    } else if (isUpdate) {
+			return "";
+		} else {
+			view.failedEntry("Field left Blank", List.of(fieldName));		
+			return null;
+		}
     }
 	
 	private boolean isPhase1() {
