@@ -7,11 +7,7 @@ import model.InventoryItem;
 
 import java.awt.*;
 import java.util.List;
-import java.util.Map;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.LinkedHashMap;
 
 public class InventoryView extends JFrame {
 	/**
@@ -29,39 +25,24 @@ public class InventoryView extends JFrame {
 	private JButton btnAdd, btnClear, btnUpdate, btnDelete, btnSubmit, btnBack;
 	private JTable catalog;
 	private DefaultTableModel tableModel;
-	private JTextField txtID, txtName, txtQuantity, txtPrice;
 	private JLabel lblID, lblName, lblQuantity, lblPrice;
+	private JTextField txtID, txtName, txtQuantity, txtPrice;
 	
 	// Field groupings by panel
-	private JPanel greetPanel = new JPanel();
-	private JPanel invPanel = new JPanel();
-	private JPanel southPanel = new JPanel();
-	private JPanel confirmPanel = new JPanel();
-	private JPanel opPanel = new JPanel();
+	private JPanel greetPanel,invPanel, southPanel, confirmPanel, opPanel;
+	
+	private boolean isMainPanel;
 	
 	// Individual, iterable lists for specific field groups
-	private final List<JTextField> ALL_FIELDS = Collections.unmodifiableList(
-			new ArrayList<>(Arrays.asList(txtID, txtName, txtQuantity, txtPrice))
-			);
+	private List<JTextField> ALL_FIELDS, DETAIL_FIELDS;
+	private List<JButton> OP_BUTTONS, CONFIRM_BUTTONS;
+	private List<JLabel> LABELS;
 	
-	private final List<JTextField> DETAIL_FIELDS = Collections.unmodifiableList(
-			new ArrayList<>(Arrays.asList(txtName, txtQuantity, txtPrice))
-			);
-	
-	private final List<JButton> OP_BUTTONS = Collections.unmodifiableList(
-			new ArrayList<>(Arrays.asList(btnDelete, btnUpdate, btnAdd))
-			);
-	
-	private final List<JButton> CONFIRM_BUTTONS = Collections.unmodifiableList(
-			new ArrayList<>(Arrays.asList(btnBack, btnClear, btnSubmit))
-			);
-	
-	private final List<JLabel> LABELS = Collections.unmodifiableList(
-			new ArrayList<>(Arrays.asList(lblID, lblName, lblQuantity, lblPrice))
-			);
 	public enum InventoryState {
 		ID_ON,
-		ID_OFF
+		ID_OFF,
+		DELETE,
+		DISABLE
 	}
 	
 	/**
@@ -78,6 +59,8 @@ public class InventoryView extends JFrame {
 		add(greetPanel, BorderLayout.NORTH);
 		add(invPanel, BorderLayout.CENTER);
 		add(southPanel, BorderLayout.SOUTH);
+		
+		isMainPanel = true;
 	}
 	
 	private void configMainPanel() {
@@ -104,8 +87,8 @@ public class InventoryView extends JFrame {
 	    invPanel.setBorder(BorderFactory.createTitledBorder("Inventory Items"));
 	    
 	    // Create table and scroll pane
-	    DefaultTableModel model = new DefaultTableModel(new Object[]{"ID", "Name", "Quantity", "Price"}, 0);
-	    JTable catalog = new JTable(model);
+	    tableModel = new DefaultTableModel(new Object[]{"ID", "Name", "Quantity", "Price"}, 0);
+	    catalog = new JTable(tableModel);
 	    JScrollPane scrollPane = new JScrollPane(catalog);
 	    
 	    // Add table to the panel
@@ -114,39 +97,92 @@ public class InventoryView extends JFrame {
 	
 	private void buildBtnOpPanel() {
 		opPanel = new JPanel(new GridLayout(1, 3, 10, 10));
+		
+		// Button Initialization
+		btnDelete = new JButton("Delete");
+		btnUpdate = new JButton("Update");
+		btnAdd = new JButton("Add");
+				
+		// List Initialization for these buttons to be group referenced at any time
+		OP_BUTTONS = List.of(btnDelete, btnUpdate, btnAdd);
+		
 		OP_BUTTONS.forEach(button -> opPanel.add(button));
+		southPanel = new JPanel();
 		southPanel.add(opPanel);
 	}
 	
 	private void buildConfirmPanel() {
-		confirmPanel = new JPanel(new GridLayout(2, 4, 10, 10));
+		// Confirmation Panel Initialization
+		confirmPanel = new JPanel();
+		confirmPanel.setLayout(new BoxLayout(confirmPanel, BoxLayout.Y_AXIS));
 		
-		 
-		// Row 1
+		// Label Initialization
+		lblID = new JLabel("ID: ");
+		lblName = new JLabel("Name: ");
+		lblQuantity = new JLabel("Quantity: ");
+		lblPrice = new JLabel("Price: ");
+		
+		// Text Field Initialization
+		txtID = new JTextField(3);
+		txtName = new JTextField(10);
+		txtQuantity = new JTextField(5);
+		txtPrice = new JTextField(5);
+		
+		// Dedicated List initialization
+		LABELS = List.of(lblID, lblName, lblQuantity, lblPrice);
+		ALL_FIELDS = List.of(txtID, txtName, txtQuantity, txtPrice);
+		DETAIL_FIELDS = ALL_FIELDS.stream()
+				.filter(field -> field != txtID)
+				.toList();
+		
+		// Text and Fields Panel Declaration & Initialization
+		JPanel fieldsPanel = new JPanel();
+		fieldsPanel.add(Box.createHorizontalGlue());
+		
+		// Row 1 - Pairs Label text with appropriate Text field
 		for (int i = 0; i < ALL_FIELDS.size(); i++) {
-			confirmPanel.add(LABELS.get(i));
-			confirmPanel.add(ALL_FIELDS.get(i));
+			fieldsPanel.add(LABELS.get(i));
+			fieldsPanel.add(ALL_FIELDS.get(i));
+			fieldsPanel.add(Box.createHorizontalGlue());
 		}
 		
-		//Row 2
-		Map<String, Runnable> txtOpBtns = new LinkedHashMap<>();
-		txtOpBtns.put("ID", () -> new JButton("Back"));
-		txtOpBtns.put("Back", () -> new JButton("Clear"));
-		txtOpBtns.put("Submit", () -> new JButton("Submit"));
+		//Row 2 - Initializes the Confirmation Buttons
+		btnBack = new JButton("Back");
+		btnClear = new JButton("Clear");
+		btnSubmit = new JButton("Submit");		
 		
-		// Creates the confirmation buttons and immediately inserts them into confirm panel 
-		txtOpBtns.values().forEach(Runnable::run);
-		CONFIRM_BUTTONS.forEach(obj -> confirmPanel.add(obj));
+		// Confirmation Buttons Panel Declaration & Initialization
+		JPanel btnsPanel = new JPanel();
+
+		// Declares all Confirmation Buttons
+		CONFIRM_BUTTONS = List.of(btnBack, btnClear, btnSubmit);
+		CONFIRM_BUTTONS.forEach(obj -> btnsPanel.add(obj));
+		
+		confirmPanel.add(fieldsPanel);
+		confirmPanel.add(btnsPanel);
+		// Does not assign to active panel since this is to be accessed later
 	}
 
 	private void toggleFieldsEdit(List<JTextField> fields, boolean status) {
 		fields.forEach(field -> {
-			if (field.isEditable()) {
 				field.setEditable(status);
-			};
+				
+				if (status) {
+					// Standard Black Text on White Background
+					field.setForeground(Color.BLACK);
+					field.setBackground(Color.WHITE);
+				} else {
+					// Lightly grayed out Text Box with darker gray Text
+					field.setForeground(Color.GRAY);
+					field.setBackground(Color.LIGHT_GRAY);
+				}
 		});
 	};
-
+	
+	/**
+	 * Generates a new table, erasing any previous table that may or may not exist
+	 * @param items
+	 */
 	public void newTable(ArrayList<InventoryItem> items) {
 		// Clears the existing table of all its data, if there is any
 		if (tableModel.getRowCount() != 0) {
@@ -165,10 +201,18 @@ public class InventoryView extends JFrame {
 		}
 	}
 	
+	/**
+	 * Actively alters the editability of given text fields provided the desired state
+	 * @param state The enum status of what to turn on/off (ID_ON, ID_OFF, other)
+	 */
 	public void setState(InventoryState state) {
 		switch (state) {
 		case ID_ON:
-			if (!txtID.isEditable()) { txtID.setEditable(true);	}			
+			if (!txtID.isEditable()) {
+				txtID.setForeground(Color.BLACK);
+				txtID.setBackground(Color.WHITE);
+				txtID.setEditable(true);
+			}			
 			toggleFieldsEdit(DETAIL_FIELDS, false);
 			break;
 			
@@ -177,15 +221,58 @@ public class InventoryView extends JFrame {
 			toggleFieldsEdit(DETAIL_FIELDS, true);
 			break;
 			
+		case DELETE:
+			toggleFieldsEdit(ALL_FIELDS, false);
+			ALL_FIELDS.forEach(field -> {
+				field.setForeground(Color.RED);
+			});
+			break;
+			
 		default:
 			toggleFieldsEdit(ALL_FIELDS, false);
 		}
 	}
 	
+	public void swapSouthPanel() {
+		southPanel.removeAll();
+		
+		// Toggles the boolean for window tracking between the Operations Button vs Confirmation Buttons
+		isMainPanel = !isMainPanel;
+		
+		if (isMainPanel) {
+			clearAllFields();
+			southPanel.add(opPanel);
+		} else {
+			southPanel.add(confirmPanel);
+		}
+		
+		southPanel.revalidate();
+		southPanel.repaint();
+	}
+	
+	public void clearAllFields() {
+		ALL_FIELDS.stream()
+		.forEach(field -> {
+			if (!field.getText().isBlank())
+				field.setText("");
+		});
+	}
+	
 	public void clearEditibleFields() {
 		ALL_FIELDS.stream()
 		.filter(JTextField::isEditable)
-		.forEach(field -> field.setText(""));
+		.forEach(field -> {
+			if (!field.getText().isBlank())
+				field.setText("");
+		});
+	}
+	
+	public void clearDetailFields() {
+		DETAIL_FIELDS.stream()
+		.forEach(field -> {
+			if (!field.getText().isBlank())
+				field.setText("");
+		});
 	}
 	
 	/**
@@ -252,69 +339,121 @@ public class InventoryView extends JFrame {
 			// Under NO circumstances should this EVER be displayed, but in the rare chance something critical happens...
 		default:
 			JOptionPane.showMessageDialog(null,
-					"Something just went HORRIBLY wrong for you to see this.",
+					"Something just went HORRIBLY wrong for you to see this. Important stuff: " + failType +
+					" with field(s) " + testedFields,
 					"Error", JOptionPane.ERROR_MESSAGE);
 		}
 	}
+
+	/**
+	 * @return the btnAdd
+	 */
+	public JButton getBtnAdd() {
+		return btnAdd;
+	}
+
+	/**
+	 * @return the btnClear
+	 */
+	public JButton getBtnClear() {
+		return btnClear;
+	}
+
+	/**
+	 * @return the btnUpdate
+	 */
+	public JButton getBtnUpdate() {
+		return btnUpdate;
+	}
+
+	/**
+	 * @return the btnDelete
+	 */
+	public JButton getBtnDelete() {
+		return btnDelete;
+	}
+
+	/**
+	 * @return the btnSubmit
+	 */
+	public JButton getBtnSubmit() {
+		return btnSubmit;
+	}
+
+	/**
+	 * @return the btnBack
+	 */
+	public JButton getBtnBack() {
+		return btnBack;
+	}
+
+	/**
+	 * @return the txtID
+	 */
+	public JTextField getTxtID() {
+		return txtID;
+	}
 	
-/*
- * String filename = "inventory.txt";
- * 
- *//**
-	 * Creates a fresh inventory for the whole program to use. If the file already
-	 * exists, it will use this inventory object to read into it. If the file does
-	 * NOT exist, it will simply create the inventory and proceed with the rest of
-	 * the program
+	/**
+	 * @param ID the string value of txtID to set
 	 */
-/*
- * Inventory inventory = retrieveFile(filename);
- * 
- * int choiceNo = 0; while (choiceNo != 5) { choiceNo =
- * readInt("Welcome to the inventory management system!\n\n" +
- * "Please choose any of the options you wish to run:\n" + "1. Add a new item\n"
- * + "2. View your current inventory\n" + "3. Update an existing item\n" +
- * "4. Delete an existing item\n" + "5. Quit\n"); switch(choiceNo) { case 1:
- * addItem(inventory); break; case 2: inventory.displayInventory(); break; case
- * 3: updateInventory(inventory); break; case 4: removeItem(inventory); break;
- * case 5: fileExport(inventory); System.exit(0); default:
- * 
- * } }
- * 
- *//**
-	 * Reads an integer from user input with validation
-	 * 
-	 * @param prompt     String message to prompt user for input
-	 * @param allowEmpty Whether to accept empty input (returns 0)
-	 * @return Valid integer value (≥ 0)
+	public void setTxtID(String ID) {
+		this.txtID.setText(ID);
+	}
+
+	/**
+	 * @return the txtName
 	 */
-/*
- * public static int readInt(String prompt) { while (true) {
- * System.out.println(prompt); String entry = keyboard.nextLine().trim();
- * 
- * // Handle empty input if (entry.isEmpty()) { return 0; }
- * 
- * try { int value = Integer.parseInt(entry); if (value <= 0) {
- * System.out.println("Value cannot be negative. Please enter a number ≥ 0"); }
- * else { return value; } } catch (NumberFormatException e) {
- * System.out.println("Invalid integer format. Please enter a whole number ≥ 0"
- * ); } } }
- * 
- *//**
-	 * Reads a double from user input with validation
-	 * 
-	 * @param prompt String message for user's input
-	 * @return Valid float value (≥ 0.0)
+	public JTextField getTxtName() {
+		return txtName;
+	}
+	
+	/**
+	 * @param name the string value of txtName to set
 	 */
-/*
- * public static double readDouble(String prompt) { while (true) {
- * System.out.println(prompt); String entry = keyboard.nextLine().trim();
- * 
- * // Handle empty input if (entry.isEmpty()) { return 0; }
- * 
- * try { double value = Double.parseDouble(entry); if (value <= 0) {
- * System.out.println("Value cannot be negative. Please enter a number ≥ 0"); }
- * else { return value; } } catch (NumberFormatException e) {
- * System.out.println("Invalid number format. Please enter a numeric value ≥ 0"
- * ); } } } 
- */
+	public void setTxtName(String name) {
+		this.txtName.setText(name);
+	}
+
+	/**
+	 * @return the txtQuantity
+	 */
+	public JTextField getTxtQuantity() {
+		return txtQuantity;
+	}
+	
+	/**
+	 * @param quantity the string value of txtQuantity to set
+	 */
+	public void setTxtQuantity(String quantity) {
+		this.txtQuantity.setText(quantity);
+	}
+
+	/**
+	 * @return the txtPrice
+	 */
+	public JTextField getTxtPrice() {
+		return txtPrice;
+	}
+	
+	/**
+	 * @param price the string value of txtPrice to set
+	 */
+	public void setTxtPrice(String price) {
+		this.txtPrice.setText(price);
+	}
+
+	/**
+	 * @return the ALL_FIELDS
+	 */
+	public List<JTextField> getALL_FIELDS() {
+		return ALL_FIELDS;
+	}
+
+	/**
+	 * @return the DETAIL_FIELDS
+	 */
+	public List<JTextField> getDETAIL_FIELDS() {
+		return DETAIL_FIELDS;
+	}
 }

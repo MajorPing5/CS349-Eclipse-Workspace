@@ -27,7 +27,7 @@ public class InventoryModel {
 	// custom methods
 	/**
 	 * Provides the next sequential ID, assuming the last element to be removed was not list.size() - 1.
-	 * @return the next highest ID + 1
+	 * @return the highest ID + 1
 	 */
 	public int getNextID() {
 		// Base case: List is empty, return ID = 1
@@ -48,7 +48,7 @@ public class InventoryModel {
 	
 	/**
 	 * Method to add a new inventory item to the inventory collection
-	 * @param item object of class ItemModel that exists in the array list
+	 * @param item object of class InventoryItem that exists in the array list
 	 */
 	public void addItem(InventoryItem item) {
 		items.add(item);
@@ -83,7 +83,7 @@ public class InventoryModel {
 		int finalQuantity = (newQuantity == 0)
 				? oldItem.getQuantity() : newQuantity;
 		
-		float finalPrice = (newPrice  == 0)
+		float finalPrice = (newPrice  == 0.0f)
 				? oldItem.getPrice() : newPrice;
 		
 		InventoryItem updatedItem = new InventoryItem(
