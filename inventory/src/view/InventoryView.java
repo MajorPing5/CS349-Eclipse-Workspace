@@ -6,6 +6,8 @@ import javax.swing.table.*;
 import model.InventoryItem;
 
 import java.awt.*;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.List;
@@ -21,7 +23,6 @@ public class InventoryView extends JFrame {
 	private static final int WINDOW_X = 800;
 	private static final int WINDOW_Y = 600;
 	private static final String NAME = "Inventory Management";
-	private static final int DEFAULT = JFrame.EXIT_ON_CLOSE;
 	
 	// Specific Fields
 	private JButton btnAdd, btnClear, btnUpdate, btnDelete, btnSubmit, btnBack;
@@ -138,6 +139,16 @@ public class InventoryView extends JFrame {
 		txtQuantity = new JTextField(5);
 		txtPrice = new JTextField(5);
 		
+		// Enter Key Listener for Text Fields
+		KeyAdapter enterKeyAdapter = new KeyAdapter() {
+			@Override
+			public void keyPressed(KeyEvent e) {
+				if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+					btnSubmit.doClick();
+				}
+			}
+		};
+		
 		// Dedicated List initialization
 		labels = List.of(lblID, lblName, lblQuantity, lblPrice);
 		allFields = List.of(txtID, txtName, txtQuantity, txtPrice);
@@ -145,6 +156,11 @@ public class InventoryView extends JFrame {
 				.filter(field -> field != txtID)
 				.toList();
 		
+		// Attaches button listener across all text fields
+		for (JTextField field : allFields) {
+			field.addKeyListener(enterKeyAdapter);;
+		}
+				
 		// Text and Fields Panel Declaration & Initialization
 		JPanel fieldsPanel = new JPanel();
 		fieldsPanel.add(Box.createHorizontalGlue());
