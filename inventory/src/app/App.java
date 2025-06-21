@@ -11,7 +11,9 @@ public class App {
 		Repository repository = new FileBased("inventory.txt");
 		InventoryView view = new InventoryView();
 		InventoryModel model = new InventoryModel();
-		new CtrlerInventory(view, model, repository);
+		CtrlerInventory ctrler = new CtrlerInventory(view, model, repository);
+		
+		view.setCloseHandler(() -> ctrler.saveInventory());
 		view.setVisible(true);
 	}
 }

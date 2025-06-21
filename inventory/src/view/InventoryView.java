@@ -6,6 +6,8 @@ import javax.swing.table.*;
 import model.InventoryItem;
 
 import java.awt.*;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.util.List;
 import java.util.ArrayList;
 
@@ -63,15 +65,23 @@ public class InventoryView extends JFrame {
 		isMainPanel = true;
 	}
 	
+	public void setCloseHandler(Runnable handler) {
+		setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
+		addWindowListener(new WindowAdapter() {
+			@Override
+			public void windowClosing(WindowEvent e) {
+				handler.run();
+				dispose();
+			}
+		});
+	}
+	
 	private void configMainPanel() {
 		// Creates an appropriate title
 		setTitle(NAME);
 		
 		// Defines the window size
 		setSize(WINDOW_X, WINDOW_Y);
-		
-		// Directly specifies the action necessary for the close button
-		setDefaultCloseOperation(DEFAULT);
 		
 		// Creates a top-level BorderLayout manager
 		setLayout(new BorderLayout());	

@@ -16,16 +16,15 @@ public class FileBased implements Repository {
 	 // Main interface implementation ================================
 	@Override
     public InventoryModel loadInventory() {
+		inventory = new InventoryModel();
+		File file = new File(fileName);
+
+		if (!file.exists()) {
+			createFile();
+		}
+		
         try {
-        	inventory = new InventoryModel();
-            
-            if (!fileExists()) {
-                createFile();
-            }
-            
-            File file = new File(fileName);
-            
-            try (Scanner inputFile = new Scanner(file)) {
+        	try (Scanner inputFile = new Scanner(file)) {
                 while (inputFile.hasNextLine()) {
                     String line = inputFile.nextLine().trim();
                     if (line.isEmpty()) continue;
@@ -44,60 +43,37 @@ public class FileBased implements Repository {
 	
     @Override
     public void saveInventory(InventoryModel inventory) {
-        fileExport(inventory);
-    }
-
-    /**
-     * Determines if "inventory.txt" should or should not be created.
-     * @param filename The string name of the file
-     * @return boolean
-     */
-    private boolean fileExists() {
-    	File file = new File(fileName);
-    	return file.exists();
+    	 try (PrintWriter writer = new PrintWriter(new FileWriter(fileName, false))) {
+             for (InventoryItem item : inventory.getItems()) {
+            	 writer.printf("%d,$%s,%d,%.2f%n",
+            			 item.getID(),
+            			 item.getName(),
+            			 item.getQuantity(),
+            			 item.getPrice());
+             }
+         } catch (IOException e) {
+             System.err.println("Error writing to file: " + e.getMessage());
+         }
     }
     
     /**
 	 * Creates a given file name.
+	 * 
 	 * <p>Precon: filename does not exist;
-	 * <p>Postcon: inventory.txt exists with 4 entries, the last entry being an empty string	
+	 * 
+	 * <p>Postcon: inventory.txt exists with 4 entries, the last entry being an empty string
+	 * 	
 	 * @param filename The string name of the file to check: inventory.txt
-	 * @throws IOException
 	 */
-    private void createFile() throws IOException {
+    private void createFile() {
         try (PrintWriter outputFile = new PrintWriter(fileName)) {
             outputFile.println("1,Apple,50,0.5");
             outputFile.println("2,Banana,30,0.3");
             outputFile.println("3,Orange,20,0.7");
-        }
-    }
-    
-    /**
-     * Initializes entire exporting process
-     * @param inventory the {@code InventoryModel} to copy/paste into the fileName
-     */
-    private void fileExport(InventoryModel inventory) {
-        try (PrintWriter writer = new PrintWriter(new FileWriter(fileName, false))) {
-            writer.println(inventoryString(inventory));
         } catch (IOException e) {
-            System.err.println("Error writing to file: " + e.getMessage());
+        	System.err.println("Error creating file: " + e.getMessage());
         }
     }
-    
-    /**
-     * Breaks down segments of string to provide into the txt file
-     * @param inventory
-     * @return all items to display in the written file
-     */
-    private StringBuilder inventoryString(InventoryModel inventory) {
-		StringBuilder itemsToDisplay = new StringBuilder("");
-		
-		for(InventoryItem items : inventory.getItems()) {
-			itemsToDisplay.append(items.display()+"\n");
-		}
-		
-		return itemsToDisplay;
-	}
     
     /**
      * Separates each line by the comma, labeling each element in the line appropriately
@@ -106,6 +82,7 @@ public class FileBased implements Repository {
      */
     private InventoryItem parseLine(String line) {
         String[] arguments = line.split(",");
+        
         int id = Integer.parseInt(arguments[0].trim());
         String name = arguments[1].trim();
         int quantity = Integer.parseInt(arguments[2].trim());

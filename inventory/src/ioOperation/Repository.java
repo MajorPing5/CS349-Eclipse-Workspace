@@ -1,6 +1,5 @@
 package ioOperation;
 
-import exception.Persistence;
 import model.InventoryModel;
 
 //InventoryRepository.java
