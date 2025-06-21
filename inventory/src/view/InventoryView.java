@@ -34,9 +34,9 @@ public class InventoryView extends JFrame {
 	private boolean isMainPanel;
 	
 	// Individual, iterable lists for specific field groups
-	private List<JTextField> ALL_FIELDS, DETAIL_FIELDS;
-	private List<JButton> OP_BUTTONS, CONFIRM_BUTTONS;
-	private List<JLabel> LABELS;
+	private List<JTextField> allFields, detailFields;
+	private List<JButton> opButtons, confirmButtons;
+	private List<JLabel> labels;
 	
 	public enum InventoryState {
 		ID_ON,
@@ -104,9 +104,9 @@ public class InventoryView extends JFrame {
 		btnAdd = new JButton("Add");
 				
 		// List Initialization for these buttons to be group referenced at any time
-		OP_BUTTONS = List.of(btnDelete, btnUpdate, btnAdd);
+		opButtons = List.of(btnDelete, btnUpdate, btnAdd);
 		
-		OP_BUTTONS.forEach(button -> opPanel.add(button));
+		opButtons.forEach(button -> opPanel.add(button));
 		southPanel = new JPanel();
 		southPanel.add(opPanel);
 	}
@@ -129,9 +129,9 @@ public class InventoryView extends JFrame {
 		txtPrice = new JTextField(5);
 		
 		// Dedicated List initialization
-		LABELS = List.of(lblID, lblName, lblQuantity, lblPrice);
-		ALL_FIELDS = List.of(txtID, txtName, txtQuantity, txtPrice);
-		DETAIL_FIELDS = ALL_FIELDS.stream()
+		labels = List.of(lblID, lblName, lblQuantity, lblPrice);
+		allFields = List.of(txtID, txtName, txtQuantity, txtPrice);
+		detailFields = allFields.stream()
 				.filter(field -> field != txtID)
 				.toList();
 		
@@ -140,9 +140,9 @@ public class InventoryView extends JFrame {
 		fieldsPanel.add(Box.createHorizontalGlue());
 		
 		// Row 1 - Pairs Label text with appropriate Text field
-		for (int i = 0; i < ALL_FIELDS.size(); i++) {
-			fieldsPanel.add(LABELS.get(i));
-			fieldsPanel.add(ALL_FIELDS.get(i));
+		for (int i = 0; i < allFields.size(); i++) {
+			fieldsPanel.add(labels.get(i));
+			fieldsPanel.add(allFields.get(i));
 			fieldsPanel.add(Box.createHorizontalGlue());
 		}
 		
@@ -155,8 +155,8 @@ public class InventoryView extends JFrame {
 		JPanel btnsPanel = new JPanel();
 
 		// Declares all Confirmation Buttons
-		CONFIRM_BUTTONS = List.of(btnBack, btnClear, btnSubmit);
-		CONFIRM_BUTTONS.forEach(obj -> btnsPanel.add(obj));
+		confirmButtons = List.of(btnBack, btnClear, btnSubmit);
+		confirmButtons.forEach(obj -> btnsPanel.add(obj));
 		
 		confirmPanel.add(fieldsPanel);
 		confirmPanel.add(btnsPanel);
@@ -213,23 +213,23 @@ public class InventoryView extends JFrame {
 				txtID.setBackground(Color.WHITE);
 				txtID.setEditable(true);
 			}			
-			toggleFieldsEdit(DETAIL_FIELDS, false);
+			toggleFieldsEdit(detailFields, false);
 			break;
 			
 		case ID_OFF:
 			if (txtID.isEditable()) { txtID.setEditable(false);	}
-			toggleFieldsEdit(DETAIL_FIELDS, true);
+			toggleFieldsEdit(detailFields, true);
 			break;
 			
 		case DELETE:
-			toggleFieldsEdit(ALL_FIELDS, false);
-			ALL_FIELDS.forEach(field -> {
+			toggleFieldsEdit(allFields, false);
+			allFields.forEach(field -> {
 				field.setForeground(Color.RED);
 			});
 			break;
 			
 		default:
-			toggleFieldsEdit(ALL_FIELDS, false);
+			toggleFieldsEdit(allFields, false);
 		}
 	}
 	
@@ -251,7 +251,7 @@ public class InventoryView extends JFrame {
 	}
 	
 	public void clearAllFields() {
-		ALL_FIELDS.stream()
+		allFields.stream()
 		.forEach(field -> {
 			if (!field.getText().isBlank())
 				field.setText("");
@@ -259,7 +259,7 @@ public class InventoryView extends JFrame {
 	}
 	
 	public void clearEditibleFields() {
-		ALL_FIELDS.stream()
+		allFields.stream()
 		.filter(JTextField::isEditable)
 		.forEach(field -> {
 			if (!field.getText().isBlank())
@@ -268,7 +268,7 @@ public class InventoryView extends JFrame {
 	}
 	
 	public void clearDetailFields() {
-		DETAIL_FIELDS.stream()
+		detailFields.stream()
 		.forEach(field -> {
 			if (!field.getText().isBlank())
 				field.setText("");
@@ -446,14 +446,14 @@ public class InventoryView extends JFrame {
 	/**
 	 * @return the ALL_FIELDS
 	 */
-	public List<JTextField> getALL_FIELDS() {
-		return ALL_FIELDS;
+	public List<JTextField> getAllFields() {
+		return allFields;
 	}
 
 	/**
 	 * @return the DETAIL_FIELDS
 	 */
-	public List<JTextField> getDETAIL_FIELDS() {
-		return DETAIL_FIELDS;
+	public List<JTextField> getDetailFields() {
+		return detailFields;
 	}
 }

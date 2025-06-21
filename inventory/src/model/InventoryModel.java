@@ -65,39 +65,22 @@ public class InventoryModel {
 	
 	/**
 	 * Updates an item based on the provided Item ID, new name, new quantity, and new price.
-	 * @param oldItem Array List of original Item object with specified ID
+	 * @param itemID int
 	 * @param newName String 
-	 * @param newQuantity
-	 * @param newPrice
+	 * @param newQuantity int
+	 * @param newPrice float
 	 */
-	public void updateItem(InventoryItem oldItem, String newName, Integer newQuantity, Float newPrice) {
-		// 1. Provided the old item information, find the index in the ArrayList of items
-		int i = items.indexOf(oldItem);
-		
-		/**
-		 * 2. Assuming there's a match, then change based on the following If criteria:
-		 *		a. If field is not null or the default initialized value, use updated value in
-		 *			items.set(i, Item(id, name, quantity, price)) with appropriate field present
-		 *		b. If field IS null or the default initialized value, use oldItem value present in
-		 *			the appropriate field. 
-		 */
-		String finalName = (newName == null || newName.isBlank())
-				? oldItem.getName() : newName;
-		
-		int finalQuantity = (newQuantity == null)
-				? oldItem.getQuantity() : newQuantity;
-		
-		float finalPrice = (newPrice  == null)
-				? oldItem.getPrice() : newPrice;
-		
-		InventoryItem updatedItem = new InventoryItem(
-				oldItem.getID(),
-				finalName,
-				finalQuantity,
-				finalPrice
-				);
-		
-		//	3. Replaces existing item at index i with updated information
-		items.set(i, updatedItem);
+	public void updateItem(int itemID, String newName, int newQuantity, float newPrice) {
+		// Searches by item ID
+		for (int i = 0; i < items.size(); i++) {
+			InventoryItem currentItem = items.get(i);
+			if (currentItem.getID() == itemID) {
+				// Overwrites existing field information with updated information
+					currentItem.setName(newName);
+					currentItem.setQuantity(newQuantity);
+					currentItem.setPrice(newPrice);
+					return;
+			}
+		}
 	}
 }
