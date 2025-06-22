@@ -1,6 +1,6 @@
 package model;
 
-public class ItemModel {
+public class InventoryItem {
 	
 	// fields - ID, Name, Quantity, Price
 	int id, quantity;
@@ -8,22 +8,19 @@ public class ItemModel {
 	float price;
 	
 	// constructor - empty constructor
-	public ItemModel() {
+	public InventoryItem() {
 		
 	}
 	
 	/**
 	 * Overloaded constructor to retrieve all specified item information
-	 * @param id
-	 * @param name
-	 * @param quantity
-	 * @param price
-	 * @return id,
-	 * name,
-	 * quantity,
-	 * price
+	 * @param id Integer value of an Item's ID
+	 * @param name String name of the Item
+	 * @param quantity Integer value of an Item's supply count
+	 * @param price Float value of an Item's cost towards consumer
+	 * {@return int id, String name, int quantity, float price}
 	 */
-	public ItemModel(int id, String name, int quantity, float price) {
+	public InventoryItem(int id, String name, int quantity, float price) {
 		this.id = id;
 		this.name = name;
 		this.quantity = quantity;
@@ -87,19 +84,7 @@ public class ItemModel {
 		this.price = price;
 	}
 	
-	// custom methods
-	/**
-	 * Provides all item details for the given object
-	 * {@return id, name, quantity, price}
-	 */
-	public String display() {
-		
-		double price = 0;
-		price = Math.round(getPrice() * Math.pow(10, 2)) / Math.pow(10,2);
-				
-		return getID()+","
-				+getName()+","
-				+getQuantity()+","
-				+price;
+	public String getFormattedPrice() {
+		return String.format("%.2f",  price);
 	}
 }

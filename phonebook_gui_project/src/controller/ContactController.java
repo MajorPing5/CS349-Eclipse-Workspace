@@ -28,7 +28,7 @@ public class ContactController {
 				/**
 				 * Creates a collection of pair entries between text fields and
 				 * their trimming function that the user can interact with,
-				 * allowing easier referencing of individual or colective
+				 * allowing easier referencing of individual or collective
 				 * fields when needed
 				 */
 				Map<String, String> txtField = new HashMap<>();
