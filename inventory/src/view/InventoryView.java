@@ -65,6 +65,119 @@ public class InventoryView extends JFrame {
 		
 		isMainPanel = true;
 	}
+
+	// Getters and Setters
+	/**
+	 * @return the btnAdd
+	 */
+	public JButton getBtnAdd() {
+		return btnAdd;
+	}
+
+	/**
+	 * @return the btnClear
+	 */
+	public JButton getBtnClear() {
+		return btnClear;
+	}
+
+	/**
+	 * @return the btnUpdate
+	 */
+	public JButton getBtnUpdate() {
+		return btnUpdate;
+	}
+
+	/**
+	 * @return the btnDelete
+	 */
+	public JButton getBtnDelete() {
+		return btnDelete;
+	}
+
+	/**
+	 * @return the btnSubmit
+	 */
+	public JButton getBtnSubmit() {
+		return btnSubmit;
+	}
+
+	/**
+	 * @return the btnBack
+	 */
+	public JButton getBtnBack() {
+		return btnBack;
+	}
+
+	/**
+	 * @return the txtID
+	 */
+	public JTextField getTxtID() {
+		return txtID;
+	}
+	
+	/**
+	 * @param ID the string value of txtID to set
+	 */
+	public void setTxtID(String ID) {
+		this.txtID.setText(ID);
+	}
+
+	/**
+	 * @return the txtName
+	 */
+	public JTextField getTxtName() {
+		return txtName;
+	}
+	
+	/**
+	 * @param name the string value of txtName to set
+	 */
+	public void setTxtName(String name) {
+		this.txtName.setText(name);
+	}
+
+	/**
+	 * @return the txtQuantity
+	 */
+	public JTextField getTxtQuantity() {
+		return txtQuantity;
+	}
+	
+	/**
+	 * @param quantity the string value of txtQuantity to set
+	 */
+	public void setTxtQuantity(String quantity) {
+		this.txtQuantity.setText(quantity);
+	}
+
+	/**
+	 * @return the txtPrice
+	 */
+	public JTextField getTxtPrice() {
+		return txtPrice;
+	}
+	
+	/**
+	 * @param price the string value of txtPrice to set
+	 */
+	public void setTxtPrice(String price) {
+		this.txtPrice.setText(price);
+	}
+
+	/**
+	 * @return the ALL_FIELDS
+	 */
+	public List<JTextField> getAllFields() {
+		return allFields;
+	}
+
+	/**
+	 * @return the DETAIL_FIELDS
+	 */
+	public List<JTextField> getDetailFields() {
+		return detailFields;
+	}
 	
 	public void setCloseHandler(Runnable handler) {
 		setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
@@ -99,6 +212,7 @@ public class InventoryView extends JFrame {
 	    
 	    // Create table and scroll pane
 	    tableModel = new DefaultTableModel(new Object[]{"ID", "Name", "Quantity", "Price"}, 0);
+	    
 	    catalog = new JTable(tableModel);
 	    JScrollPane scrollPane = new JScrollPane(catalog);
 	    
@@ -221,7 +335,7 @@ public class InventoryView extends JFrame {
 					item.getID(),
 					item.getName(),
 					item.getQuantity(),
-					item.getPrice()
+					item.getFormattedPrice()
 			};
 			tableModel.addRow(row);
 		}
@@ -369,117 +483,5 @@ public class InventoryView extends JFrame {
 					" with field(s) " + testedFields,
 					"Error", JOptionPane.ERROR_MESSAGE);
 		}
-	}
-
-	/**
-	 * @return the btnAdd
-	 */
-	public JButton getBtnAdd() {
-		return btnAdd;
-	}
-
-	/**
-	 * @return the btnClear
-	 */
-	public JButton getBtnClear() {
-		return btnClear;
-	}
-
-	/**
-	 * @return the btnUpdate
-	 */
-	public JButton getBtnUpdate() {
-		return btnUpdate;
-	}
-
-	/**
-	 * @return the btnDelete
-	 */
-	public JButton getBtnDelete() {
-		return btnDelete;
-	}
-
-	/**
-	 * @return the btnSubmit
-	 */
-	public JButton getBtnSubmit() {
-		return btnSubmit;
-	}
-
-	/**
-	 * @return the btnBack
-	 */
-	public JButton getBtnBack() {
-		return btnBack;
-	}
-
-	/**
-	 * @return the txtID
-	 */
-	public JTextField getTxtID() {
-		return txtID;
-	}
-	
-	/**
-	 * @param ID the string value of txtID to set
-	 */
-	public void setTxtID(String ID) {
-		this.txtID.setText(ID);
-	}
-
-	/**
-	 * @return the txtName
-	 */
-	public JTextField getTxtName() {
-		return txtName;
-	}
-	
-	/**
-	 * @param name the string value of txtName to set
-	 */
-	public void setTxtName(String name) {
-		this.txtName.setText(name);
-	}
-
-	/**
-	 * @return the txtQuantity
-	 */
-	public JTextField getTxtQuantity() {
-		return txtQuantity;
-	}
-	
-	/**
-	 * @param quantity the string value of txtQuantity to set
-	 */
-	public void setTxtQuantity(String quantity) {
-		this.txtQuantity.setText(quantity);
-	}
-
-	/**
-	 * @return the txtPrice
-	 */
-	public JTextField getTxtPrice() {
-		return txtPrice;
-	}
-	
-	/**
-	 * @param price the string value of txtPrice to set
-	 */
-	public void setTxtPrice(String price) {
-		this.txtPrice.setText(price);
-	}
-
-	/**
-	 * @return the ALL_FIELDS
-	 */
-	public List<JTextField> getAllFields() {
-		return allFields;
-	}
-
-	/**
-	 * @return the DETAIL_FIELDS
-	 */
-	public List<JTextField> getDetailFields() {
-		return detailFields;
 	}
 }

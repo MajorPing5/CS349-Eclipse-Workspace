@@ -24,7 +24,7 @@ public class InventoryModel {
 		this.items = items;
 	}
 	
-	// custom methods
+	// Custom methods
 	/**
 	 * Provides the next sequential ID, assuming the last element to be removed was not list.size() - 1.
 	 * @return the highest ID + 1

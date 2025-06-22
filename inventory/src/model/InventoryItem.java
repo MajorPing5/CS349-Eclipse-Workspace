@@ -84,19 +84,7 @@ public class InventoryItem {
 		this.price = price;
 	}
 	
-	// custom methods
-	/**
-	 * Provides all item details for the given object
-	 * {@return id, name, quantity, price}
-	 */
-	public String display() {
-		
-		double price = 0;
-		price = Math.round(getPrice() * Math.pow(10, 2)) / Math.pow(10,2);
-				
-		return getID()+","
-				+getName()+","
-				+getQuantity()+","
-				+price;
+	public String getFormattedPrice() {
+		return String.format("%.2f",  price);
 	}
 }

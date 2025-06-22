@@ -23,16 +23,18 @@ public class FileBased implements Repository {
 			createFile();
 		}
 		
-        try {
-        	try (Scanner inputFile = new Scanner(file)) {
-                while (inputFile.hasNextLine()) {
-                    String line = inputFile.nextLine().trim();
-                    if (line.isEmpty()) continue;
-                    
-                    InventoryItem item = parseLine(line);
-                    inventory.addItem(item);
+       	try (Scanner inputFile = new Scanner(file)) {
+            while (inputFile.hasNextLine()) {
+                String line = inputFile.nextLine().trim();
+                // Skips any empty lines out of precaution
+                if (line.isEmpty()) {
+                	continue;
                 }
+                
+                InventoryItem item = parseLine(line);
+                inventory.addItem(item);
             }
+            
             return inventory;
         } catch (IOException e) {
             System.err.println("Error reading file: " + e.getMessage());
@@ -44,12 +46,19 @@ public class FileBased implements Repository {
     @Override
     public void saveInventory(InventoryModel inventory) {
     	 try (PrintWriter writer = new PrintWriter(new FileWriter(fileName, false))) {
-             for (InventoryItem item : inventory.getItems()) {
-            	 writer.printf("%d,$%s,%d,%.2f%n",
+    		 
+    		 /**
+    		  * Due to formatting issues, price is separated from rest of fields to
+    		  * ensure there are no extra 0s in file writing for retaining proper data integrity.
+    		  * Using %f%n results in %.6f%n, which obviously can be problematic
+    		  */
+    		 
+    		 for (InventoryItem item : inventory.getItems()) {
+            	 writer.printf("%d,%s,%d,",
             			 item.getID(),
             			 item.getName(),
-            			 item.getQuantity(),
-            			 item.getPrice());
+            			 item.getQuantity());
+            	 writer.println(item.getPrice());
              }
          } catch (IOException e) {
              System.err.println("Error writing to file: " + e.getMessage());
