@@ -335,7 +335,7 @@ public class InventoryView extends JFrame {
 					item.getID(),
 					item.getName(),
 					item.getQuantity(),
-					item.getFormattedPrice()
+					item.getDisplayPrice()
 			};
 			tableModel.addRow(row);
 		}

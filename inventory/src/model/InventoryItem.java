@@ -84,7 +84,11 @@ public class InventoryItem {
 		this.price = price;
 	}
 	
-	public String getFormattedPrice() {
+	/**
+	 * View specific method that only converts float price into string w/ only 2 decimals
+	 * @return the price
+	 */
+	public String getDisplayPrice() {
 		return String.format("%.2f",  price);
 	}
 }
