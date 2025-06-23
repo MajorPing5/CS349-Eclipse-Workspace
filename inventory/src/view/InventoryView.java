@@ -1,17 +1,29 @@
 package view;
 
-import javax.swing.*;
-import javax.swing.table.*;
-
-import model.InventoryItem;
-
-import java.awt.*;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.GridLayout;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.util.List;
 import java.util.ArrayList;
+import java.util.List;
+
+import javax.swing.BorderFactory;
+import javax.swing.Box;
+import javax.swing.BoxLayout;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.JTextField;
+import javax.swing.table.DefaultTableModel;
+
+import model.InventoryItem;
 
 public class InventoryView extends JFrame {
 	/**
@@ -335,7 +347,7 @@ public class InventoryView extends JFrame {
 					item.getID(),
 					item.getName(),
 					item.getQuantity(),
-					item.getFormattedPrice()
+					item.getDisplayPrice()
 			};
 			tableModel.addRow(row);
 		}
