@@ -1,32 +1,39 @@
 package model;
 
 public class InventoryItem {
-	
+
 	// fields - ID, Name, Quantity, Price
 	int id, quantity;
 	String name;
-	float price;
-	
+	double price;
+
 	// constructor - empty constructor
 	public InventoryItem() {
-		
 	}
-	
+
 	/**
 	 * Overloaded constructor to retrieve all specified item information
 	 * @param id Integer value of an Item's ID
 	 * @param name String name of the Item
 	 * @param quantity Integer value of an Item's supply count
-	 * @param price Float value of an Item's cost towards consumer
-	 * {@return int id, String name, int quantity, float price}
+	 * @param price double value of an Item's cost towards consumer
+	 * {@return int id, String name, int quantity, double price}
 	 */
-	public InventoryItem(int id, String name, int quantity, float price) {
+	public InventoryItem(int id, String name, int quantity, double price) {
+		super();
 		this.id = id;
 		this.name = name;
 		this.quantity = quantity;
 		this.price = price;
 	}
-	
+
+	public InventoryItem(String name, int quantity, double price) {
+		super();
+		this.name = name;
+		this.quantity = quantity;
+		this.price = price;
+	}
+
 	// setters and getters
 	/**
 	 * @return the id
@@ -73,7 +80,7 @@ public class InventoryItem {
 	/**
 	 * @return the price
 	 */
-	public float getPrice() {
+	public double getPrice() {
 		return price;
 	}
 
@@ -83,7 +90,7 @@ public class InventoryItem {
 	public void setPrice(float price) {
 		this.price = price;
 	}
-	
+
 	/**
 	 * View specific method that only converts float price into string w/ only 2 decimals
 	 * @return the price
