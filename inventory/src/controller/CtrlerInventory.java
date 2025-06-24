@@ -193,6 +193,7 @@ public class CtrlerInventory {
 
 					// Conditional scene switch if CRUD operation is a success
 					if (stateChange) {
+						view.successEntry();
 						state = "Main";
 						view.newTable(model.getItems());
 						view.swapSouthPanel();
