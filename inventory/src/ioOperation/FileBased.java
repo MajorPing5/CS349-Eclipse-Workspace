@@ -15,61 +15,62 @@ public class FileBased implements Repository {
 
 	 // Main interface implementation ================================
 	@Override
-    public InventoryModel loadInventory() {
-		inventory = new InventoryModel();
+	public ArrayList<InventoryItem> loadInventory() {
 		File file = new File(fileName);
+		ArrayList<InventoryItem> items = new ArrayList<>();
 
 		if (!file.exists()) {
 			createFile();
 		}
-		
-       	try (Scanner inputFile = new Scanner(file)) {
-            while (inputFile.hasNextLine()) {
-                String line = inputFile.nextLine().trim();
-                // Skips any empty lines out of precaution
-                if (line.isEmpty()) {
-                	continue;
-                }
-                
-                InventoryItem item = parseLine(line);
-                inventory.addItem(item);
-            }
-            
-            return inventory;
-        } catch (IOException e) {
-            System.err.println("Error reading file: " + e.getMessage());
-            file.delete();
-            loadInventory();
-            
-            // Recursive call, so will never return null
-            return null;
-        }
 
-    }
-	
-    @Override
-    public void saveInventory(InventoryModel inventory) {
-    	 try (PrintWriter writer = new PrintWriter(new FileWriter(fileName, false))) {
-    		 
-    		 /**
-    		  * Due to formatting issues, price is separated from rest of fields to
-    		  * ensure there are no extra 0s in file writing for retaining proper data integrity.
-    		  * Using %f%n results in %.6f%n, which obviously can be problematic
-    		  */
-    		 
-    		 for (InventoryItem item : inventory.getItems()) {
-            	 writer.printf("%d,%s,%d,",
-            			 item.getID(),
-            			 item.getName(),
-            			 item.getQuantity());
-            	 writer.println(item.getPrice());
-             }
-         } catch (IOException e) {
-             System.err.println("Error writing to file: " + e.getMessage());
-         }
-    }
-    
-    /**
+		try (Scanner inputFile = new Scanner(file)) {
+			while (inputFile.hasNextLine()) {
+				String line = inputFile.nextLine().trim();
+				// Skips any empty lines out of precaution
+				if (line.isEmpty()) {
+					continue;
+				}
+
+				InventoryItem item = parseLine(line);
+				items.add(item);
+			}
+
+			return items;
+		} catch (IOException e) {
+			System.err.println("Error reading file: " + e.getMessage());
+      file.delete();
+      loadInventory();
+
+      // Recursive call, so will never return null
+			return null;
+		}
+
+	}
+
+	@Override
+	public void saveInventory(InventoryDataAccess inventory) {
+		try (PrintWriter writer = new PrintWriter(new FileWriter(fileName, false))) {
+
+			/**
+			 * Due to formatting issues, price is separated from rest of fields to
+			 * ensure there are no extra 0s in file writing for retaining proper data integrity.
+			 * Using %f%n results in %.6f%n, which obviously can be problematic
+			 */
+
+			for (InventoryItem item : inventory.getInventoryList()) {
+				writer.printf("%d,%s,%d,",
+						item.getID(),
+						item.getName(),
+						item.getQuantity());
+				writer.println(item.getPrice());
+			}
+		} catch (IOException e) {
+			System.err.println("Error writing to file: " + e.getMessage());
+		}
+	}
+  
+	/**
+
 	 * Creates a given file name.
 	 * 
 	 * <p>Precon: filename does not exist;

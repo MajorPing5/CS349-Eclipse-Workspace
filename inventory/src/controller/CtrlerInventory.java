@@ -9,40 +9,33 @@ import java.util.Objects;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
-import java.lang.Integer;
 
-import ioOperation.Repository;
-import model.*;
-import view.*;
+import model.InventoryDataAccess;
+import model.InventoryItem;
+import view.InventoryView;
 
 public class CtrlerInventory {
 
 	private InventoryView view;
 	private InventoryModel model;
-	private Repository repository;
 	private String state = "Main";
 	private InventoryItem searchResult;
 
-	public CtrlerInventory(InventoryView view, InventoryModel model, Repository repository) {
+	public CtrlerInventory(InventoryView view, InventoryModel model) {
 		this.view = view;
 		this.model = model;
-		this.repository = repository;
-
-		InventoryModel loadedModel = null;
-		loadedModel = repository.loadInventory();
-		
-		model.setItems(loadedModel.getItems());
 
 		view.newTable(
-			    new ArrayList<>(model.getItems()), 
-			    item -> new Object[]{
-			        item.getID(),
-			        item.getName(),
-			        item.getQuantity(),
-			        item.getDisplayPrice()
-			    }
+            new ArrayList<>(model.getInventoryList()),
+            item -> new Object[]{
+			          item.getID(),
+			          item.getName(),
+			          item.getQuantity(),
+			          item.getDisplayPrice()
+			      }
 			);
 
+		// "Delete" Button listener
 		view.getBtnDelete().addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				// Immediately switch everything BUT the ID field OFF for editing
