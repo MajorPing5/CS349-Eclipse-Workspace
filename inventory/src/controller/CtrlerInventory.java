@@ -25,6 +25,7 @@ public class CtrlerInventory {
 		this.view = view;
 		this.model = model;
 
+
 		view.newTable(new ArrayList<>(model.getInventoryList()));
 
 		// "Delete" Button listener

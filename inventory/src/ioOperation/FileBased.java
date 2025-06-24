@@ -27,25 +27,29 @@ public class FileBased implements Repository {
 			createFile();
 		}
 
-		try (Scanner inputFile = new Scanner(file)) {
-			while (inputFile.hasNextLine()) {
-				String line = inputFile.nextLine().trim();
-				// Skips any empty lines out of precaution
-				if (line.isEmpty()) {
-					continue;
-				}
+      try (Scanner inputFile = new Scanner(file)) {
+          while (inputFile.hasNextLine()) {
+              String line = inputFile.nextLine().trim();
+              // Skips any empty lines out of precaution
+              if (line.isEmpty()) {
+                continue;
+              }
 
-				InventoryItem item = parseLine(line);
-				items.add(item);
-			}
+              InventoryItem item = parseLine(line);
+              inventory.addItem(item);
+          }
 
-			return items;
-		} catch (IOException e) {
-			System.err.println("Error reading file: " + e.getMessage());
-			return null;
-		}
+          return inventory;
+      } catch (IOException e) {
+          System.err.println("Error reading file: " + e.getMessage());
+          file.delete();
+          loadInventory();
 
-	}
+          // Recursive call, so will never return null
+          return null;
+      }
+
+  }
 
 	@Override
 	public void saveInventory(InventoryDataAccess inventory) {
