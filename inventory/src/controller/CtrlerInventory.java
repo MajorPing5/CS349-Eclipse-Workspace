@@ -33,7 +33,15 @@ public class CtrlerInventory {
 		
 		model.setItems(loadedModel.getItems());
 
-		view.newTable(new ArrayList<>(model.getItems()));
+		view.newTable(
+			    new ArrayList<>(model.getItems()), 
+			    item -> new Object[]{
+			        item.getID(),
+			        item.getName(),
+			        item.getQuantity(),
+			        item.getDisplayPrice()
+			    }
+			);
 
 		view.getBtnDelete().addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -192,7 +200,15 @@ public class CtrlerInventory {
 					if (stateChange) {
 						view.successEntry();
 						state = "Main";
-						view.newTable(model.getItems());
+						view.newTable(
+							    model.getItems(), 
+							    item -> new Object[]{
+							        item.getID(),
+							        item.getName(),
+							        item.getQuantity(),
+							        item.getDisplayPrice()
+							    }
+							);
 						view.swapSouthPanel();
 					}
 				}

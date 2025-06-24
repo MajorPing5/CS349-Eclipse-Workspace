@@ -7,8 +7,8 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Function;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
@@ -22,8 +22,6 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
-
-import model.InventoryItem;
 
 public class InventoryView extends JFrame {
 	/**
@@ -332,25 +330,20 @@ public class InventoryView extends JFrame {
 	};
 	
 	/**
-	 * Generates a new table, erasing any previous table that may or may not exist
-	 * @param items
+	 * Generates a new table using a generic data extraction approach
+	 * @param items List of items of any type
+	 * @param rowMapper Function to convert items to table row data
 	 */
-	public void newTable(ArrayList<InventoryItem> items) {
-		// Clears the existing table of all its data, if there is any
-		if (tableModel.getRowCount() != 0) {
-			tableModel.setRowCount(0);
-		}
-		
-		// Begins writing from the beginning all existing data
-		for (InventoryItem item : items) {
-			Object[] row = {
-					item.getID(),
-					item.getName(),
-					item.getQuantity(),
-					item.getDisplayPrice()
-			};
-			tableModel.addRow(row);
-		}
+	public <T> void newTable(List<T> items, Function<T, Object[]> rowMapper) {
+	    // Clear existing table data
+	    if (tableModel.getRowCount() > 0) {
+	        tableModel.setRowCount(0);
+	    }
+	    
+	    // Populate table using the mapper function
+	    for (T item : items) {
+	        tableModel.addRow(rowMapper.apply(item));
+	    }
 	}
 	
 	/**
