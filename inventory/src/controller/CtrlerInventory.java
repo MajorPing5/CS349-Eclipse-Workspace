@@ -29,11 +29,8 @@ public class CtrlerInventory {
 		this.repository = repository;
 
 		InventoryModel loadedModel = null;
-		try {
-			loadedModel = repository.loadInventory();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		loadedModel = repository.loadInventory();
+		
 		model.setItems(loadedModel.getItems());
 
 		view.newTable(new ArrayList<>(model.getItems()));

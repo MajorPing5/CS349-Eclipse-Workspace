@@ -38,6 +38,10 @@ public class FileBased implements Repository {
             return inventory;
         } catch (IOException e) {
             System.err.println("Error reading file: " + e.getMessage());
+            file.delete();
+            loadInventory();
+            
+            // Recursive call, so will never return null
             return null;
         }
 
