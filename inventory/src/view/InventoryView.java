@@ -446,7 +446,7 @@ public class InventoryView extends JFrame {
 			// By far the most-likely and widely applicable error that can take place
 		case "Blank": 
 			JOptionPane.showMessageDialog(null,
-					"Missing: " + String.join(", ", testedFields),
+					"Empty Field Detected: " + String.join(", ", testedFields),
 					"Error", JOptionPane.ERROR_MESSAGE);
 			break;
 

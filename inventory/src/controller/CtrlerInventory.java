@@ -210,6 +210,18 @@ public class CtrlerInventory {
 							    }
 							);
 						view.swapSouthPanel();
+					} else {
+						/**
+						 * Operation Phase (A or U2): Reopen previously closed fields used in operation
+						 */
+						switch (state.charAt(0)) {
+						case 'A':
+							view.setState(InventoryView.InventoryState.ID_OFF);
+							break;
+						case 'U':
+							view.setState(InventoryView.InventoryState.ID_OFF);
+							break;
+						}
 					}
 				}
 			}
@@ -276,7 +288,7 @@ public class CtrlerInventory {
 
 		List<Object> results = fieldValidators.stream().map(Supplier::get).collect(Collectors.toList());
 
-		String updatedName = (results.get(0) != "") ? (String) results.get(0) : searchResult.getName();
+		String updatedName = (results.get(0) != null) ? (String) results.get(0) : searchResult.getName();
 		int updatedQuantity = (results.get(1) != null) ? (Integer) results.get(1) : searchResult.getQuantity();
 		float updatedPrice = (results.get(2) != null) ? (Float) results.get(2) : searchResult.getPrice();
 
@@ -392,9 +404,9 @@ public class CtrlerInventory {
 			return input.trim();
 		} else {
 			if (!isUpdate) {
-				view.failedEntry("Field left Blank", List.of(fieldName));
+				view.failedEntry("Blank", List.of(fieldName));
 			}
-			return "";
+			return null;
 		}
 	}
 
