@@ -192,7 +192,7 @@ public class InventoryView extends JFrame {
 	}
 	
 	public void setCloseHandler(Runnable handler) {
-		setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowClosing(WindowEvent e) {
