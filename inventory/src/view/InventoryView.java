@@ -7,6 +7,8 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.function.Function;
 
@@ -47,9 +49,9 @@ public class InventoryView extends JFrame {
 	private boolean isMainPanel;
 	
 	// Individual, iterable lists for specific field groups
-	private List<JTextField> allFields, detailFields;
-	private List<JButton> opButtons, confirmButtons;
-	private List<JLabel> labels;
+	private ArrayList<JTextField> allFields, detailFields;
+	private ArrayList<JButton> opButtons, confirmButtons;
+	private ArrayList<JLabel> labels;
 	
 	public enum InventoryState {
 		ID_ON,
@@ -178,15 +180,15 @@ public class InventoryView extends JFrame {
 	/**
 	 * @return the ALL_FIELDS
 	 */
-	public List<JTextField> getAllFields() {
+	public ArrayList<JTextField> getAllFields() {
 		return allFields;
 	}
 
 	/**
 	 * @return the DETAIL_FIELDS
 	 */
-	public List<JTextField> getDetailFields() {
-		return detailFields;
+	public ArrayList<JTextField> getDetailFields() {
+	    return detailFields;
 	}
 	
 	public void setCloseHandler(Runnable handler) {
@@ -238,8 +240,8 @@ public class InventoryView extends JFrame {
 		btnUpdate = new JButton("Update");
 		btnAdd = new JButton("Add");
 				
-		// List Initialization for these buttons to be group referenced at any time
-		opButtons = List.of(btnDelete, btnUpdate, btnAdd);
+		// ArrayList Initialization for these buttons to be group referenced at any time
+		opButtons = new ArrayList<>(Arrays.asList(btnDelete, btnUpdate, btnAdd));
 		
 		opButtons.forEach(button -> opPanel.add(button));
 		southPanel = new JPanel();
@@ -273,12 +275,11 @@ public class InventoryView extends JFrame {
 			}
 		};
 		
-		// Dedicated List initialization
-		labels = List.of(lblID, lblName, lblQuantity, lblPrice);
-		allFields = List.of(txtID, txtName, txtQuantity, txtPrice);
-		detailFields = allFields.stream()
-				.filter(field -> field != txtID)
-				.toList();
+		// Dedicated ArrayList initialization
+		labels = new ArrayList<>(Arrays.asList(lblID, lblName, lblQuantity, lblPrice));
+		allFields = new ArrayList<>(Arrays.asList(txtID, txtName, txtQuantity, txtPrice));
+		detailFields = new ArrayList<>(allFields);
+		detailFields.remove(txtID);
 		
 		// Attaches button listener across all text fields
 		for (JTextField field : allFields) {
@@ -305,7 +306,7 @@ public class InventoryView extends JFrame {
 		JPanel btnsPanel = new JPanel();
 
 		// Declares all Confirmation Buttons
-		confirmButtons = List.of(btnBack, btnClear, btnSubmit);
+		confirmButtons = new ArrayList<>(Arrays.asList(btnBack, btnClear, btnSubmit));
 		confirmButtons.forEach(obj -> btnsPanel.add(obj));
 		
 		confirmPanel.add(fieldsPanel);
@@ -334,7 +335,7 @@ public class InventoryView extends JFrame {
 	 * @param items List of items of any type
 	 * @param rowMapper Function to convert items to table row data
 	 */
-	public <T> void newTable(List<T> items, Function<T, Object[]> rowMapper) {
+	public <T> void newTable(ArrayList<T> items, Function<T, Object[]> rowMapper) {
 	    // Clear existing table data
 	    if (tableModel.getRowCount() > 0) {
 	        tableModel.setRowCount(0);
@@ -440,11 +441,11 @@ public class InventoryView extends JFrame {
 	 * @param testedFields A list of strings for all tested field(s)
 	 * @returns Error Message
 	 */
-	public void failedEntry(String failType, List<String> testedFields) {
+	public void failedEntry(String failType, ArrayList<String> testedFields) {
 		switch (failType) {
 		
 			// By far the most-likely and widely applicable error that can take place
-		case "Blank": 
+		case "Empty Field Detected:": 
 			JOptionPane.showMessageDialog(null,
 					"Empty Field Detected: " + String.join(", ", testedFields),
 					"Error", JOptionPane.ERROR_MESSAGE);
