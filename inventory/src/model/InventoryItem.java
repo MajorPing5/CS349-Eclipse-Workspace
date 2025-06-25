@@ -1,7 +1,6 @@
 package model;
 
 public class InventoryItem {
-
 	// fields - ID, Name, Quantity, Price
 	int id, quantity;
 	String name;
@@ -27,6 +26,13 @@ public class InventoryItem {
 		this.price = price;
 	}
 
+	/**
+	 * Overloaded constructor to retrieve item detail information
+	 * @param name String name of the Item
+	 * @param quantity Integer value of an Item's supply count
+	 * @param price double value of an Item's cost towards consumer
+	 * {@return String name, int quantity, double price}
+	 */
 	public InventoryItem(String name, int quantity, double price) {
 		super();
 		this.name = name;
@@ -34,7 +40,8 @@ public class InventoryItem {
 		this.price = price;
 	}
 
-	// setters and getters
+	// getters and setters
+
 	/**
 	 * @return the id
 	 */

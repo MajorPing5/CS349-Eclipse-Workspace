@@ -1,9 +1,9 @@
 package ioOperation;
 
-import java.io.*;
-import java.util.*;
+import java.util.ArrayList;
 
-import model.*;
+import model.InventoryDataAccess;
+import model.InventoryItem;
 
 //InventoryRepository.java
 public interface Repository {

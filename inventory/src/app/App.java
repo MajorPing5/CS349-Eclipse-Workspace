@@ -16,10 +16,10 @@ public class App {
         if (dbInventory.isEmpty()) {
         	// Initializes the file-based approach IF AND ONLY IF the database is already a clean slate
         	Repository repo = new FileBased("inventory.txt");
-        	
+
             // Load inventory from file system
             ArrayList<InventoryItem> fileInventory = repo.loadInventory();
-            
+
             // Insert file items into DBMS
             for (InventoryItem item : fileInventory) {
                 model.addItem(new InventoryItem(
@@ -32,7 +32,7 @@ public class App {
             System.out.println("Migrated " + fileInventory.size() + " items from file to database");
         }
 	}
-	
+
 	public static void main(String[] args) {
 		InventoryView view = new InventoryView();
 		InventoryDataAccess model = new InventoryDataAccess();
