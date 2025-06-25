@@ -9,27 +9,41 @@ import java.util.Objects;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
+import java.lang.Integer;
 
-import model.InventoryDataAccess;
-import model.InventoryItem;
-import view.InventoryView;
+import ioOperation.Repository;
+import model.*;
+import view.*;
 
 public class CtrlerInventory {
 
 	private InventoryView view;
-	private InventoryDataAccess model;
+	private InventoryModel model;
+	private Repository repository;
 	private String state = "Main";
 	private InventoryItem searchResult;
 
-	public CtrlerInventory(InventoryView view, InventoryDataAccess model) {
+	public CtrlerInventory(InventoryView view, InventoryModel model, Repository repository) {
 		this.view = view;
 		this.model = model;
+		this.repository = repository;
 
-		view.newTable(new ArrayList<>(model.getInventoryList()));
+		InventoryModel loadedModel = null;
+		loadedModel = repository.loadInventory();
+		
+		model.setItems(loadedModel.getItems());
 
-		// "Delete" Button listener
+		view.newTable(
+			    new ArrayList<>(model.getItems()), 
+			    item -> new Object[]{
+			        item.getID(),
+			        item.getName(),
+			        item.getQuantity(),
+			        item.getDisplayPrice()
+			    }
+			);
+
 		view.getBtnDelete().addActionListener(new ActionListener() {
-			@Override
 			public void actionPerformed(ActionEvent e) {
 				// Immediately switch everything BUT the ID field OFF for editing
 				view.setState(InventoryView.InventoryState.ID_ON);
@@ -40,9 +54,8 @@ public class CtrlerInventory {
 			}
 		});
 
-		// "Update" Button listener
+		// "Update" button listener
 		view.getBtnUpdate().addActionListener(new ActionListener() {
-			@Override
 			public void actionPerformed(ActionEvent e) {
 				// Immediately switch everything BUT the ID field OFF for editing
 				view.setState(InventoryView.InventoryState.ID_ON);
@@ -55,10 +68,14 @@ public class CtrlerInventory {
 
 		// "Add" Button listener
 		view.getBtnAdd().addActionListener(new ActionListener() {
-			@Override
 			public void actionPerformed(ActionEvent e) {
 				// Immediately switch everything BUT the ID field ON for editing
 				view.setState(InventoryView.InventoryState.ID_OFF);
+
+				// Automatically calculates the next ID before inserting into the ID Field
+				String ID = "";
+				ID = String.valueOf(model.getNextID());
+				view.setTxtID(ID);
 
 				// Update the state to "Add" & show final south panel
 				state = "A";
@@ -68,7 +85,6 @@ public class CtrlerInventory {
 
 		// "Back" Button listener
 		view.getBtnBack().addActionListener(new ActionListener() {
-			@Override
 			public void actionPerformed(ActionEvent e) {
 				// Assumes that the fields picked are already
 				if (state != "D2") {
@@ -97,15 +113,12 @@ public class CtrlerInventory {
 
 		// "Clear" Button listener
 		view.getBtnClear().addActionListener(new ActionListener() {
-			@Override
 			public void actionPerformed(ActionEvent e) {
 				view.clearEditibleFields();
 			}
 		});
 
-		// "Submit" Button listener
 		view.getBtnSubmit().addActionListener(new ActionListener() {
-			@Override
 			public void actionPerformed(ActionEvent e) {
 				// Locks the fields in an uneditable manner, preventing any potential tampering
 				// with the fields before reading occurs
@@ -185,9 +198,30 @@ public class CtrlerInventory {
 
 					// Conditional scene switch if CRUD operation is a success
 					if (stateChange) {
+						view.successEntry();
 						state = "Main";
-						view.newTable(model.getInventoryList());
+						view.newTable(
+							    model.getItems(), 
+							    item -> new Object[]{
+							        item.getID(),
+							        item.getName(),
+							        item.getQuantity(),
+							        item.getDisplayPrice()
+							    }
+							);
 						view.swapSouthPanel();
+					} else {
+						/**
+						 * Operation Phase (A or U2): Reopen previously closed fields used in operation
+						 */
+						switch (state.charAt(0)) {
+						case 'A':
+							view.setState(InventoryView.InventoryState.ID_OFF);
+							break;
+						case 'U':
+							view.setState(InventoryView.InventoryState.ID_OFF);
+							break;
+						}
 					}
 				}
 			}
@@ -198,33 +232,18 @@ public class CtrlerInventory {
 
 	/**
 	 * Public method combining validation and search
-	 *
+	 * 
 	 * @return Found item or null if invalid/not found
 	 */
 	public InventoryItem searchInventory() {
 		Integer existingID = validateInt(view.getTxtID().getText(), "ID", false);
-		searchResult = findID(existingID);
-		return (searchResult instanceof InventoryItem) ? searchResult : null;
+		return existingID > 0 ? findID(existingID) : null;
 	}
 
-	/**
-	 * Near pure search operation - 1 validation for ID not existing;
-	 *
-	 * <p>Precon: ID field has already been verified to be a proper integer
-	 *
-	 * @param ID an integer that may or may not exist within the inventory
-	 * @return Found item or null w/ failedEntry throw
-	 */
-	private InventoryItem findID(int ID) {
-		searchResult = model.getItem(ID);
-		return (searchResult instanceof InventoryItem) ? searchResult : null;
+	public void saveInventory() {
+		repository.saveInventory(model);
 	}
 
-	/**
-	 * Assesses the current state by checking the state's string length & 2nd character return
-	 * 
-	 * @return {@code true} if it's "U1" or "D1", or {@code false} under any other circumstance
-	 */
 	private boolean isPhase1() {
 		return (state.length() == 2) && (state.charAt(1) == '1');
 	}
@@ -235,21 +254,15 @@ public class CtrlerInventory {
 		view.setTxtPrice(String.valueOf(item.getPrice()));
 	};
 
-	/**
-	 * Final operation in Controller side before Model takes over Creation protocol. Has to verify
-	 * the new input information from the user (name, quantity, price) before sending it off to
-	 * the model for database operation testing.
-	 * 
-	 * @return {@code true} or {@code false} depending on success/failure of operation
-	 */
 	private boolean addExecution() {
 		// Assigns all fields with validation - if necessary
-		List<Supplier<Object>> fieldValidators = Arrays.asList(
+		List<Supplier<Object>> fieldValidators = Arrays.asList(() -> Integer.parseInt(view.getTxtID().getText()),
 				() -> validateString(view.getTxtName().getText(), "Name", false),
 				() -> validateInt(view.getTxtQuantity().getText(), "Quantity", false),
-				() -> validateDouble(view.getTxtPrice().getText(), false));
+				() -> validateFloat(view.getTxtPrice().getText(), false));
 
-		// Will automatically iterate through the list to search for anything that is null
+		// Will automatically iterate through the list to search for anything that is
+		// null
 		List<Object> results = fieldValidators.stream().map(Supplier::get).collect(Collectors.toList());
 
 		// Searches results to see if anything retains null, indicating a failed field
@@ -257,52 +270,63 @@ public class CtrlerInventory {
 			return false;
 
 		} else {
-			String name = (String) results.get(0);
-			int quantity = (Integer) results.get(1);
-			double price = (Double) results.get(2);
+			int ID = (Integer) results.get(0);
+			String name = (String) results.get(1);
+			int quantity = (Integer) results.get(2);
+			float price = (Float) results.get(3);
 
-			return model.addItem(new InventoryItem(name, quantity, price));
+			model.addItem(new InventoryItem(ID, name, quantity, price));
+			return true;
 		}
 	}
 
-	/**
-	 * Final operation in Controller side before Model takes over Update protocol. Has to verify
-	 * the new input information from the user (name, quantity, price) before sending it off to
-	 * the model for database operation testing.
-	 * 
-	 * @return {@code true} or {@code false} depending on success/failure of operation
-	 */
 	private boolean updateExecution() {
 		List<Supplier<Object>> fieldValidators = Arrays.asList(
 				() -> validateString(view.getTxtName().getText(), "Name", true),
 				() -> validateInt(view.getTxtQuantity().getText(), "Quantity", true),
-				() -> validateDouble(view.getTxtPrice().getText(), true));
+				() -> validateFloat(view.getTxtPrice().getText(), true));
 
 		List<Object> results = fieldValidators.stream().map(Supplier::get).collect(Collectors.toList());
 
-		String updatedName = (results.get(0) != "") ? (String) results.get(0) : searchResult.getName();
+		String updatedName = (results.get(0) != null) ? (String) results.get(0) : searchResult.getName();
 		int updatedQuantity = (results.get(1) != null) ? (Integer) results.get(1) : searchResult.getQuantity();
-		double updatedPrice = (results.get(2) != null) ? (Double) results.get(2) : searchResult.getPrice();
+		float updatedPrice = (results.get(2) != null) ? (Float) results.get(2) : searchResult.getPrice();
 
-		return model.updateItem(new InventoryItem(searchResult.getID(), updatedName, updatedQuantity, updatedPrice));
+		model.updateItem(searchResult.getID(), updatedName, updatedQuantity, updatedPrice);
+		return true;
 	}
 
-	/**
-	 * Final operation in Controller side before Model takes over deletion protocol
-	 * 
-	 * @return {@code true} or {@code false} depending on success/failure of operation
-	 */
 	private boolean deleteExecution() {
 		// Quickly converts ID text into integer before removing everything
 		String txtId = view.getTxtID().getText();
 		int id = Integer.parseInt(txtId);
 
-		return model.deleteItem(findID(id));
+		// Method already attempts to remove if the whole item is found in the inventory
+		// system
+		model.removeItem(findID(id));
+		return true;
+	}
+
+	/**
+	 * Near pure search operation - 1 validation for ID not existing;
+	 * 
+	 * <p>Precon: ID field has already been verified to be a proper integer
+	 * 
+	 * @param ID an integer that may or may not exist within the inventory
+	 * @return Found item or null w/ failedEntry throw
+	 */
+	private InventoryItem findID(int ID) {
+		for (InventoryItem item : model.getItems()) {
+			if (item.getID() == ID) {
+				return item;
+			}
+		}
+		return null;
 	}
 
 	/**
 	 * Validates Integer input from text field
-	 *
+	 * 
 	 * @return Validated Integer or null if invalid
 	 */
 	private Integer validateInt(String input, String fieldName, boolean isUpdate) {
@@ -334,11 +358,11 @@ public class CtrlerInventory {
 	}
 
 	/**
-	 * Validates Double input from text field
-	 *
-	 * @return Validated Double or null if invalid
+	 * Validates Float input from text field
+	 * 
+	 * @return Validated float or null if invalid
 	 */
-	private Double validateDouble(String input, boolean isUpdate) {
+	private Float validateFloat(String input, boolean isUpdate) {
 		input = validateString(input, "Price", isUpdate);
 		// Terminates due to empty field without repeatedly mentioning field is empty
 		if (input.isBlank()) {
@@ -346,20 +370,20 @@ public class CtrlerInventory {
 
 		} else {
 			try {
-				Double value = Double.parseDouble(input);
-				if (value >= 0) {
+				float value = Float.parseFloat(input);
+				if (value > 0) {
 					return value;
 				} else {
 					// Silently converts if we're in the update state
 					if (!isUpdate) {
-						view.failedEntry("Double Domain Violation", List.of("Price"));
+						view.failedEntry("Float Domain Violation", List.of("Price"));
 					}
 					return null;
 				}
 			} catch (NumberFormatException e) {
 				// Silently converts if we're in the update state
 				if (!isUpdate) {
-					view.failedEntry("Not A Double", List.of("Price"));
+					view.failedEntry("Not A Float", List.of("Price"));
 				}
 				return null;
 			}
@@ -368,7 +392,7 @@ public class CtrlerInventory {
 
 	/**
 	 * Validates String input from text field
-	 *
+	 * 
 	 * @return Validated String or empty string if invalid
 	 */
 	private String validateString(String input, String fieldName, boolean isUpdate) {
@@ -380,9 +404,10 @@ public class CtrlerInventory {
 			return input.trim();
 		} else {
 			if (!isUpdate) {
-				view.failedEntry("Field left Blank", List.of(fieldName));
+				view.failedEntry("Blank", List.of(fieldName));
 			}
-			return "";
+			return null;
 		}
 	}
+
 }
