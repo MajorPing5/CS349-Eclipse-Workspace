@@ -61,6 +61,8 @@ Completing these layers demonstrates separation of concerns, proper MVC flow, da
 ### Add / Update / Delete
 - Clicking **Add**, **Update**, or **Delete** on the main panel swaps in the edit panel with form fields and **Submit**, **Back**, **Clear** buttons at the bottom
 - All JTextFields that are enabled/disabled are set to specific Foreground and Background colors (Black/White for enabled, or Gray/Light Gray for disabled) each
+
+### Submit / Back / Clear
 - **Submit** executes the selected operation:
     - Add immediately creates and inserts new item
     - Update/Delete first prompts user for ID paired with Item in question, before doing 1 of the following:
@@ -93,7 +95,7 @@ Completing these layers demonstrates separation of concerns, proper MVC flow, da
   Initial Add Window:  
   ![Add State](https://github.com/user-attachments/assets/2ab4a69c-8816-47ec-8afe-fbc21c2bc003)
     
-  ### Successfull Add:  
+  ### Successful Add:  
   ![Confirmation Window](https://github.com/user-attachments/assets/63390308-dab9-467b-89cd-b1907a026da4)
   ![Post-Add Tabel](https://github.com/user-attachments/assets/94be883e-3d4e-442a-a125-a9c7f589c96d)
     
@@ -164,10 +166,14 @@ Completing these layers demonstrates separation of concerns, proper MVC flow, da
 
 Importing/Exporting Functionality:  
 Before:  
-![Pre Program Import or Export](https://github.com/user-attachments/assets/45d57447-c255-4af3-b176-909e03eede91)
+![Pre-Runtime](https://github.com/user-attachments/assets/45d57447-c255-4af3-b176-909e03eede91)
+
+During:  
+![Runtime](https://github.com/user-attachments/assets/def43ebd-1fd5-4a08-9cac-3483706d2a57)
+
  
 Export:  
-![Post Program Export](https://github.com/user-attachments/assets/d3dc6f91-2bfe-41aa-bead-4e1263b5d49e)
+![Post Shutdown](https://github.com/user-attachments/assets/d3dc6f91-2bfe-41aa-bead-4e1263b5d49e)
 
 
 # Known Issues  
