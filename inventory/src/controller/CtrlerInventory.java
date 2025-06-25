@@ -415,7 +415,7 @@ public class CtrlerInventory {
 			return input.trim();
 		} else {
 			if (!isUpdate) {
-				view.failedEntry("Field left Blank", new ArrayList<>(Arrays.asList((fieldName))));
+				view.failedEntry("Empty Field", new ArrayList<>(Arrays.asList((fieldName))));
 			}
 			return "";
 		}

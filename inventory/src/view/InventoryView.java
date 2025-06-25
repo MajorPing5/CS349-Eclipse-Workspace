@@ -445,7 +445,7 @@ public class InventoryView extends JFrame {
 		switch (failType) {
 		
 			// By far the most-likely and widely applicable error that can take place
-		case "Empty Field Detected:": 
+		case "Empty Field": 
 			JOptionPane.showMessageDialog(null,
 					"Empty Field Detected: " + String.join(", ", testedFields),
 					"Error", JOptionPane.ERROR_MESSAGE);
