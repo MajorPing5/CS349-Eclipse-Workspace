@@ -9,7 +9,6 @@ import java.util.Objects;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
-import java.lang.Integer;
 
 import ioOperation.Repository;
 import model.*;
@@ -22,6 +21,7 @@ public class CtrlerInventory {
 	private Repository repository;
 	private String state = "Main";
 	private InventoryItem searchResult;
+	private ArrayList<String> blankFields;
 
 	public CtrlerInventory(InventoryView view, InventoryModel model, Repository repository) {
 		this.view = view;
@@ -150,12 +150,12 @@ public class CtrlerInventory {
 						 * screwed up in the code in this segment
 						 */
 						default:
-							view.failedEntry("Missing State", List.of("state: " + state));
+							view.failedEntry("Missing State", state);
 							break;
 						}
 					} else {
 						// 1. Call Failed Entry error
-						view.failedEntry("Integer DNE", List.of("ID"));
+						view.failedEntry("Integer DNE", "ID");
 
 						// 2. Does not change existing state string
 
@@ -185,7 +185,7 @@ public class CtrlerInventory {
 					 */
 					default:
 						// 1. Call Failed Entry error
-						view.failedEntry("Missing State", List.of("state: " + state));
+						view.failedEntry("Missing State", state);
 
 						// 2. Does not change existing state string
 
@@ -255,18 +255,30 @@ public class CtrlerInventory {
 	};
 
 	private boolean addExecution() {
+		String txtName = view.getTxtName().getText();
+		String txtQuantity = view.getTxtQuantity().getText();
+		String txtPrice = view.getTxtPrice().getText();
+		
 		// Assigns all fields with validation - if necessary
-		List<Supplier<Object>> fieldValidators = Arrays.asList(() -> Integer.parseInt(view.getTxtID().getText()),
-				() -> validateString(view.getTxtName().getText(), "Name", false),
-				() -> validateInt(view.getTxtQuantity().getText(), "Quantity", false),
-				() -> validateFloat(view.getTxtPrice().getText(), false));
+		List<Supplier<Object>> fieldValidators = Arrays.asList(
+				() -> Integer.parseInt(view.getTxtID().getText()),
+				() -> validateString(txtName, "Name", false),
+				() -> validateInt(txtQuantity, "Quantity", false),
+				() -> validateFloat(txtPrice, false));
 
+		blankFields = new ArrayList<>();
 		// Will automatically iterate through the list to search for anything that is
 		// null
-		List<Object> results = fieldValidators.stream().map(Supplier::get).collect(Collectors.toList());
+		List<Object> results = fieldValidators.stream()
+				.map(Supplier::get)
+				.collect(Collectors.toList());
 
 		// Searches results to see if anything retains null, indicating a failed field
 		if (results.stream().anyMatch(Objects::isNull)) {
+			if (!blankFields.isEmpty()) {
+				view.failedEntry("Blank", String.join(", ", blankFields));
+				blankFields.clear();
+			}
 			return false;
 
 		} else {
@@ -281,12 +293,18 @@ public class CtrlerInventory {
 	}
 
 	private boolean updateExecution() {
+		String txtName = view.getTxtName().getText();
+		String txtQuantity = view.getTxtQuantity().getText();
+		String txtPrice = view.getTxtPrice().getText();
+		
 		List<Supplier<Object>> fieldValidators = Arrays.asList(
-				() -> validateString(view.getTxtName().getText(), "Name", true),
-				() -> validateInt(view.getTxtQuantity().getText(), "Quantity", true),
-				() -> validateFloat(view.getTxtPrice().getText(), true));
+				() -> validateString(txtName, "Name", true),
+				() -> validateInt(txtQuantity, "Quantity", true),
+				() -> validateFloat(txtPrice, true));
 
-		List<Object> results = fieldValidators.stream().map(Supplier::get).collect(Collectors.toList());
+		List<Object> results = fieldValidators.stream()
+				.map(Supplier::get)
+				.collect(Collectors.toList());
 
 		String updatedName = (results.get(0) != null) ? (String) results.get(0) : searchResult.getName();
 		int updatedQuantity = (results.get(1) != null) ? (Integer) results.get(1) : searchResult.getQuantity();
@@ -332,7 +350,7 @@ public class CtrlerInventory {
 	private Integer validateInt(String input, String fieldName, boolean isUpdate) {
 		input = validateString(input, fieldName, isUpdate);
 		// Terminates due to empty field without repeatedly mentioning field is empty
-		if (input.isBlank()) {
+		if (String.valueOf(input) == "null") {
 			return null;
 
 		} else {
@@ -343,14 +361,14 @@ public class CtrlerInventory {
 				} else {
 					// Silently converts if we're in the update state
 					if (!isUpdate) {
-						view.failedEntry("Integer Domain Violation", List.of(fieldName));
+						view.failedEntry("Integer Domain Violation", fieldName);
 					}
 					return null;
 				}
 			} catch (NumberFormatException e) {
 				// Silently converts if we're in the update state
 				if (!isUpdate) {
-					view.failedEntry("Not An Integer", List.of(fieldName));
+					view.failedEntry("Not An Integer", fieldName);
 				}
 				return null;
 			}
@@ -365,7 +383,7 @@ public class CtrlerInventory {
 	private Float validateFloat(String input, boolean isUpdate) {
 		input = validateString(input, "Price", isUpdate);
 		// Terminates due to empty field without repeatedly mentioning field is empty
-		if (input.isBlank()) {
+		if (String.valueOf(input) == "null") {
 			return null;
 
 		} else {
@@ -376,14 +394,14 @@ public class CtrlerInventory {
 				} else {
 					// Silently converts if we're in the update state
 					if (!isUpdate) {
-						view.failedEntry("Float Domain Violation", List.of("Price"));
+						view.failedEntry("Float Domain Violation", "Price");
 					}
 					return null;
 				}
 			} catch (NumberFormatException e) {
 				// Silently converts if we're in the update state
 				if (!isUpdate) {
-					view.failedEntry("Not A Float", List.of("Price"));
+					view.failedEntry("Not A Float", "Price");
 				}
 				return null;
 			}
@@ -404,10 +422,9 @@ public class CtrlerInventory {
 			return input.trim();
 		} else {
 			if (!isUpdate) {
-				view.failedEntry("Blank", List.of(fieldName));
+				blankFields.add(fieldName);
 			}
 			return null;
 		}
 	}
-
 }
