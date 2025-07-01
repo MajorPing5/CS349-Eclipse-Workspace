@@ -19,6 +19,7 @@ public class CtrlerInventory {
 	private InventoryDataAccess model;
 	private String state = "Main";
 	private InventoryItem searchResult;
+	private ArrayList<String> blankFields;
 
 	private final Consumer<InventoryItem> setTxtFields = item -> {
 		view.setTxtName(item.getName());
@@ -145,27 +146,27 @@ public class CtrlerInventory {
 						setTxtFields.accept(searchResult);
 
 						switch (state.charAt(0)) {
-							case 'U':
-								view.setState(InventoryView.InventoryState.ID_OFF);
-								state = "U2"; // Transition to Update phase 2
-								break;
 
-							case 'D':
-								view.setState(InventoryView.InventoryState.DELETE);
-								state = "D2"; // Transition to Delete phase 2
-								break;
+						case 'U':
+							view.setState(InventoryView.InventoryState.ID_OFF);
+							state = "U2"; // Transition to Update phase 2
+							break;
+						case 'D':
+							view.setState(InventoryView.InventoryState.DELETE);
+							state = "D2"; // Transition to Delete phase 2
+							break;
 
-								/**
-								 * Under NO circumstance should this be called during runtime. If it does, I
-								 * screwed up in the code in this segment
-								 */
-							default:
-								view.failedEntry("Missing State", new ArrayList<>(Arrays.asList("state: " + state)));
-								break;
+						/**
+						 * Under NO circumstance should this be called during runtime. If it does, I
+						 * screwed up in the code in this segment
+						 */
+						default:
+							view.failedEntry("Missing State", state);
+							break;
 						}
 					} else {
 						// 1. Call Failed Entry error
-						view.failedEntry("Integer DNE", new ArrayList<>(Arrays.asList("ID")));
+						view.failedEntry("Integer DNE", "ID");
 
 						// 2. Does not change existing state string
 
@@ -190,13 +191,13 @@ public class CtrlerInventory {
 							stateChange = deleteExecution();
 							break;
 
-							/**
-							 * Under NO circumstance should this be called during runtime. If it does, I
-							 * screwed up in the code in this segment
-							 */
-						default:
-							// 1. Call Failed Entry error
-							view.failedEntry("Missing State", new ArrayList<>(Arrays.asList("state: " + state)));
+					/**
+					 * Under NO circumstance should this be called during runtime. If it does, I
+					 * screwed up in the code in this segment
+					 */
+					default:
+						// 1. Call Failed Entry error
+						view.failedEntry("Missing State", state);
 
 							// 2. Does not change existing state string
 
@@ -249,12 +250,19 @@ public class CtrlerInventory {
 	 * @return {@code true} or {@code false} depending on success/failure of operation
 	 */
 	private boolean addExecution() {
+		String txtName = view.getTxtName().getText();
+		String txtQuantity = view.getTxtQuantity().getText();
+		String txtPrice = view.getTxtPrice().getText();
+		
 		// Assigns all fields with validation - if necessary
+
 		ArrayList<Supplier<Object>> fieldValidators = new ArrayList<>(Arrays.asList(
 				() -> validateString(view.getTxtName().getText(), "Name", false),
 				() -> validateInt(view.getTxtQuantity().getText(), "Quantity", false),
 				() -> validateDouble(view.getTxtPrice().getText(), false)));
 
+    blankFields = new ArrayList<>();
+    
 		// Will automatically iterate through the list to search for anything that is null
 		ArrayList<Object> results = fieldValidators.stream()
 				.map(Supplier::get)
@@ -262,6 +270,10 @@ public class CtrlerInventory {
 
 		// Searches results to see if anything retains null, indicating a failed field
 		if (results.stream().anyMatch(Objects::isNull)) {
+			if (!blankFields.isEmpty()) {
+				view.failedEntry("Blank", String.join(", ", blankFields));
+				blankFields.clear();
+			}
 			return false;
 
 		} else {
@@ -320,16 +332,21 @@ public class CtrlerInventory {
 	 * @return {@code true} or {@code false} depending on success/failure of operation
 	 */
 	private boolean updateExecution() {
+    private boolean updateExecution() {
+		String txtName = view.getTxtName().getText();
+		String txtQuantity = view.getTxtQuantity().getText();
+		String txtPrice = view.getTxtPrice().getText();
+        
 		ArrayList<Supplier<Object>> fieldValidators = new ArrayList<>(Arrays.asList(
-				() -> validateString(view.getTxtName().getText(), "Name", true),
-				() -> validateInt(view.getTxtQuantity().getText(), "Quantity", true),
-				() -> validateDouble(view.getTxtPrice().getText(), true)));
+				() -> validateString(txtName, "Name", true),
+				() -> validateInt(txtQuantity, "Quantity", true),
+				() -> validateDouble(txtPrice, "Price", true)));
 
 		ArrayList<Object> results = fieldValidators.stream()
 				.map(Supplier::get)
 				.collect(Collectors.toCollection(ArrayList::new));
 
-		String updatedName = (results.get(0) != "") ? (String) results.get(0) : searchResult.getName();
+		String updatedName = (results.get(0) != null ? (String) results.get(0) : searchResult.getName();
 		int updatedQuantity = (results.get(1) != null) ? (Integer) results.get(1) : searchResult.getQuantity();
 		double updatedPrice = (results.get(2) != null) ? (Double) results.get(2) : searchResult.getPrice();
 
@@ -341,10 +358,10 @@ public class CtrlerInventory {
 	 *
 	 * @return Validated Double or null if invalid
 	 */
-	private Double validateDouble(String input, boolean isUpdate) {
+	private Double validateDouble(String input, String, fieldName, boolean isUpdate) {
 		input = validateString(input, "Price", isUpdate);
 		// Terminates due to empty field without repeatedly mentioning field is empty
-		if (input.isBlank()) {
+		if (String.valueOf(input) == "null") {
 			return null;
 
 		} else {
@@ -355,14 +372,14 @@ public class CtrlerInventory {
 				} else {
 					// Silently converts if we're in the update state
 					if (!isUpdate) {
-						view.failedEntry("Double Domain Violation", new ArrayList<>(Arrays.asList(("Price"))));
+						view.failedEntry("Double Domain Violation", fieldName);
 					}
 					return null;
 				}
 			} catch (NumberFormatException e) {
 				// Silently converts if we're in the update state
 				if (!isUpdate) {
-					view.failedEntry("Not A Double", new ArrayList<>(Arrays.asList(("Price"))));
+					view.failedEntry("Not A Double", fieldName);
 				}
 				return null;
 			}
@@ -377,7 +394,7 @@ public class CtrlerInventory {
 	private Integer validateInt(String input, String fieldName, boolean isUpdate) {
 		input = validateString(input, fieldName, isUpdate);
 		// Terminates due to empty field without repeatedly mentioning field is empty
-		if (input.isBlank()) {
+		if (String.valueOf(input) == "null") {
 			return null;
 		} else {
 			try {
@@ -387,14 +404,14 @@ public class CtrlerInventory {
 				} else {
 					// Silently converts if we're in the update state
 					if (!isUpdate) {
-						view.failedEntry("Integer Domain Violation", new ArrayList<>(Arrays.asList((fieldName))));
+						view.failedEntry("Integer Domain Violation", fieldName);
 					}
 					return null;
 				}
 			} catch (NumberFormatException e) {
 				// Silently converts if we're in the update state
 				if (!isUpdate) {
-					view.failedEntry("Not An Integer", new ArrayList<>(Arrays.asList((fieldName))));
+					view.failedEntry("Not An Integer", fieldName);
 				}
 				return null;
 			}
@@ -415,9 +432,9 @@ public class CtrlerInventory {
 			return input.trim();
 		} else {
 			if (!isUpdate) {
-				view.failedEntry("Empty Field", new ArrayList<>(Arrays.asList((fieldName))));
+				blankFields.add(fieldName);
 			}
-			return "";
+			return null;
 		}
 	}
 }
