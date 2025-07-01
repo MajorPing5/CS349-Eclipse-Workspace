@@ -96,3 +96,8 @@ replay_pid*
 
 # System files
 *.DS_Store
+
+.metadata/
+/.metadata
+bin/
+
