@@ -257,11 +257,11 @@ public class CtrlerInventory {
 		// Assigns all fields with validation - if necessary
 
 		ArrayList<Supplier<Object>> fieldValidators = new ArrayList<>(Arrays.asList(
-				() -> validateString(view.getTxtName().getText(), "Name", false),
-				() -> validateInt(view.getTxtQuantity().getText(), "Quantity", false),
-				() -> validateDouble(view.getTxtPrice().getText(), false)));
+				() -> validateString(txtName, "Name", false),
+				() -> validateInt(txtQuantity, "Quantity", false),
+				() -> validateDouble(txtPrice, "Price", false)));
 
-    blankFields = new ArrayList<>();
+		blankFields = new ArrayList<>();
     
 		// Will automatically iterate through the list to search for anything that is null
 		ArrayList<Object> results = fieldValidators.stream()
@@ -331,7 +331,6 @@ public class CtrlerInventory {
 	 * 
 	 * @return {@code true} or {@code false} depending on success/failure of operation
 	 */
-	private boolean updateExecution() {
     private boolean updateExecution() {
 		String txtName = view.getTxtName().getText();
 		String txtQuantity = view.getTxtQuantity().getText();
@@ -341,12 +340,14 @@ public class CtrlerInventory {
 				() -> validateString(txtName, "Name", true),
 				() -> validateInt(txtQuantity, "Quantity", true),
 				() -> validateDouble(txtPrice, "Price", true)));
+		
+		
 
 		ArrayList<Object> results = fieldValidators.stream()
 				.map(Supplier::get)
 				.collect(Collectors.toCollection(ArrayList::new));
 
-		String updatedName = (results.get(0) != null ? (String) results.get(0) : searchResult.getName();
+		String updatedName = (results.get(0) != null) ? (String) results.get(0) : searchResult.getName();
 		int updatedQuantity = (results.get(1) != null) ? (Integer) results.get(1) : searchResult.getQuantity();
 		double updatedPrice = (results.get(2) != null) ? (Double) results.get(2) : searchResult.getPrice();
 
@@ -358,7 +359,7 @@ public class CtrlerInventory {
 	 *
 	 * @return Validated Double or null if invalid
 	 */
-	private Double validateDouble(String input, String, fieldName, boolean isUpdate) {
+	private Double validateDouble(String input, String fieldName, boolean isUpdate) {
 		input = validateString(input, "Price", isUpdate);
 		// Terminates due to empty field without repeatedly mentioning field is empty
 		if (String.valueOf(input) == "null") {
