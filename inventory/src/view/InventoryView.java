@@ -240,9 +240,8 @@ public class InventoryView extends JFrame {
 		btnUpdate = new JButton("Update");
 		btnAdd = new JButton("Add");
 
-		// List Initialization for these buttons to be group referenced at any time
+		// ArrayList Initialization for these buttons to be group referenced at any time
 		opButtons = new ArrayList<>(Arrays.asList(btnDelete, btnUpdate, btnAdd));
-
 		opButtons.forEach(button -> opPanel.add(button));
 		southPanel = new JPanel();
 		southPanel.add(opPanel);
@@ -275,13 +274,11 @@ public class InventoryView extends JFrame {
 			}
 		};
 
-		// Dedicated List initialization
+		// Dedicated ArrayList initialization
 		labels = new ArrayList<>(Arrays.asList(lblID, lblName, lblQuantity, lblPrice));
 		allFields = new ArrayList<>(Arrays.asList(txtID, txtName, txtQuantity, txtPrice));
-		detailFields = allFields.stream()
-				.filter(field -> field != txtID)
-				.collect(Collectors.toCollection(ArrayList::new));
-
+		detailFields = new ArrayList<>(allFields);
+		detailFields.remove(txtID);
 
 		// Attaches button listener across all text fields
 		for (JTextField field : allFields) {

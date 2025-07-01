@@ -1,11 +1,10 @@
 package model;
 
 public class InventoryItem {
-
 	// fields - ID, Name, Quantity, Price
 	int id, quantity;
 	String name;
-	float price;
+	double price;
 
 	// constructor - empty constructor
 	public InventoryItem() {
@@ -16,10 +15,10 @@ public class InventoryItem {
 	 * @param id Integer value of an Item's ID
 	 * @param name String name of the Item
 	 * @param quantity Integer value of an Item's supply count
-	 * @param price float value of an Item's cost towards consumer
-	 * {@return int id, String name, int quantity, float price}
+	 * @param price double value of an Item's cost towards consumer
+	 * {@return int id, String name, int quantity, double price}
 	 */
-	public InventoryItem(int id, String name, int quantity, float price) {
+	public InventoryItem(int id, String name, int quantity, double price) {
 		super();
 		this.id = id;
 		this.name = name;
@@ -27,7 +26,22 @@ public class InventoryItem {
 		this.price = price;
 	}
 
-	// setters and getters
+	/**
+	 * Overloaded constructor to retrieve item detail information
+	 * @param name String name of the Item
+	 * @param quantity Integer value of an Item's supply count
+	 * @param price double value of an Item's cost towards consumer
+	 * {@return String name, int quantity, double price}
+	 */
+	public InventoryItem(String name, int quantity, double price) {
+		super();
+		this.name = name;
+		this.quantity = quantity;
+		this.price = price;
+	}
+
+	// getters and setters
+
 	/**
 	 * @return the id
 	 */
@@ -73,7 +87,7 @@ public class InventoryItem {
 	/**
 	 * @return the price
 	 */
-	public float getPrice() {
+	public double getPrice() {
 		return price;
 	}
 
