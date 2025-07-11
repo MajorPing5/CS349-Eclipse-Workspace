@@ -1,7 +1,7 @@
 package bmi_project;
 import java.util.Scanner; // needed for console input
 
-public class app {
+public class App {
 
 	public static void main(String[] args) {
 		
