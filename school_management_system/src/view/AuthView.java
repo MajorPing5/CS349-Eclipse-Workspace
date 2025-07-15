@@ -2,8 +2,6 @@ package view;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 public class AuthView extends JFrame {
 	private static final long serialVersionUID = 1L;
@@ -11,9 +9,6 @@ public class AuthView extends JFrame {
 	private JPasswordField passwordField;
 	private JButton btnLogin;
 	private JLabel greeting, directions, emailPrompt, passwordPrompt, errorField;
-	
-	private JMenuBar menuBar;
-	private JMenu mmFile;
 	
 	private JPanel welcomePanel, loginFields, buttons;
 	
@@ -25,19 +20,19 @@ public class AuthView extends JFrame {
 		
 		// EDIT Refactor code below ln 26 for easier reading & clearer execution
 		// NOTE Reference ContactController and ContactView.java for further insight on how
-		// Create the menu bar
-		JMenuBar menuBar = new JMenuBar();
-		
-		// Create the File menu option and everything underneath
-		menuBar.add(mmFile);
-		setJMenuBar(menuBar);
 		
 		JPanel welcomePanel = new JPanel();
-		getContentPane().add(welcomePanel, BorderLayout.NORTH);
 		welcomePanel.setLayout(new BorderLayout(0, 10));
+		getContentPane().add(welcomePanel, BorderLayout.NORTH);
 		
 		JLabel greeting = new JLabel("Welcome to the School System!");
 		JLabel directions = new JLabel("Log-In using your Email and Password Credentials");
+		greeting.setHorizontalAlignment(SwingConstants.CENTER);
+		directions.setHorizontalAlignment(SwingConstants.CENTER);
+		directions.setAlignmentX(0.5f);
+		welcomePanel.add(greeting, BorderLayout.NORTH);
+		welcomePanel.add(directions, BorderLayout.SOUTH);
+
 		JPanel loginFields = new JPanel();
 		Box authFields = Box.createVerticalBox();
 		JLabel emailPrompt = new JLabel("Email: ");
@@ -47,13 +42,8 @@ public class AuthView extends JFrame {
 		emailField.setPreferredSize(new Dimension(150, 20));
 		emailField.setToolTipText("Must include @example.com");
 		
-		greeting.setHorizontalAlignment(SwingConstants.CENTER);
-		directions.setHorizontalAlignment(SwingConstants.CENTER);
 		emailPrompt.setHorizontalAlignment(SwingConstants.RIGHT);
-		directions.setAlignmentX(0.5f);
 		
-		welcomePanel.add(greeting, BorderLayout.NORTH);
-		welcomePanel.add(directions, BorderLayout.SOUTH);
 		getContentPane().add(loginFields, BorderLayout.CENTER);
 		loginFields.add(authFields);
 		authFields.add(emailPrompt);
@@ -68,7 +58,7 @@ public class AuthView extends JFrame {
 		passwordField.setHorizontalAlignment(SwingConstants.CENTER);
 		authFields.add(passwordField);
 		
-		JLabel errorField = new JLabel("ERROR: Email and/or Password is Incorrect!");
+		errorField = new JLabel("ERROR: Email and/or Password is Incorrect!");
 		errorField.setForeground(Color.RED);
 		errorField.setFont(new Font("Tahoma", Font.BOLD, 11));
 		errorField.setVisible(false);
@@ -81,14 +71,6 @@ public class AuthView extends JFrame {
 		buttons.add(btnLogin);
 	}
 	
-	// NOTE buildMenu is not used as of yet. Awaiting implementation
-	private void buildMenu() {
-		JMenu mmFile = new JMenu("File");
-		
-		mmFile.add(new JMenuItem("Log-Out"));
-		mmFile.add(new JMenuItem("Quit"));
-		
-	}
 	/**
 	 * @return the emailField
 	 */
@@ -131,5 +113,10 @@ public class AuthView extends JFrame {
 		return errorField;
 	}
 
-	
+	/**
+	 * @return the entire window
+	 */
+	public Container getWindow() {
+		return getContentPane();
+	}
 }

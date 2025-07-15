@@ -90,11 +90,17 @@ public class StudentView extends JFrame {
 	 * @return LogOutButton
 	 */
 	public JButton getLogOutButton() {
-		return (JButton) componentSections.get("menu").get(menuBar.getComponentIndex(mmLogOutItem));
+		return (JButton) componentSections
+				.get("menu")
+				.get(
+						menuBar.getComponentIndex(mmLogOutItem));
 	}
 	
 	public JButton getQuitButton() {
-		return (JButton) componentSections.get("menu").get(menuBar.getComponentIndex(mmQuitItem));
+		return (JButton) componentSections
+				.get("menu")
+				.get(
+						menuBar.getComponentIndex(mmQuitItem));
 	}
 	
 	// TODO Create remaining getters for controller access

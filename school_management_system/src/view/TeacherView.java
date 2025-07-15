@@ -12,7 +12,7 @@ public class TeacherView extends JFrame {
 	private JPanel Dashboard;
 	public TeacherView() {
 		setTitle("User Dashboard");
-		setSize(800, 600);
+		setSize(1440, 1024);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 450, 300);
 		Dashboard = new JPanel();

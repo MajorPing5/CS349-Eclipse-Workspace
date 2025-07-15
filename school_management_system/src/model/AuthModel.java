@@ -25,7 +25,9 @@ public class AuthModel {
 
 		return new Database().executeQuery(
 				query,
-				parameters -> parameters.setString(1, email),
+				parameters -> {
+					parameters.setString(1, email);
+					},
 				results -> {
 					if (results.next()) {
 						String storedHash = results.getString("password");
@@ -39,16 +41,19 @@ public class AuthModel {
 	
 	public String retrieveRole(String email, String password) {
 		String query = "SELECT role_type FROM tb_user WHERE email=? AND password=?;";
-		
+
 		return new Database().executeQuery(
 				query,
-				null,
+				parameters -> {
+					parameters.setString(1, email);
+					parameters.setString(2, Security.hashPassword(password));
+				},
 				results -> {
 					if (results.next()) {
-						String role = results.getString("role_type");
-						return role;
+						return results.getString("role_type");
+					} else {
+						return null;
 					}
-					return "admin";
-		});
+				});
 	}
 }
