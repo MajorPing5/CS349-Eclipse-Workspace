@@ -10,6 +10,8 @@ public class AuthView extends JFrame {
 	private JButton btnLogin;
 	private JLabel greeting, directions, emailPrompt, passwordPrompt, errorField;
 	
+	private Box authFields;
+
 	private JPanel welcomePanel, loginFields, buttons;
 	
 	public AuthView() {
@@ -21,22 +23,22 @@ public class AuthView extends JFrame {
 		// EDIT Refactor code below ln 26 for easier reading & clearer execution
 		// NOTE Reference ContactController and ContactView.java for further insight on how
 		
-		JPanel welcomePanel = new JPanel();
+		welcomePanel = new JPanel();
 		welcomePanel.setLayout(new BorderLayout(0, 10));
 		getContentPane().add(welcomePanel, BorderLayout.NORTH);
 		
-		JLabel greeting = new JLabel("Welcome to the School System!");
-		JLabel directions = new JLabel("Log-In using your Email and Password Credentials");
+		greeting = new JLabel("Welcome to the School System!");
+		directions = new JLabel("Log-In using your Email and Password Credentials");
 		greeting.setHorizontalAlignment(SwingConstants.CENTER);
 		directions.setHorizontalAlignment(SwingConstants.CENTER);
 		directions.setAlignmentX(0.5f);
 		welcomePanel.add(greeting, BorderLayout.NORTH);
 		welcomePanel.add(directions, BorderLayout.SOUTH);
 
-		JPanel loginFields = new JPanel();
-		Box authFields = Box.createVerticalBox();
-		JLabel emailPrompt = new JLabel("Email: ");
-		JLabel passwordPrompt = new JLabel("Password: ");
+		loginFields = new JPanel();
+		authFields = Box.createVerticalBox();
+		emailPrompt = new JLabel("Email: ");
+		passwordPrompt = new JLabel("Password: ");
 		
 		emailField = new JTextField();
 		emailField.setPreferredSize(new Dimension(150, 20));
@@ -64,7 +66,7 @@ public class AuthView extends JFrame {
 		errorField.setVisible(false);
 		authFields.add(errorField);
 		
-		JPanel buttons = new JPanel();
+		buttons = new JPanel();
 		getContentPane().add(buttons, BorderLayout.SOUTH);
 		
 		btnLogin = new JButton("Log-In");

@@ -16,6 +16,7 @@ public class AdminView extends JFrame {
 	
 	@SuppressWarnings("unused")
 	private AdminManageButtons sysManageButtons;
+	@SuppressWarnings("unused")
 	private TableFramework tableFramework;
 	
 	/**

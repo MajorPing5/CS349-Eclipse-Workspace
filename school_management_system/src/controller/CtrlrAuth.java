@@ -37,11 +37,13 @@ public class CtrlrAuth {
 							AdminView adminView = new AdminView();
 							adminView.setVisible(true);
 							break;
-						case "teacher":
-							StudentView studentView = new StudentView();
-							break;
 						case "student":
+							StudentView studentView = new StudentView();
+							studentView.setVisible(true);
+							break;
+						case "teacher":
 							TeacherView teacherView = new TeacherView();
+							teacherView.setVisible(true);
 							break;
 					}
 				} else {
