@@ -60,7 +60,7 @@ public class AdminManageButtons extends JPanel{
 	
 	// Custom Methods
 	private void buildLabel() {
-		String directions = "What System Information do you want to Modify?";
+		String directions = "What system information do you want to modify?";
 		centerPanel.add(new JLabel(directions));
 	}
 	

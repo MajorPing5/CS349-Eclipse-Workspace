@@ -21,7 +21,7 @@ public class AdminConfirmButtons extends JFrame {
 	private JTextField txtID, txtFirstName, txtLastName, txtEmail, txtPassword;
 	
 	// Field groupings by panel
-	private JPanel southPanel, confirmPanel;
+	private JPanel southPanel, confirmPanel, btnsPanel;
 	
 	// Individual, iterable lists for specific field groups
 	private ArrayList<JTextField> allFields, detailFields;
@@ -211,6 +211,20 @@ public class AdminConfirmButtons extends JFrame {
 		this.confirmButtons = confirmButtons;
 	}
 
+	/**
+	 * @return the btnsPanel
+	 */
+	public JPanel getBtnsPanel() {
+		return btnsPanel;
+	}
+
+	/**
+	 * @param btnsPanel the btnsPanel to set
+	 */
+	public void setBtnsPanel(JPanel btnsPanel) {
+		this.btnsPanel = btnsPanel;
+	}
+
 	// Constructor
 	public AdminConfirmButtons() {
 		buildConfirmPanel();
@@ -272,17 +286,27 @@ public class AdminConfirmButtons extends JFrame {
 		//Row 2 - Initializes the Confirmation Buttons
 		btnBack = new JButton("Back");
 		btnClear = new JButton("Clear");
-		btnSubmit = new JButton("Submit");		
+		btnSubmit = new JButton("Submit");
 		
-		// Confirmation Buttons Panel Declaration & Initialization
-		JPanel btnsPanel = new JPanel();
-
 		// Declares all Confirmation Buttons
+		btnsPanel = new JPanel();
 		confirmButtons = new ArrayList<>(Arrays.asList(btnBack, btnClear, btnSubmit));
 		confirmButtons.forEach(obj -> btnsPanel.add(obj));
 		
 		confirmPanel.add(fieldsPanel);
 		confirmPanel.add(btnsPanel);
 		// Does not assign to active panel since this is to be accessed later
+	}
+	
+	public void deleteMode() {
+		ArrayList<JButton> noClear = new ArrayList<>(confirmButtons);
+		noClear.remove(btnClear);
+		
+		confirmPanel.remove(btnsPanel);
+		noClear.forEach(obj -> btnsPanel.add(obj));
+		
+		confirmPanel.add(btnsPanel);
+		confirmPanel.revalidate();
+		confirmPanel.repaint();
 	}
 }

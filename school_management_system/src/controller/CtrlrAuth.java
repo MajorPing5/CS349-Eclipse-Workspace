@@ -16,38 +16,35 @@ import view.AuthView;
 
 public class CtrlrAuth {
 	
-	private AuthView aView;
-	private AuthModel aModel;
+	private AuthView view;
+	private AuthModel model;
 	
-	public CtrlrAuth(AuthView aView, AuthModel aModel) {
-		this.aView = aView;
-		this.aModel = aModel;
+	public CtrlrAuth(AuthView view, AuthModel model) {
+		this.view = view;
+		this.model = model;
 		
-		aView.getBtnLogin().addActionListener(new ActionListener() {
+		view.getBtnLogin().addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				if (loginValidator()) {					
-					String role = aModel.retrieveRole(
-							aView.getEmailField().getText(),
-							new String(aView.getPasswordField().getPassword()));							
-					aView.dispose();
+					String role = model.retrieveRole(
+							view.getEmailField().getText(),
+							new String(view.getPasswordField().getPassword()));							
+					view.dispose();
 					
 					switch (role) {
 						case "admin":
 							AdminView adminView = new AdminView();
-							adminView.setVisible(true);
 							break;
 						case "student":
 							StudentView studentView = new StudentView();
-							studentView.setVisible(true);
 							break;
 						case "teacher":
 							TeacherView teacherView = new TeacherView();
-							teacherView.setVisible(true);
 							break;
 					}
 				} else {
-					aView.getErrorField().setVisible(true);
+					view.getErrorField().setVisible(true);
 				}
 			}
 		});
@@ -61,8 +58,8 @@ public class CtrlrAuth {
 	 */
 	private boolean loginValidator() {
 		ArrayList<Supplier<Object>> fieldValidators = new ArrayList<>(Arrays.asList(
-				() -> validateString(aView.getEmailField().getText(), "Email"),
-				() -> validateTextPassword(aView.getPasswordField().getPassword())));
+				() -> validateString(view.getEmailField().getText(), "Email"),
+				() -> validateTextPassword(view.getPasswordField().getPassword())));
 
 		// Will automatically iterate through the list to search for anything that is null
 		ArrayList<Object> results = fieldValidators.stream()
@@ -77,7 +74,7 @@ public class CtrlrAuth {
 			String email = (String) results.get(0);
 			String plaintextPassword = (String) results.get(1);
 
-			return aModel.validatePassword(email, plaintextPassword);
+			return model.validatePassword(email, plaintextPassword);
 		}
 	}
 	

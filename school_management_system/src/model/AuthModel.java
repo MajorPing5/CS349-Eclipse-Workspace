@@ -40,7 +40,7 @@ public class AuthModel {
 	}
 	
 	public String retrieveRole(String email, String password) {
-		String query = "SELECT role_type FROM tb_user WHERE email=? AND password=?;";
+		String query = "SELECT role_type FROM tb_user WHERE email=? AND password=?";
 
 		return new Database().executeQuery(
 				query,
