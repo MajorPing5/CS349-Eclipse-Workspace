@@ -76,6 +76,7 @@ public class AdminView extends JFrame {
 		contentPanel.add(sysManageButtons, BorderLayout.CENTER);
 		
 		// Pack the contents of the window and display it.
+		add(contentPanel);
 		pack();
 		setVisible(true);
 	}

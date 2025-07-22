@@ -1,13 +1,13 @@
 package app;
 
 import controller.CtrlrAuth;
-import model.AuthModel;
+import model.DBO;
 import view.AuthView;
 
 public class Main {	
 	public static void main(String[] args) {
 		AuthView view = new AuthView();
-		AuthModel model = new AuthModel();
+		DBO model = new DBO();
 		new CtrlrAuth(view, model);
 		view.setVisible(true);
 	}

@@ -1,11 +1,15 @@
 package model;
 
-import java.sql.*;
 import java.util.ArrayList;
 
 import my_util.*;
 
-public class CourseDA {
+public class DBO {
+	/**
+	 * Executes SQL Query for INSERT in table tb_course
+	 * @param course
+	 * @return
+	 */
 	public boolean addCourse(Course course) {
 		String query = "INSERT INTO tb_course (code, name, description, max_capacity, status) VALUES (?, ?, ?, ?, 'active')";
 
@@ -38,7 +42,7 @@ public class CourseDA {
 	
 	/**
 	 * "Remove" method to delete a course from the course ArrayList 
-	 * @param courseToRemove
+	 * @param course
 	 */
 	public boolean deleteCourse(Course course) {
 		String query = "DELETE FROM tb_course WHERE id=?";
@@ -74,5 +78,59 @@ public class CourseDA {
 					return courseList;
 				}
 				);
+	}
+	
+	public Boolean validateEmail(String email) {
+		String query = "SELECT email FROM tb_user WHERE email=?";
+		
+		return new Database().executeQuery(
+				query,
+				null,
+				results -> {
+					if (results.next()) {
+						String storedEmail = results.getString("email");
+						String inputEmail = email;
+						return storedEmail.equals(inputEmail);
+					}
+					return false;
+				}
+				);
+	}
+	
+	public Boolean validatePassword(String email, String password) {
+		String query = "SELECT password FROM tb_user WHERE email =?";
+
+		return new Database().executeQuery(
+				query,
+				parameters -> {
+					parameters.setString(1, email);
+					},
+				results -> {
+					if (results.next()) {
+						String storedHash = results.getString("password");
+						String inputHash = Security.hashPassword(password);
+						return storedHash.equals(inputHash);
+					}
+					return false;
+				}
+				);
+	}
+	
+	public String retrieveRole(String email, String password) {
+		String query = "SELECT role_type FROM tb_user WHERE email=? AND password=?";
+
+		return new Database().executeQuery(
+				query,
+				parameters -> {
+					parameters.setString(1, email);
+					parameters.setString(2, Security.hashPassword(password));
+				},
+				results -> {
+					if (results.next()) {
+						return results.getString("role_type");
+					} else {
+						return null;
+					}
+				});
 	}
 }
