@@ -13,9 +13,9 @@ public class CtrlrAuth {
 	private DBO model;
 	private Validation valid = new Validation();
 	
-	public CtrlrAuth(AuthView view, DBO model) {
-		this.view = view;
-		this.model = model;
+	public CtrlrAuth(AuthView AuthView, DBO DBO) {
+		this.view = AuthView;
+		this.model = DBO;
 		
 		view.getBtnLogin().addActionListener(new ActionListener() {
 			@Override
@@ -29,14 +29,17 @@ public class CtrlrAuth {
 					switch (role) {
 						case "admin":
 							AdminView adminView = new AdminView();
+							new CtrlrAdmin(adminView, model);
 							adminView.setVisible(true);
 							break;
 						case "student":
 							StudentView studentView = new StudentView();
+							new CtrlrStudent(studentView, model);
 							studentView.setVisible(true);
 							break;
 						case "teacher":
 							TeacherView teacherView = new TeacherView();
+							new CtrlrTeacher(teacherView, model);
 							teacherView.setVisible(true);
 							break;
 					}

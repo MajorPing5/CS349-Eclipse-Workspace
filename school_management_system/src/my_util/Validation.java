@@ -12,7 +12,7 @@ import model.*;
 
 public class Validation {
 	// Fields
-	private Course course;
+	private Entities course;
 	private DBO dbo = new DBO();
 	/**
 	 * Checks the email and password credentials to the database information

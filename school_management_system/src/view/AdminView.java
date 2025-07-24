@@ -2,6 +2,7 @@ package view;
 
 import java.awt.BorderLayout;
 import java.util.ArrayList;
+import java.util.function.Function;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -25,9 +26,11 @@ public class AdminView extends JFrame {
 	private String[] coursesAttributes = {
 			"Course Code",
 			"Course Name",
-			"Teacher Name",
 			"Description",
-			"Max Capacity"
+			"Teacher First Name",
+			"Teacher Last Name",
+			"Max Capacity",
+			"Status"
 	};
 	private String[] studentAttributes = {
 			"Student ID",
@@ -45,12 +48,180 @@ public class AdminView extends JFrame {
 			"Department",
 	};
 	
-	private AdminManageButtons sysManageButtons;
-	private TableFramework tableFramework;
-	private PanelOperations panelOps;
+	public AdminManageButtons sysManageButtons;
+	public TableFramework tableFramework;
+	public PanelOperations panelOps;
 	
 	// Getters & Setters
 	
+	/**
+	 * @return the contentPanel
+	 */
+	public JPanel getContentPanel() {
+		return contentPanel;
+	}
+
+	/**
+	 * @return the coursePanel
+	 */
+	public JPanel getCoursePanel() {
+		return coursePanel;
+	}
+
+	/**
+	 * @return the teacherPanel
+	 */
+	public JPanel getTeacherPanel() {
+		return teacherPanel;
+	}
+
+	/**
+	 * @return the studentPanel
+	 */
+	public JPanel getStudentPanel() {
+		return studentPanel;
+	}
+
+	/**
+	 * @return the allFields
+	 */
+	public ArrayList<JTextField> getAllFields() {
+		return allFields;
+	}
+
+	/**
+	 * @return the detailFields
+	 */
+	public ArrayList<JTextField> getDetailFields() {
+		return detailFields;
+	}
+
+	/**
+	 * @return the coursesAttributes
+	 */
+	public String[] getCoursesAttributes() {
+		return coursesAttributes;
+	}
+
+	/**
+	 * @return the studentAttributes
+	 */
+	public String[] getStudentAttributes() {
+		return studentAttributes;
+	}
+
+	/**
+	 * @return the teacherAttributes
+	 */
+	public String[] getTeacherAttributes() {
+		return teacherAttributes;
+	}
+
+	/**
+	 * @return the sysManageButtons
+	 */
+	public AdminManageButtons getSysManageButtons() {
+		return sysManageButtons;
+	}
+
+	/**
+	 * @return the tableFramework
+	 */
+	public TableFramework getTableFramework() {
+		return tableFramework;
+	}
+
+	/**
+	 * @return the panelOps
+	 */
+	public PanelOperations getPanelOps() {
+		return panelOps;
+	}
+
+	/**
+	 * @param contentPanel the contentPanel to set
+	 */
+	public void setContentPanel(JPanel contentPanel) {
+		this.contentPanel = contentPanel;
+	}
+
+	/**
+	 * @param coursePanel the coursePanel to set
+	 */
+	public void setCoursePanel(JPanel coursePanel) {
+		this.coursePanel = coursePanel;
+	}
+
+	/**
+	 * @param teacherPanel the teacherPanel to set
+	 */
+	public void setTeacherPanel(JPanel teacherPanel) {
+		this.teacherPanel = teacherPanel;
+	}
+
+	/**
+	 * @param studentPanel the studentPanel to set
+	 */
+	public void setStudentPanel(JPanel studentPanel) {
+		this.studentPanel = studentPanel;
+	}
+
+	/**
+	 * @param allFields the allFields to set
+	 */
+	public void setAllFields(ArrayList<JTextField> allFields) {
+		this.allFields = allFields;
+	}
+
+	/**
+	 * @param detailFields the detailFields to set
+	 */
+	public void setDetailFields(ArrayList<JTextField> detailFields) {
+		this.detailFields = detailFields;
+	}
+
+	/**
+	 * @param coursesAttributes the coursesAttributes to set
+	 */
+	public void setCoursesAttributes(String[] coursesAttributes) {
+		this.coursesAttributes = coursesAttributes;
+	}
+
+	/**
+	 * @param studentAttributes the studentAttributes to set
+	 */
+	public void setStudentAttributes(String[] studentAttributes) {
+		this.studentAttributes = studentAttributes;
+	}
+
+	/**
+	 * @param teacherAttributes the teacherAttributes to set
+	 */
+	public void setTeacherAttributes(String[] teacherAttributes) {
+		this.teacherAttributes = teacherAttributes;
+	}
+
+	/**
+	 * @param sysManageButtons the sysManageButtons to set
+	 */
+	public void setSysManageButtons(AdminManageButtons sysManageButtons) {
+		this.sysManageButtons = sysManageButtons;
+	}
+
+	/**
+	 * @param tableFramework the tableFramework to set
+	 */
+	public void setTableFramework(TableFramework tableFramework) {
+		this.tableFramework = tableFramework;
+	}
+
+	/**
+	 * @param panelOps the panelOps to set
+	 */
+	public void setPanelOps(PanelOperations panelOps) {
+		this.panelOps = panelOps;
+	}
+
 	// Constructors
 	/**
 	 * Create the Admin specific frames.
@@ -107,10 +278,25 @@ public class AdminView extends JFrame {
 	}
 	
 	private void buildCoursesConfirmPanel() {
-		
 	}
 	
 	public void sceneSwap(JPanel target) {
 		panelOps.panelSwap(contentPanel, target);
+	}
+	
+	public void activateAdminPanel(String mode, ArrayList<?> courseList, Function<Object, Object[]> rowMapper) {
+		tableFramework.newTable(new ArrayList<>(courseList), rowMapper);
+
+		switch (mode) {
+		case "Course":
+			sceneSwap(coursePanel);
+			break;
+		case "Student":
+			sceneSwap(studentPanel);
+			break;
+		case "Teacher":
+			sceneSwap(teacherPanel);
+			break;
+		}
 	}
 }
