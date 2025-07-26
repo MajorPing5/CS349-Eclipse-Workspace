@@ -4,13 +4,20 @@ import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 
 import java.awt.*;
-import java.awt.event.*;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 public class TeacherView extends JFrame {
 	// TODO Convert TeacherView into CommonView to permit this being the splash page for teachers and students post-login
 	private static final long serialVersionUID = 1L;
+	
+	private JButton btnCourse, btnInbox;
+	
+	private ArrayList<JButton> dashButtons;
+	
 	private JPanel Dashboard;
-	public TeacherView() {
+	
+	public TeacherView(String fName, String lName) {
 		setTitle("User Dashboard");
 		setSize(1440, 1024);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -25,49 +32,30 @@ public class TeacherView extends JFrame {
 		Dashboard.add(topPanel, BorderLayout.NORTH);
 		topPanel.setLayout(new BorderLayout(0, 0));
 		
-		JLabel lblWelcome = new JLabel("placeholder");
+		JLabel lblWelcome = new JLabel("Welcome " + fName + " " + lName +"!");
 		lblWelcome.setFont(new Font("Times New Roman", Font.BOLD, 16));
 		topPanel.add(lblWelcome, BorderLayout.WEST);
 		
 		JButton btnLogout = new JButton("Logout");
 		topPanel.add(btnLogout, BorderLayout.EAST);
 		
-		JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
+		JPanel dashboardButtons = new JPanel(new GridLayout(1,2,10,10));
 		
-		JPanel coursesPanel = createButtonPanel("Courses", "View all information regarding your assigned courses & students", this::handleCourses);
-		JPanel inboxPanel	= createButtonPanel("Inbox", "Check your in-system messages from students", this::handleInbox);
+		btnCourse = createButton("Courses", "View all information regarding your assigned courses & students");
+		btnInbox = createButton("Inbox", "Check your in-system messages from students");
 		
-		splitPane.setLeftComponent(coursesPanel);
-		splitPane.setRightComponent(inboxPanel);
+		dashButtons = new ArrayList<>(Arrays.asList(btnCourse, btnInbox));
 		
-		Dashboard.add(splitPane, BorderLayout.CENTER);
-		SwingUtilities.invokeLater(() -> {
-			splitPane.setDividerLocation(0.5);
-			splitPane.setResizeWeight(0.5);
-		});
+		Dashboard.add(dashboardButtons, BorderLayout.CENTER);
+		setVisible(true);
 	}
 	
-	private JPanel createButtonPanel(String buttonText, String tooltipText, ActionListener handler) {
-		JPanel panel = new JPanel(new GridBagLayout());
-		panel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
-		
+	private JButton createButton(String buttonText, String tooltipText) {
 		JButton button = new JButton(buttonText);
 		button.setPreferredSize(new Dimension(100,50));
 		button.setFont(new Font("Times New Roman", Font.PLAIN, 18));;
 		button.setToolTipText(tooltipText);
-		button.addActionListener(handler);
 		
-		GridBagConstraints gbc_button = new GridBagConstraints();
-		panel.add(button, gbc_button);		
-		return panel;
+		return button;
 	}
-	
-	private void handleCourses(ActionEvent e) {
-		System.out.println("Courses button clicked");
-	}
-	
-	private void handleInbox(ActionEvent e) {
-		System.out.println("Inbox button clicked");
-	}
-
 }

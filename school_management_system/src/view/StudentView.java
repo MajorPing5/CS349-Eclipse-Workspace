@@ -19,25 +19,15 @@ public class StudentView extends JFrame {
 		
 		setTitle("Course Enrollment");
 		setLayout(new BorderLayout());
-		initializeView();
-	}
-	
-	/**
-	 * Initialize the contents of the full window.
-	 */	
-	public void createView() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		
+		componentSections.put("menu",  new ArrayList<>());
+		componentSections.put("frame", new ArrayList<>());
+		
 		buildMenu();
 		buildFrame();
 		assembleComponents();
-	}
-
-	/**
-	 * Pre-Defines all segments of the full view at declaration
-	 */
-	private void initializeView() {
-		componentSections.put("menu",  new ArrayList<>());
-		componentSections.put("frame", new ArrayList<>());
+		setVisible(true);
 	}
 	
 	/**

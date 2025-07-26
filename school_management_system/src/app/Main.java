@@ -9,6 +9,5 @@ public class Main {
 		AuthView view = new AuthView();
 		DBO model = new DBO();
 		new CtrlrAuth(view, model);
-		view.setVisible(true);
 	}
 }

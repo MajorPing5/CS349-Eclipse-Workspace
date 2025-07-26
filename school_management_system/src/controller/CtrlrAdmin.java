@@ -19,7 +19,8 @@ public class CtrlrAdmin {
 		this.view = AdminView;
 		this.model = DBO;
 		
-		view.sysManageButtons.getBtnCourses().addActionListener(new ActionListener() {
+		// Courses Administration Button
+		view.sysManBtns.getBtnCourses().addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				ArrayList<Entities> courses = model.getCourseList();				
@@ -38,6 +39,35 @@ public class CtrlrAdmin {
 									course.getStatus()
 							};
 						});
+			}
+		});
+		
+		// Students Administration Button
+		view.sysManBtns.getBtnStudents().addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				ArrayList<Entities> students = model.getStudentList();				
+				view.activateAdminPanel(
+						"Students",
+						students,
+						info -> {
+							Entities student = (Entities) info;
+							return new Object[] {
+									student.getID(),
+									student.getFirstName(),
+									student.getLastName(),
+									student.getEmail(),
+									student.getPassword()
+							};
+						});
+			}
+		});
+		
+		// Teachers Administration Button
+		view.sysManBtns.getBtnTeachers().addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				
 			}
 		});
 	}	

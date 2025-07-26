@@ -1,6 +1,9 @@
 package view;
 
 import javax.swing.*;
+
+import view.common.PanelOperations;
+
 import java.awt.*;
 
 public class AuthView extends JFrame {
@@ -12,12 +15,15 @@ public class AuthView extends JFrame {
 	
 	private Box authFields;
 
-	private JPanel welcomePanel, loginFields, buttons;
+	private JPanel welcomePanel, loginPanel, buttons;
+	
+	public PanelOperations panelOps = new PanelOperations();
 	
 	public AuthView() {
 		setTitle("School System");
 		setSize(600, 400);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setLocationRelativeTo(null);
 		setLayout(new BorderLayout(0, 20));
 		
 		// EDIT Refactor code below ln 26 for easier reading & clearer execution
@@ -25,7 +31,7 @@ public class AuthView extends JFrame {
 		
 		welcomePanel = new JPanel();
 		welcomePanel.setLayout(new BorderLayout(0, 10));
-		getContentPane().add(welcomePanel, BorderLayout.NORTH);
+		add(welcomePanel, BorderLayout.NORTH);
 		
 		greeting = new JLabel("Welcome to the School System!");
 		directions = new JLabel("Log-In using your Email and Password Credentials");
@@ -35,25 +41,25 @@ public class AuthView extends JFrame {
 		welcomePanel.add(greeting, BorderLayout.NORTH);
 		welcomePanel.add(directions, BorderLayout.SOUTH);
 
-		loginFields = new JPanel();
+		loginPanel = new JPanel();
 		authFields = Box.createVerticalBox();
 		emailPrompt = new JLabel("Email: ");
 		passwordPrompt = new JLabel("Password: ");
 		
+		loginPanel.add(authFields);
+		add(loginPanel, BorderLayout.CENTER);
+
+		emailPrompt.setHorizontalAlignment(SwingConstants.RIGHT);
+
 		emailField = new JTextField();
 		emailField.setPreferredSize(new Dimension(150, 20));
 		emailField.setToolTipText("Must include @example.com");
 		
-		emailPrompt.setHorizontalAlignment(SwingConstants.RIGHT);
-		
-		getContentPane().add(loginFields, BorderLayout.CENTER);
-		loginFields.add(authFields);
 		authFields.add(emailPrompt);
+		authFields.add(emailField);		
 		
-		authFields.add(emailField);
-		
-		authFields.add(passwordPrompt);
 		passwordPrompt.setHorizontalAlignment(SwingConstants.CENTER);
+		authFields.add(passwordPrompt);
 		
 		passwordField = new JPasswordField();
 		passwordField.setPreferredSize(new Dimension(150, 20));
@@ -66,11 +72,13 @@ public class AuthView extends JFrame {
 		errorField.setVisible(false);
 		authFields.add(errorField);
 		
-		buttons = new JPanel();
-		getContentPane().add(buttons, BorderLayout.SOUTH);
-		
+		buttons = new JPanel();		
 		btnLogin = new JButton("Log-In");
+		
 		buttons.add(btnLogin);
+		add(buttons, BorderLayout.SOUTH);
+		
+		setVisible(true);
 	}
 	
 	/**
@@ -115,10 +123,7 @@ public class AuthView extends JFrame {
 		return errorField;
 	}
 
-	/**
-	 * @return the entire window
-	 */
-	public Container getWindow() {
-		return getContentPane();
+	public void clearAuthView() {
+		dispose();
 	}
 }

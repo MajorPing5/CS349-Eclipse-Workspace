@@ -48,8 +48,8 @@ public class AdminView extends JFrame {
 			"Department",
 	};
 	
-	public AdminManageButtons sysManageButtons;
-	public TableFramework tableFramework;
+	public AdminManageButtons sysManBtns;
+	public TableFramework table;
 	public PanelOperations panelOps;
 	
 	// Getters & Setters
@@ -121,14 +121,14 @@ public class AdminView extends JFrame {
 	 * @return the sysManageButtons
 	 */
 	public AdminManageButtons getSysManageButtons() {
-		return sysManageButtons;
+		return sysManBtns;
 	}
 
 	/**
 	 * @return the tableFramework
 	 */
 	public TableFramework getTableFramework() {
-		return tableFramework;
+		return table;
 	}
 
 	/**
@@ -205,14 +205,14 @@ public class AdminView extends JFrame {
 	 * @param sysManageButtons the sysManageButtons to set
 	 */
 	public void setSysManageButtons(AdminManageButtons sysManageButtons) {
-		this.sysManageButtons = sysManageButtons;
+		this.sysManBtns = sysManageButtons;
 	}
 
 	/**
 	 * @param tableFramework the tableFramework to set
 	 */
 	public void setTableFramework(TableFramework tableFramework) {
-		this.tableFramework = tableFramework;
+		this.table = tableFramework;
 	}
 
 	/**
@@ -235,8 +235,8 @@ public class AdminView extends JFrame {
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 
 		// Enables common view classes for use in this view
-		sysManageButtons = new AdminManageButtons();
-		tableFramework = new TableFramework();
+		sysManBtns = new AdminManageButtons();
+		table = new TableFramework();
 		panelOps = new PanelOperations();		
 		
 		// Creates all potential 
@@ -244,11 +244,10 @@ public class AdminView extends JFrame {
 		buildStudentPanel();
 		buildTeacherPanel();
 		
-		contentPanel.add(sysManageButtons, BorderLayout.CENTER);
+		contentPanel.add(sysManBtns, BorderLayout.CENTER);
 		
 		// Pack the contents of the window and display it.
 		add(contentPanel);
-		pack();
 		setVisible(true);
 	}
 	
@@ -258,7 +257,7 @@ public class AdminView extends JFrame {
 	 */
 	private void buildCoursesPanel() {
 		coursePanel = new JPanel();
-		tableFramework.buildInitialTable(coursePanel, "Course Catalog", coursesAttributes);
+		table.buildInitialTable(coursePanel, "Course Catalog", coursesAttributes);
 	}
 	
 	/**
@@ -266,7 +265,7 @@ public class AdminView extends JFrame {
 	 */
 	private void buildStudentPanel() {
 		studentPanel = new JPanel();
-		tableFramework.buildInitialTable(studentPanel, "Student Information", studentAttributes);
+		table.buildInitialTable(studentPanel, "Student Information", studentAttributes);
 	}
 	
 	/**
@@ -274,28 +273,24 @@ public class AdminView extends JFrame {
 	 */
 	private void buildTeacherPanel() {
 		teacherPanel = new JPanel();
-		tableFramework.buildInitialTable(teacherPanel,"Teacher Information", teacherAttributes);
+		table.buildInitialTable(teacherPanel,"Teacher Information", teacherAttributes);
 	}
 	
 	private void buildCoursesConfirmPanel() {
 	}
 	
-	public void sceneSwap(JPanel target) {
-		panelOps.panelSwap(contentPanel, target);
-	}
-	
-	public void activateAdminPanel(String mode, ArrayList<?> courseList, Function<Object, Object[]> rowMapper) {
-		tableFramework.newTable(new ArrayList<>(courseList), rowMapper);
+	public void activateAdminPanel(String mode, ArrayList<?> dataList, Function<Object, Object[]> rowMapper) {
+		table.newTable(new ArrayList<>(dataList), rowMapper);
 
 		switch (mode) {
 		case "Course":
-			sceneSwap(coursePanel);
+			panelOps.panelSwap(getContentPanel(), getCoursePanel());
 			break;
 		case "Student":
-			sceneSwap(studentPanel);
+			panelOps.panelSwap(getContentPanel(), getStudentPanel());
 			break;
 		case "Teacher":
-			sceneSwap(teacherPanel);
+			panelOps.panelSwap(getContentPanel(), getTeacherPanel());
 			break;
 		}
 	}

@@ -66,6 +66,11 @@ public class DBO {
 				);
 	}
 
+	/**
+	 * Executes SQL Query for INSERT in Table {@code tb_teacher_courses}
+	 * @param assignment
+	 * @return Boolean for success/failure
+	 */
 	public boolean addTeacherAssignment(Entities assignment) {
 		String query = "INSERT INTO tb_teacher_courses (teacher_id, course_code) VALUES (?, ?)";
 
@@ -78,10 +83,15 @@ public class DBO {
 				null
 				);
 	}
-	
+
+	/**
+	 * Executes SQL Query for INSERT in Table {@code tb_enrollment}
+	 * @param enrollment
+	 * @return Boolean for success/failure
+	 */
 	public boolean addStudentEnrollment(Entities enrollment) {
 		String query = "INSERT INTO tb_enrollment (student_id, course_code) VALUES (?, ?)";
-		
+
 		return new Database().executeQuery(
 				query,
 				parameters -> {
@@ -99,7 +109,7 @@ public class DBO {
 	 */
 	public boolean deleteCourse(Entities course) {
 		String query = "DELETE FROM tb_course WHERE id=?";
-		
+
 		return new Database().executeQuery(
 				query,
 				parameters -> {
@@ -108,7 +118,7 @@ public class DBO {
 				null
 				);
 	}
-	
+
 	/**
 	 * Executes SQL Query for DELETE in Table {@code tb_enrollment}
 	 * @param enrollment
@@ -116,7 +126,7 @@ public class DBO {
 	 */
 	public boolean deleteEnrollment(Entities enrollment) {
 		String query = "DELETE FROM tb_enrollment WHERE id=?";
-		
+
 		return new Database().executeQuery(
 				query, 
 				parameters -> {
@@ -124,7 +134,7 @@ public class DBO {
 				}, 
 				null);
 	}
-	
+
 	/**
 	 * Executes SQL Query for DELETE in Table {@code tb_user}, for both Students and Teachers
 	 * @param user The user entry
@@ -132,7 +142,7 @@ public class DBO {
 	 */
 	public boolean deleteUser(Entities user) {
 		String query = "DELETE FROM tb_user WHERE id=?";
-		
+
 		return new Database().executeQuery(
 				query,
 				parameters -> {
@@ -141,7 +151,7 @@ public class DBO {
 				null
 				);
 	}	
-	
+
 	/**
 	 * Executes SQL Query for UPDATE in Table {@code tb_course}
 	 * @param course Full object that exists in class Entities for a proper course
@@ -149,7 +159,7 @@ public class DBO {
 	 */
 	public boolean updateCourse(Entities course) {
 		String query = "UPDATE tb_course SET name = ?, description = ?, max_capacity = ?, status = ? WHERE id=?";
-		
+
 		return new Database().executeQuery(
 				query,
 				parameters -> {
@@ -161,7 +171,7 @@ public class DBO {
 				null
 				);
 	}
-	
+
 	/**
 	 * Executes SQL Query for UPDATE in Table {@code tb_teacher_courses"
 	 * @param assignment
@@ -169,7 +179,7 @@ public class DBO {
 	 */
 	public boolean updateAssignment(Entities assignment) {
 		String query = "UPDATE tb_teacher_courses SET teacher_id = ?, course_code = ? WHERE id=?";
-		
+
 		return new Database().executeQuery(
 				query,
 				parameters -> {
@@ -180,7 +190,7 @@ public class DBO {
 				null
 				);
 	}
-	
+
 	/**
 	 * Executes SQL Query for UPDATE in Table {@code tb_course}
 	 * @param course Full object that exists in class Entities for any user (student or teacher)
@@ -189,7 +199,7 @@ public class DBO {
 	public boolean updateUser(Entities user) {
 		String query = "UPDATE tb_user SET first_name = ?, last_name = ?, email = ?, password = ?, department = ?,"
 				+ " WHERE id=?";
-		
+
 		return new Database().executeQuery(
 				query,
 				parameters -> {
@@ -203,13 +213,16 @@ public class DBO {
 				null
 				);
 	}
-	
+
 	/**
-	 * 
+	 * Executes SQL Query SELECT for tuple ID in Table {@code tb_teacher_courses}
+	 * @param tID the Teacher's ID, auto-created from Table {@code tb_user}
+	 * @param code the Course Code provided from Table {@code tb_course}
+	 * @return int of assignment ID for corresponding (tID, code) pair match
 	 */
 	public int getAssignmentID(int tID, String code) {
 		String query = "SELECT id FROM tb_teacher_courses WHERE teacher_id = ? AND course_code = ?";
-		
+
 		return new Database().executeQuery(
 				query,
 				parameters -> {
@@ -227,18 +240,51 @@ public class DBO {
 	}
 
 	/**
+	 * Executes SQL Query SELECT for course code in Table {@code tb_teacher_courses}
+	 * @param ID the Teacher's ID, auto-created from Table {@code tb_user}
+	 * @return ArrayList of type Entities with assignments tied to matching ID
+	 */
+	public ArrayList<Entities> getAssignments(int ID) {
+		String query = "SELECT course_code FROM tb_teacher_courses WHERE teacher_id = ?";
+
+		return new Database().executeQuery(
+				query,
+				parameters -> {
+					parameters.setInt(1, ID);
+				},
+				results -> {
+					ArrayList<Entities> assignments = new ArrayList<>();
+
+					while (results.next()) {
+						String code = results.getString("course_code");
+
+						Entities course = new Entities(ID, code);
+						assignments.add(course);
+					}
+					return assignments;
+				});
+	}
+
+	/**
 	 * Executes SQL Query for SELECT from Table {@code tb_course}
+	 * 
+	 * <p> Query results will consist (in order) of the course's code, name, description, 
+	 * teacher assigned's first name, teacher assigned's last name, course max capacity, 
+	 * and enrollment status.
+	 * 
+	 * <p> Note: Teacher's assigned first and last name is pulled from 
+	 * {@code tb_user} through {@code tb_teacher_courses}
 	 * @return Boolean for success/failure 
 	 */
 	public ArrayList<Entities> getCourseList() {
 		String query = "SELECT c.code AS course_code, "
-					+ "c.name, "
-					+ "c.description, "
-					+ "u.first_name, "
-					+ "u.last_name, "
-					+ "c.max_capacity, "
-					+ "c.status "
-				+ "FROM tb_courses AS c "
+				+ "c.name, "
+				+ "c.description, "
+				+ "u.first_name, "
+				+ "u.last_name, "
+				+ "c.max_capacity, "
+				+ "c.status "
+				+ "FROM tb_course AS c "
 				+ "LEFT JOIN tb_teacher_courses AS inter ON c.code = inter.course_code "
 				+ "LEFT JOIN tb_user AS u ON inter.teacher_id = u.id";
 
@@ -267,6 +313,9 @@ public class DBO {
 
 	/**
 	 * Executes SQL Query for SELECT from Table {@code tb_user} for any user role = "student"
+	 * 
+	 * <p> Query results will consist (in order) of the user's:
+	 * ID, first name, last name, email, and hashed password
 	 * @return ArrayList of students or empty ArrayList
 	 */
 	public ArrayList<Entities> getStudentList() {
@@ -293,8 +342,60 @@ public class DBO {
 				);
 	}
 
+	public Entities getUserInfoByID(int ID) {
+		String query = "SELECT * FROM tb_user WHERE id = ?";
+
+		return new Database().executeQuery(
+				query,
+				parameters -> {
+					parameters.setInt(1, ID);
+				},
+				results -> {
+					int id = results.getInt("id");
+					String fName = results.getString("first_name");
+					String lName = results.getString("last_name");
+					String email = results.getString("email");
+					String password = results.getString("password");
+					String dept = results.getString("department");
+
+					Entities userInfo = new Entities(id, fName, lName, email, password, dept);
+					return userInfo;
+				}
+				);
+	}
+
+	public Entities getUserInfoByEmail(String emailTxt) {
+		String query = "SELECT * FROM tb_user WHERE email = ?";
+
+		return new Database().executeQuery(
+				query,
+				parameters -> {
+					parameters.setString(1, emailTxt);
+				},
+				results -> {
+					if (results.next()) {
+						int id = results.getInt("id");
+						String fName = results.getString("first_name");
+						String lName = results.getString("last_name");
+						String email = results.getString("email");
+						String password = results.getString("password");
+						String role = results.getString("role_type");
+						String dept = results.getString("department");
+
+						Entities userInfo = new Entities(id, fName, lName, email, password, role, dept);
+						return userInfo;
+					} else {
+					return null;
+					}
+				}
+				);
+	}
+
 	/**
 	 * Executes SQL Query for SELECT from Table {@code tb_user} for any user role = "teacher"
+	 * 
+	 * <p> Query results will consist (in order) of the user's:
+	 * ID, first name, last name, email, hashed password, and department
 	 * @return ArrayList of teachers or empty ArrayList
 	 */
 	public ArrayList<Entities> getTeacherList() {
@@ -340,15 +441,13 @@ public class DBO {
 				});
 	}
 
-	public int retriveID(String fName, String lName, String email) {
-		String query = "SELECT id FROM tb_user WHERE (first_name=? AND last_name=?) AND (email = ?)";
+	public int retriveID(String email) {
+		String query = "SELECT id FROM tb_user WHERE email = ?";
 
 		return new Database().executeQuery(
 				query,
 				parameters -> {
-					parameters.setString(1, fName);
-					parameters.setString(2, lName);
-					parameters.setString(3, email);
+					parameters.setString(1, email);
 				}, results -> {
 					if (results.next()) {
 						return results.getInt("id");

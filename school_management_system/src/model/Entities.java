@@ -181,6 +181,9 @@ public class Entities {
 		this.dept = dept;
 	}
 
+	public Entities() {
+	}
+
 	/**
 	 * @return the Course Code
 	 */
