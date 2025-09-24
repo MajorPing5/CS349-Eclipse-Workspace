@@ -73,25 +73,15 @@ public class StudentView extends JFrame {
 		pack();
 		
 	}
-	
+
 	// Segment for direct controller access, for pure clarity
-	/**
-	 * Direct references Log-Out Button located within the menu bar
-	 * @return LogOutButton
-	 */
-	public JButton getLogOutButton() {
-		return (JButton) componentSections
-				.get("menu")
-				.get(
-						menuBar.getComponentIndex(mmLogOutItem));
+	public JMenuItem getMmLogOutItem() {
+		return mmLogOutItem;
+	}
+
+	public JMenuItem getMmQuitItem() {
+		return mmQuitItem;
 	}
 	
-	public JButton getQuitButton() {
-		return (JButton) componentSections
-				.get("menu")
-				.get(
-						menuBar.getComponentIndex(mmQuitItem));
-	}
-	
-	// TODO Create remaining getters for controller access
+	// TODO Migrate menu logout and quit into common class for all users to simplify operational sharing
 }
